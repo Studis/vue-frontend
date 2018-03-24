@@ -1,29 +1,25 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+   <div id="app">
+     <div id="nav">
+       <b-navbar toggleable="md" type="dark" variant="info">
+         <b-navbar-brand href="#">Studis - Študijski informacijski sistem</b-navbar-brand>
+       </b-navbar>
+      <b-container class="main-content">
+        <router-view></router-view>
+      </b-container>
+     </div>
     </div>
-    <router-view/>
-  </div>
 </template>
 
 <style lang="scss">
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
 }
 #nav {
+  // padding: 30px;
+}
+.main-content {
   padding: 30px;
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
 }
 </style>
