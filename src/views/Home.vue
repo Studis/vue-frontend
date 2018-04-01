@@ -1,56 +1,54 @@
 <template>
-  <div class="text-center">
-    <b-row>
-      <b-col>
-        <b-form-text tag="h1" id="logintext">
-          Prijava v sistem
-        </b-form-text>
-      </b-col>
-    </b-row>
-    <b-row>
-      <b-col sm="2"></b-col>
-      <b-col sm="8">
-      <b-form @submit="onSubmit" @reset="onReset" v-if="true">
-        <b-form-group id="exampleInputGroup1"
-          label="Študijska identiteta"
-          label-for="exampleInput1">
-          <b-form-input id="exampleInput1"
-            type="email"
-            required
-            placeholder="">
-          </b-form-input>
-        </b-form-group>
-        <b-form-group id="exampleInputGroup1"
-            label="Geslo:"
-            label-for="exampleInput3">
-          <b-form-input id="exampleInput3"
-            type="password"
-            required
-            >
-          </b-form-input>
-        </b-form-group>
-        <b-form-group id="exampleGroup4">
-          <b-form-checkbox-group  id="exampleChecks">
-            <b-form-checkbox value="me">Prijava brez digitalnega potrdila</b-form-checkbox>
-          </b-form-checkbox-group>
-          <b-link>Pozabil sem geslo</b-link>
-        </b-form-group>
-        <b-button type="submit" variant="primary">Prijava</b-button>
-      </b-form>
-      </b-col>
-      <b-col sm="2"></b-col>
-    </b-row>
+  <div class="">
+    <b-alert show>Fill out the survey for better quality of studies</b-alert>
+    <h3>Exam dates</h3>
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Study year</th>
+            <th scope="col">Course</th>
+            <th scope="col">Professor</th>
+            <th scope="col">Date</th>
+            <th scope="col">Sign up</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">1</th>
+            <td>Statisticsc</td>
+            <td>Otto</td>
+            <td>12.3.2019</td>
+            <td><b-button type="" variant="">Sign up</b-button></td>
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <td>Programming 1</td>
+            <td>Thornton</td>
+            <td>12.3.2019</td>
+            <td><b-button type="" variant="">Sign up</b-button></td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td>Programming 2</td>
+            <td>the Bird</td>
+            <td>12.3.2019</td>
+            <td><b-button type="" variant="">Sign up</b-button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
 
 @Component({
   components: {
-    HelloWorld,
   },
+  methods: {
+  }
 })
 export default class Home extends Vue {}
 </script>

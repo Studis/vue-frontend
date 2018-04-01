@@ -1,4 +1,11 @@
 <template>
+  <div id="app">
+    <studis-header></studis-header>
+    <b-container class="main-content">
+      <router-view></router-view>
+    </b-container>
+</div>
+<!--
    <div id="app">
      <div id="nav">
        <b-navbar toggleable="md" type="dark" variant="info">
@@ -9,15 +16,24 @@
       </b-container>
      </div>
     </div>
+  -->
 </template>
+
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+import Header from './components/header/Header.vue'
+@Component({
+  components: {
+    'studis-header': Header
+  }
+})
+export default class App extends Vue {}
+</script>
 
 <style lang="scss">
 #app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-#nav {
-  // padding: 30px;
 }
 .main-content {
   padding: 30px;
