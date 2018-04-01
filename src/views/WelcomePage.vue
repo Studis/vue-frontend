@@ -33,7 +33,7 @@
           <b-form-checkbox-group  id="exampleChecks">
             <b-form-checkbox value="me">Prijava brez digitalnega potrdila</b-form-checkbox>
           </b-form-checkbox-group>
-          <b-link>Pozabil sem geslo</b-link>
+          <b-link @click.prevent="forgotPassword">Pozabil sem geslo</b-link>
         </b-form-group>
         <b-button type="submit" variant="primary">Prijava</b-button>
       </b-form>
@@ -57,6 +57,9 @@ import Router from 'vue-router'
       this.$router.push({name: 'home'})
     },
     onReset () {
+    },
+    forgotPassword () {
+      this.$router.push({name: 'forgotPassword'})
     }
   }
 })

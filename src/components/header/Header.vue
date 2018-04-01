@@ -46,7 +46,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 
 @Component({
-  name: 'header',
+  name: 'studis-header',
   components: {
   },
   methods: {
