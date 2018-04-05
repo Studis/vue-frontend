@@ -3,3 +3,6 @@ declare module '*.vue' {
   export default Vue;
 }
 declare module 'bootstrap-vue'
+
+
+declare module 'vue-snotify'

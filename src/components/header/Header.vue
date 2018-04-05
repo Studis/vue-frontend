@@ -27,12 +27,12 @@
         <b-dropdown-item href="#">FA</b-dropdown-item>
       </b-nav-item-dropdown-->
 
-      <b-nav-item-dropdown right>
+      <b-nav-item-dropdown right v-if="isAuthorised">
         <!-- Using button-content slot -->
         <template slot="button-content">
           <em>User</em>
         </template>
-        <b-dropdown-item href="#">Profile</b-dropdown-item>
+        <b-dropdown-item href="#" @click.prevent="goToProfile">Edit Profile</b-dropdown-item>
         <b-dropdown-item href="#" @click.prevent="signOut">Signout</b-dropdown-item>
       </b-nav-item-dropdown>
     </b-navbar-nav>
@@ -44,6 +44,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { mapState } from 'vuex';
 
 @Component({
   name: 'studis-header',
@@ -52,7 +53,18 @@ import { Component, Vue } from 'vue-property-decorator';
   methods: {
     signOut () {
       this.$router.push({name: 'welcome'})
+      this.$store.commit('cAuth', false)
+    },
+    goToProfile () {
+      this.$router.push({name: 'profile'})
     }
+  },
+  computed: {
+    ...mapState({
+      isAuthorised: (state: any) => state.isAuth
+    })
+  },
+  created () {
   }
 })
 export default class Header extends Vue {}

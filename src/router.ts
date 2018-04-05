@@ -4,6 +4,7 @@ import WelcomePage from './views/WelcomePage.vue';
 import About from './views/About.vue';
 import Home from './views/Home.vue';
 import ForgotPassword from './components/authentication/ForgotPassword.vue';
+import Profile from './components/user/Profile.vue';
 
 Vue.use(Router);
 
@@ -28,6 +29,11 @@ export default new Router({
       path: '/forgot',
       name: 'forgotPassword',
       component: ForgotPassword,
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: Profile,
     }
   ],
   mode: 'history'

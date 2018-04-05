@@ -55,6 +55,7 @@ import Router from 'vue-router'
   methods: {
     onSubmit () {
       this.$router.push({name: 'home'})
+      this.$store.commit('cAuth', true)
     },
     onReset () {
     },

@@ -10,26 +10,27 @@
     <b-row>
       <b-col sm="2"></b-col>
       <b-col sm="8">
-      <b-form @submit.prevent="onSubmit" @reset.prevent="onReset" v-if="true">
-        <b-form-group id="exampleInputGroup1"
-          label="Študijska identiteta"
-          label-for="exampleInput1">
-          <b-form-input id="exampleInput1"
-            type="email"
-            required
-            placeholder="">
-          </b-form-input>
-        </b-form-group>
-      </b-form>
-      
+        <b-form @submit.prevent="onSubmit" @reset.prevent="onReset" v-if="true">
+          <b-form-group id="exampleInputGroup1"
+            label="Študijska identiteta"
+            label-for="exampleInput1">
+            <b-form-input id="exampleInput1"
+              type="email"
+              required
+              placeholder="">
+            </b-form-input>
+          </b-form-group>
+        </b-form>
       </b-col>
       <b-col sm="2"></b-col>
     </b-row>
     <b-row>
-      <b-col>
-        <b-button @click.prevent="goBack" class="forgotBtn">Nazaj</b-button>
-        <b-button type="submit" variant="primary" class="pull-right">Pošlji</b-button>
+      <b-col sm="2"></b-col>
+      <b-col sm="8">
+        <b-button @click.prevent="goBack" class="backBtn">Nazaj</b-button>
+        <b-button type="submit" variant="primary" class="forgotBtn">Pošlji</b-button>
       </b-col>
+      <b-col sm="2"></b-col>
     </b-row>
   </div>
 </template>
@@ -59,7 +60,14 @@ export default class ForgotPassword extends Vue {}
   #logintext {
     padding: 0.3em;
   }
+  .backBtn {
+    position: absolute;
+    left: 0;
+    box-sizing: border-box;
+  }
   .forgotBtn {
-    margin-right: 36em;
+    position: absolute;
+    right: 0;
+    box-sizing: border-box;
   }
 </style>
