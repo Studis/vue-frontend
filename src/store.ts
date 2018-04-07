@@ -5,14 +5,13 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    isAuth: false
+    isAuth: false,
   },
   mutations: {
-    cAuth (state, newValue) {
-      state.isAuth = newValue
-    }
+    cAuth(state, newValue) {
+      state.isAuth = newValue;
+    },
   },
   actions: {
-
   },
 });

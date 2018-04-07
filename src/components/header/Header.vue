@@ -65,7 +65,7 @@ import { mapState } from 'vuex';
     })
   },
   created () {
-  }
+  },
 })
 export default class Header extends Vue {}
 </script>

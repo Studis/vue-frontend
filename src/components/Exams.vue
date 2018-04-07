@@ -1,56 +1,21 @@
 <template>
   <div class="">
     <b-alert show>Fill out the survey for better quality of studies</b-alert>
-    <h3>Exam dates</h3>
-    <div class="table-responsive">
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">Study year</th>
-            <th scope="col">Course</th>
-            <th scope="col">Professor</th>
-            <th scope="col">Date</th>
-            <th scope="col">Sign up</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Statisticsc</td>
-            <td>Otto</td>
-            <td>12.3.2019</td>
-            <td><b-button type="" variant="">Sign up</b-button></td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Programming 1</td>
-            <td>Thornton</td>
-            <td>12.3.2019</td>
-            <td><b-button type="" variant="">Sign up</b-button></td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>Programming 2</td>
-            <td>the Bird</td>
-            <td>12.3.2019</td>
-            <td><b-button type="" variant="">Sign up</b-button></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <exam-sign-up></exam-sign-up>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-
+import ExamSignUp from './exams/ExamSignUp.vue'
 @Component({
   components: {
+    'exam-sign-up': ExamSignUp
   },
   methods: {
-  }
+  },
 })
-export default class Home extends Vue {}
+export default class Exams extends Vue {}
 </script>
 
 <style lang="scss">

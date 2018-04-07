@@ -59,10 +59,10 @@ import Router from 'vue-router'
     },
     forgotPassword () {
       this.$router.push({name: 'forgotPassword'})
-    }
-  }
+    },
+  },
 })
-export default class Home extends Vue {}
+export default class Login extends Vue {}
 </script>
 
 <style lang="scss">

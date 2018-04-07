@@ -1,33 +1,30 @@
-<template>
-  <div id="app">
-    <studis-header></studis-header>
-    <b-container class="main-content">
-      <router-view></router-view>
-    </b-container>
-</div>
-<!--
-   <div id="app">
-     <div id="nav">
-       <b-navbar toggleable="md" type="dark" variant="info">
-         <b-navbar-brand href="#">Studis - Študijski informacijski sistem</b-navbar-brand>
-       </b-navbar>
-      <b-container class="main-content">
-        <router-view></router-view>
-      </b-container>
-     </div>
-    </div>
-  -->
-</template>
+
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import Header from './components/header/Header.vue'
+
 @Component({
+  template: '#base-template',
+  render (h: any) {
+    return h('div', {
+      'id': 'app',
+    }, [
+      h('studis-header'),
+      h('b-container', {
+        'class': 'main-content'
+      },[
+        h('router-view')
+      ]),
+      h('vue-snotify')
+    ])
+  },
   components: {
     'studis-header': Header
   }
 })
-export default class App extends Vue {}
+export default class App extends Vue {
+}
 </script>
 
 <style lang="scss">

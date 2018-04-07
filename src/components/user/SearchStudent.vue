@@ -76,48 +76,34 @@
 import { Component, Vue } from 'vue-property-decorator';
 
 @Component({
-  name: 'forgotPassword',
   components: {
   },
   methods: {
-    onSubmit() {
-    this.$router.push({name: 'login'});
+    onSubmit () {
+    this.$router.push({name: 'login'})
     },
-    goBack() {
-      this.$router.push({name: 'login'});
+    goBack () {
+      this.$router.push({name: 'login'})
     },
-    onReset() {
+    onReset () {
     },
-    goHome() {
-      this.$router.push({name: 'home'});
+    goHome () {
+      this.$router.push({name: 'home'})
     },
-    saveProfile() {
+    saveProfile () {
       this.$snotify.async('Saved', 'saved', () => new Promise((resolve, reject) =>
         resolve({
           config: {
             closeOnClick: true,
-            timeout: 2000,
-          },
+            timeout: 2000
+          }
         })
       ));
     },
   },
 })
-export default class Profile extends Vue {}
+export default class SearchStudent extends Vue {}
 </script>
 
 <style lang="scss">
-  #logintext {
-    padding: 0.3em;
-  }
-  .backBtn {
-    position: absolute;
-    left: 0;
-    box-sizing: border-box;
-  }
-  .forgotBtn {
-    position: absolute;
-    right: 0;
-    box-sizing: border-box;
-  }
 </style>
