@@ -52,7 +52,7 @@ import { mapState } from 'vuex';
   },
   methods: {
     signOut () {
-      this.$router.push({name: 'welcome'})
+      this.$router.push({name: 'login'})
       this.$store.commit('cAuth', false)
     },
     goToProfile () {

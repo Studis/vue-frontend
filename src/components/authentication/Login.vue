@@ -45,12 +45,10 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
 import Router from 'vue-router'
 
 @Component({
   components: {
-    HelloWorld,
   },
   methods: {
     onSubmit () {

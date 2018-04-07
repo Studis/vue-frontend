@@ -8,7 +8,7 @@
       </b-col>
     </b-row>
     <b-row>
-      <b-col sm="2"></b-col>
+      <b-col></b-col>
       <b-col sm="8">
         <b-form @submit.prevent="onSubmit" @reset.prevent="onReset" v-if="true">
           <b-form-group id="exampleInputGroup1"
@@ -44,10 +44,10 @@ import { Component, Vue } from 'vue-property-decorator';
   },
   methods: {
     onSubmit () {
-    this.$router.push({name: 'welcome'})
+    this.$router.push({name: 'login'})
     },
     goBack () {
-      this.$router.push({name: 'welcome'})
+      this.$router.push({name: 'login'})
     },
     onReset () {
     }
@@ -64,8 +64,10 @@ export default class ForgotPassword extends Vue {}
     position: absolute;
     left: 0;
     box-sizing: border-box;
+    margin: 1em;
   }
   .forgotBtn {
+    margin: 1em;
     position: absolute;
     right: 0;
     box-sizing: border-box;

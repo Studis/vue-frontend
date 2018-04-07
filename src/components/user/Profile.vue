@@ -81,10 +81,10 @@ import { Component, Vue } from 'vue-property-decorator';
   },
   methods: {
     onSubmit () {
-    this.$router.push({name: 'welcome'})
+    this.$router.push({name: 'login'})
     },
     goBack () {
-      this.$router.push({name: 'welcome'})
+      this.$router.push({name: 'login'})
     },
     onReset () {
     },
