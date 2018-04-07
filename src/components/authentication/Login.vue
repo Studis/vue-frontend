@@ -52,8 +52,9 @@ import Router from 'vue-router'
   },
   methods: {
     onSubmit () {
-      this.$router.push({name: 'home'})
+      localStorage.setItem('loggedIn', 'true');
       this.$store.commit('cAuth', true)
+      this.$router.push({name: 'home'})
     },
     onReset () {
     },

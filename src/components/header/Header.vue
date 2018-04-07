@@ -42,11 +42,11 @@
 </template>
 
 
-<script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+<script>
+
 import { mapState } from 'vuex';
 
-@Component({
+export default {
   name: 'studis-header',
   components: {
   },
@@ -54,18 +54,27 @@ import { mapState } from 'vuex';
     signOut () {
       this.$router.push({name: 'login'})
       this.$store.commit('cAuth', false)
+      this.isAuthorised = false
     },
     goToProfile () {
       this.$router.push({name: 'profile'})
-    }
+    },
   },
   computed: {
     ...mapState({
-      isAuthorised: (state: any) => state.isAuth
-    })
+      authChanged: (state) => state.isAuth
+    }),
+    isAuthorised: {
+      get () {
+        return this.$store.state.isAuth || localStorage.getItem('loggedIn') === 'true'
+      },
+      set (val) {
+        localStorage.setItem('loggedIn', val)
+      }
+    }
   },
   created () {
   },
-})
-export default class Header extends Vue {}
+}
+
 </script>
