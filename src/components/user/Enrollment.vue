@@ -9,7 +9,7 @@
       <h4>Osebni podatki</h4>
 
       <b-form-group id="exampleInputGroup1"
-                    label="Student number:"
+                    label="Vpisna številka:"
                     label-for="exampleInput1">
         <b-form-input id="exampleInput1"
                       placeholder="62130075"
@@ -19,7 +19,7 @@
         </b-form-input>
       </b-form-group>
       <b-form-group id="exampleInputGroup2"
-                    label="Surname and Name"
+                    label="Ime in Priimek:"
                     label-for="exampleInput2">
         <b-form-input id="exampleInput2"
                       type="text"
@@ -28,7 +28,7 @@
         
       </b-form-group>
        <b-form-group id="exampleInputGroup2"
-                    label="Birth date:"
+                    label="Datum rojstva:"
                     label-for="exampleInput2">
         <b-form-input id="exampleInput2"
                       type="date"
@@ -37,33 +37,33 @@
         
       </b-form-group>
       <b-form-group id="exampleInputGroup2"
-                    label="Place of birth:"
+                    label="Kraj rojstva:"
                     label-for="exampleInput2">
         <b-form-select v-model="selectedCountry" :options="countries" class="mb-3">
         </b-form-select>
       </b-form-group>
       <b-form-group id="exampleInputGroup2"
-                    label="Province of birth:"
+                    label="Regija:"
                     label-for="exampleInput2">
         <b-form-select v-model="selectedPost" :options="posts" class="mb-3">
         </b-form-select>
         
       </b-form-group>
       <b-form-group id="exampleInputGroup2"
-                    label="Nationality:"
+                    label="Država:"
                     label-for="exampleInput2">
         <b-form-select :options="posts" class="mb-3">
         </b-form-select>
         
       </b-form-group>
       <b-form-group id="exampleInputGroup2"
-                    label="Gender:"
+                    label="Spol:"
                     label-for="exampleInput2">
-        <b-form-select :options="['Male', 'Female']" class="mb-3">
+        <b-form-select :options="['Moški', 'Ženska']" class="mb-3">
         </b-form-select>
       </b-form-group>
          <b-form-group id="exampleInputGroup2"
-                    label="Emšo:"
+                    label="EMŠO:"
                     label-for="exampleInput2">
         <b-form-input id="exampleInput2"
                       type="text" 
@@ -74,7 +74,7 @@
         
       </b-form-group>
           <b-form-group id="exampleInputGroup2"
-                    label="Tax number:"
+                    label="Davčna številka:"
                     label-for="exampleInput2">
         <b-form-input id="exampleInput2"
                       type="text" 
@@ -85,7 +85,7 @@
         
       </b-form-group>
       <b-form-group id="exampleInputGroup2"
-                    label="Email:"
+                    label="Elektronski naslov: "
                     label-for="exampleInput2">
         <b-form-input id="exampleInput2"
                       type="email" 
@@ -94,7 +94,7 @@
         
       </b-form-group>
       <b-form-group id="exampleInputGroup2"
-                    label="Phone number:"
+                    label="Telefonska številka:"
                     label-for="exampleInput2">
         <b-form-input id="exampleInput2"
                       type="tel" 
@@ -111,7 +111,7 @@
         
       </b-form-group>
       <b-form-group id="exampleInputGroup2"
-                    label="Country:"
+                    label="Država:"
                     label-for="exampleInput2">
         <b-form-select v-model="selectedCountry" :options="countries" class="mb-3">
         </b-form-select>
@@ -120,13 +120,13 @@
                     label="Naslov:"
                     label-for="exampleInput2">
         <b-form-input id="exampleInput2"
-                      type="tel" 
+                      type="text" 
                       required>
         </b-form-input>
         
       </b-form-group>
         <b-form-group id="exampleInputGroup2"
-                    label="Post number:"
+                    label="Poštna številka:"
                     label-for="exampleInput2">
          <b-form-select :options="postNumbers" class="mb-3">
         </b-form-select>
@@ -142,7 +142,7 @@
         
       </b-form-group>
       <b-form-group id="exampleInputGroup2"
-                    label="Country:"
+                    label="Država:"
                     label-for="exampleInput2">
         <b-form-select v-model="selectedCountry" :options="countries" class="mb-3">
         </b-form-select>
@@ -151,12 +151,12 @@
                     label="Naslov:"
                     label-for="exampleInput2">
         <b-form-input id="exampleInput2"
-                      type="tel" 
+                      type="text" 
                       required>
         </b-form-input>
       </b-form-group>
         <b-form-group id="exampleInputGroup2"
-                    label="Post number:"
+                    label="Poštna številka:"
                     label-for="exampleInput2">
          <b-form-select :options="postNumbers" class="mb-3">
         </b-form-select>
@@ -178,235 +178,91 @@
       <b-form-group id="exampleInputGroup2"
                     label="Študijski program:"
                     label-for="exampleInput2">
-       <b-form-input id="exampleInput2"
-                      type="tel" 
-                      required>
-        </b-form-input>
-        
+       <b-form-select v-model="selectedCourse" :options="courses" class="mb-3">
+       </b-form-select>        
       </b-form-group>
+
       <b-form-group id="exampleInputGroup2"
-                    label="Smer/usmeritev/modul/znanstveno področje:"
+                    label="Kraj izvajanja:"
                     label-for="exampleInput2">
        <b-form-input id="exampleInput2"
-                      type="tel" 
+                      type="text"
+                      placeholder="Ljubljana"
+                      disabled 
                       required>
         </b-form-input>
         
       </b-form-group>
 
       <b-form-group id="exampleInputGroup2"
-                    label="Kraj izvajanja"
+                    label="Izbirna skupina:"
                     label-for="exampleInput2">
        <b-form-input id="exampleInput2"
-                      type="tel" 
+                      type="text"
+                      disabled 
                       required>
         </b-form-input>
         
       </b-form-group>
 
       <b-form-group id="exampleInputGroup2"
-                    label="Izbirna skupina"
+                    label="Vrsta študija:"
                     label-for="exampleInput2">
-       <b-form-input id="exampleInput2"
-                      type="tel" 
-                      required>
-        </b-form-input>
-        
-      </b-form-group>
-      <b-form-group id="exampleInputGroup2"
-                    label="Študijski program"
-                    label-for="exampleInput2">
-       <b-form-input id="exampleInput2"
-                      type="tel" 
-                      required>
-        </b-form-input>
-        
-      </b-form-group>
-<h3>PODATKI O VZPOREDNEM ŠTUDIJU</h3>
-       <b-form-group id="exampleInputGroup2"
-                    label="Zavod:"
-                    label-for="exampleInput2">
-       <b-form-input id="exampleInput2"
-                      type="tel" 
-                      required>
-        </b-form-input>
-        
-      </b-form-group>
-       <b-form-group id="exampleInputGroup2"
-                    label="Letnik"
-                    label-for="exampleInput2">
-       <b-form-input id="exampleInput2"
-                      type="tel" 
-                      required>
-        </b-form-input>
-        
-      </b-form-group>
-       <b-form-group id="exampleInputGroup2"
-                    label="Študijski program"
-                    label-for="exampleInput2">
-       <b-form-input id="exampleInput2"
-                      type="tel" 
-                      required>
-        </b-form-input>
-        
-      </b-form-group>
-       <b-form-group id="exampleInputGroup2"
-                    label="Vrsta študija"
-                    label-for="exampleInput2">
-       <b-form-input id="exampleInput2"
-                      type="tel" 
-                      required>
-        </b-form-input>
-        
-      </b-form-group>
-      <h4>PREDMETNIK</h4>
-       <b-form-group id="exampleInputGroup2"
-                    label="Študijski program"
-                    label-for="exampleInput2">
-       <b-form-input id="exampleInput2"
-                      type="tel" 
-                      required>
-        </b-form-input>
-        
-      </b-form-group>
-       <b-form-group id="exampleInputGroup2"
-                    label="Učitelj"
-                    label-for="exampleInput2">
-       <b-form-input id="exampleInput2"
-                      type="tel" 
-                      required>
-        </b-form-input>
-        
-      </b-form-group>
-       <b-form-group id="exampleInputGroup2"
-                    label="Učna enota"
-                    label-for="exampleInput2">
-       <b-form-input id="exampleInput2"
-                      type="tel" 
-                      required>
-        </b-form-input>
-        
-      </b-form-group>
-      <h3>PREDHODNO DOSEŽENA IZOBRAZBA</h3>
-      <b-form-group id="exampleInputGroup2"
-                    label="Zavod"
-                    label-for="exampleInput2">
-       <b-form-input id="exampleInput2"
-                      type="tel" 
-                      required>
-        </b-form-input>
-        
-      </b-form-group>
-         <b-form-group id="exampleInputGroup2"
-                    label="Kraj:"
-                    label-for="exampleInput2">
-        <b-form-select v-model="selectedPost" :options="posts" class="mb-3">
-        </b-form-select>
-        
-      </b-form-group>
-         <b-form-group id="exampleInputGroup2"
-                    label="Country:"
-                    label-for="exampleInput2">
-        <b-form-select v-model="selectedCountry" :options="countries" class="mb-3">
-        </b-form-select>
-      </b-form-group>
-          <b-form-group id="exampleInputGroup2"
-                    label="Program"
-                    label-for="exampleInput2">
-       <b-form-input id="exampleInput2"
-                      type="tel" 
-                      required>
-        </b-form-input>
-        
-      </b-form-group>
-          <b-form-group id="exampleInputGroup2"
-                    label="Leto zaključka"
-                    label-for="exampleInput2">
-       <b-form-input id="exampleInput2"
-                      type="text" 
-                      pattern="\d*" 
-                      maxlength="4"
-                      required>
-        </b-form-input>
-        
+       <b-form-select v-model="selectedCourseType" :options="course_types" class="mb-3">
+       </b-form-select>
       </b-form-group>
 
-       <b-form-group id="exampleInputGroup2"
-                    label="Uspeh"
-                    label-for="exampleInput2">
-       <b-form-input id="exampleInput2"
-                      type="text" 
-                      required>
-        </b-form-input>
-        
-      </b-form-group>
-       <b-form-group id="exampleInputGroup2"
-                    label="Smer/naziv strokovne izobrazbe"
-                    label-for="exampleInput2">
-       <b-form-input id="exampleInput2"
-                      type="text" 
-                      required>
-        </b-form-input>
-        
-      </b-form-group>
-       <b-form-group id="exampleInputGroup2"
-                    label="Način končanja srednje šole"
-                    label-for="exampleInput2">
-       <b-form-input id="exampleInput2"
-                      type="text" 
-                      required>
-        </b-form-input>
-        
-      </b-form-group>
-       <b-form-group id="exampleInputGroup2"
-                    label="KLASIUS SRV"
-                    label-for="exampleInput2">
-       <b-form-input id="exampleInput2"
-                      type="text" 
-                      required>
-        </b-form-input>
-        
-      </b-form-group>
-       <b-form-group id="exampleInputGroup2"
-                    label="Najvišjaj dosežena izobrazba"
-                    label-for="exampleInput2">
-       <b-form-input id="exampleInput2"
-                      type="text" 
-                      required>
-        </b-form-input>
-        
-      </b-form-group>
-      <h3>DODATNI PODATKI</h3>
       <b-form-group id="exampleInputGroup2"
-                    label="Tutor"
+                    label="Vrsta vpisa:"
                     label-for="exampleInput2">
-       <b-form-input id="exampleInput2"
-                      type="text" 
-                      required>
-        </b-form-input>
-        
-      </b-form-group>
-      <b-form-group id="exampleInputGroup2"
-                    label="Število obrokov za plačilo šolnine"
-                    label-for="exampleInput2">
-       <b-form-input id="exampleInput2"
-                      type="text" 
-                      required>
-        </b-form-input>
-        
-      </b-form-group>
-      <b-form-group id="exampleInputGroup2"
-                    label="TRR za plačilo štipendije"
-                    label-for="exampleInput2">
-       <b-form-input id="exampleInput2"
-                      type="text" 
-                      required>
-        </b-form-input>
-        
+       <b-form-select v-model="selectedEnrollmentType" :options="enrollment_types" class="mb-3">
+       </b-form-select>
       </b-form-group>
 
+      <b-form-group id="exampleInputGroup2"
+                    label="Letnik študija:"
+                    label-for="exampleInput2">
+        <b-form-select v-model="selectedStudyYear" :options="study_year" class="mb-3">
+       </b-form-select>
+      </b-form-group>
+
+      <b-form-group id="exampleInputGroup2"
+                    label="Način študija:"
+                    label-for="exampleInput2">
+        <b-form-select v-model="selectedStudyType" :options="study_type" class="mb-3">
+       </b-form-select>
+      </b-form-group>
+
+      <b-form-group id="exampleInputGroup2"
+                    label="Oblika študija:"
+                    label-for="exampleInput2">
+        <b-form-select v-model="selectedStudyForm" :options="study_form" class="mb-3">
+       </b-form-select>
+      </b-form-group>
+
+      <b-form-group id="exampleInputGroup2"
+                    label="Študijsko leto prvega vpisa v ta program:"
+                    label-for="exampleInput2">
+        <b-form-select v-model="selectedFirstYearStudy" :options="studyYears" class="mb-3">
+       </b-form-select>
+      </b-form-group>
+
+      <b-form-group id="exampleInputGroup2"
+                    label="Soglasje za koriščenje storitev knjižničnega sistema"
+                    label-for="exampleInput2">
+        <b-form-checkbox id="exampleInput2"
+                      type="checkbox" >
+        </b-form-checkbox>
+      </b-form-group>
+
+      <b-form-group id="exampleInputGroup2"
+                    label="Soglasje za obveščanje o aktualnih študijskih zadevah ter za karierno svetovanje in za druge aktivnosti, povezane z zagotavljanjem kakovosti"
+                    label-for="exampleInput2">
+        <b-form-checkbox id="exampleInput2"
+                      type="checkbox" >
+        </b-form-checkbox>
+      </b-form-group>
       
-
       <b-button type="submit" variant="primary" @click.prevent="saveProfile">Shrani</b-button>
       <b-button type="reset" variant="danger" @click.prevent="goHome">Nazaj</b-button>
     </b-form>
@@ -419,6 +275,10 @@ import { Component, Vue } from 'vue-property-decorator';
 @Component({
   name: 'forgotPassword',
   data () {
+    var studyYears = [];
+    for(var year = 1990; year < 2017; year++) {
+      studyYears.push(year + '/' + (year+1));
+    } 
     return {
       selectedCountry: '',
       selectedPost: '',
@@ -1366,7 +1226,38 @@ import { Component, Vue } from 'vue-property-decorator';
         '4226,	Žiri',
         '4274,	Žirovnica',
         '8360,	Žužemberk',
-      ]
+      ],
+      courses: [
+        '1001001 Multimedija UN-I. ST',
+        '1000407 Računalništvo in matematika UN-I. ST',
+        '1000468 Računalništvo in informatika UN-I. ST',
+        '1000469 Upravna informatika UN-I. ST',
+        '1000470 Računalništvo in informatika VS-I. ST',
+        '1000471 Računalništvo in informatika MAG-II. ST',
+        '1000472 Kognitivna znanost MAG-II. ST',
+        '1000934 Računalništvo in matematika MAG-II. ST',
+        '7002801 Pedagoško računalništvo in informatika MAG-II. ST',
+        '1000474 Računalništvo in informatika DR-III. ST',
+      ],
+      course_types: [
+        '16203 Visokošolska strokovna izobrazba (prva bolonjska stopnja)',
+        '16204 Visokošolska univerzitetna izobrazba (prva bolonjska stopnja)',
+        '17003 Magistrska izobrazba (druga bolonjska stopnja)',
+        '18202 Doktorat znanosti (tretja bolonjska stopnja)',
+      ],
+      enrollment_types: [
+        '01 - Prvi vpis v letnik/dodatno leto',
+        '02 - Ponavljanje letnika',
+        '03 - Nadeljevanje letnika',
+        '04 - Podaljšanje statusa študenta',
+        '05 - Vpis po merilih za prehode v višji letnik',
+        '06 - Vpis v semester skupnega št. programa',
+        '07 - Vpis po merilih za prehode v isti letnik',
+      ],
+      study_year: ['1.', '2.', '3.', '4.', '5.', '6.', 'dodatno leto',],
+      study_type: ['1 redni', '3 izredni'],
+      study_form: ['1 na lokaciji', '2 na daljavo', '3 e-študij'],
+      studyYears
     }
   },
   components: {
