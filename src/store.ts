@@ -6,7 +6,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     isAuth: false,
-    role: 'none' // ['none',student', 'referent', 'ucitelj', 'skrbnik']
+    role: 'skrbnik' // ['none',student', 'referent', 'ucitelj', 'skrbnik']
   },
   mutations: {
     cAuth(state, newValue) {
@@ -16,7 +16,7 @@ export default new Vuex.Store({
   actions: {
   },
   getters: {
-    role (state) {
+    getRole (state):string {
       return state.role
     }
   }

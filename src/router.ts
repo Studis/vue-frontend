@@ -15,31 +15,49 @@ export default new Router({
       path: '/',
       name: 'login',
       component: Login,
+      meta: {
+        forVisitors: true
+      }
     },
     {
       path: '/home',
       name: 'home',
       component: Exams,
+      meta: {
+        forAuth: true
+      }
     },
     {
       path: '/forgot',
       name: 'forgotPassword',
       component: ForgotPassword,
+      meta: {
+        forVisitors: true
+      }
     },
     {
       path: '/profile',
       name: 'profile',
       component: Profile,
+      meta: {
+        forAuth: true
+      }
     },
     {
       path: '/students',
       name: 'search-students',
       component: SearchStudent,
+      meta: {
+        forAuth: true
+      }
     },
     {
       path: '/enrollment',
       name: 'enrollment',
       component: Enrollment,
+      meta: {
+        forAuth: true
+      }
     },
   ],
   mode: 'history',
