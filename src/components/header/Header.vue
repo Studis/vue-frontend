@@ -35,7 +35,7 @@
         <b-dropdown-item href="#" @click.prevent="goToProfile">Edit Profile</b-dropdown-item>
         <b-dropdown-item href="#" @click.prevent="goToStudents">Search students</b-dropdown-item>
         <b-dropdown-item href="#" @click.prevent="signOut">Signout</b-dropdown-item>
-        <b-dropdown-item><router-link :to="{ name: 'enrollment'}">Enrollment</router-link></b-dropdown-item>
+        <b-dropdown-item href="#" @click.prevent="goToEnrollment">Enrollment</b-dropdown-item>
       </b-nav-item-dropdown>
     </b-navbar-nav>
 
@@ -66,6 +66,9 @@ export default {
     },
     goToStudents () {
       this.$router.push({name: 'search-students'})
+    },
+    goToEnrollment () {
+      this.$router.push({name: 'enrollment'})
     }
   },
   computed: {
