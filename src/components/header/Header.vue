@@ -32,10 +32,10 @@
         <template slot="button-content">
           <em>User</em>
         </template>
-        <b-dropdown-item href="#" @click.prevent="goToProfile">Edit Profile</b-dropdown-item>
-        <b-dropdown-item href="#" @click.prevent="goToStudents">Search students</b-dropdown-item>
-        <b-dropdown-item href="#" @click.prevent="signOut">Signout</b-dropdown-item>
-        <b-dropdown-item><router-link :to="{ name: 'enrollment'}">Enrollment</router-link></b-dropdown-item>
+        <b-dropdown-item href="#" v-if="getRole === 'skrbnik'" @click.prevent="goToProfile">Edit Profile</b-dropdown-item>
+        <b-dropdown-item href="#" v-if="getRole === 'skrbnik'" @click.prevent="goToStudents">Search students</b-dropdown-item>
+        <b-dropdown-item href="#" v-if="getRole === 'skrbnik'" @click.prevent="goToEnrollment">Enrollment</b-dropdown-item>
+        <b-dropdown-item href="#" v-if="getRole === 'skrbnik'" @click.prevent="signOut">Signout</b-dropdown-item>
       </b-nav-item-dropdown>
     </b-navbar-nav>
 
@@ -46,7 +46,7 @@
 
 <script>
 
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 
 export default {
   name: 'studis-header',
@@ -66,9 +66,15 @@ export default {
     },
     goToStudents () {
       this.$router.push({name: 'search-students'})
+    },
+    goToEnrollment () {
+      this.$router.push({name: 'enrollment'})
     }
   },
   computed: {
+    ...mapGetters([
+      'getRole'
+    ]),
     ...mapState({
       authChanged: (state) => state.isAuth
     }),
