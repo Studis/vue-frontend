@@ -1,72 +1,63 @@
 <template>
   <div>
     <b-form @submit="onSubmit" @reset="onReset" v-if="true">
-      <h3>Spremeni kontaktne podatke</h3>
-      <b-form-group id="exampleInputGroup1"
-                    label="Email address:"
-                    label-for="exampleInput1">
-        <b-form-input id="exampleInput1"
-                      type="email"
-                      required>
+      <h3>Osebni podatki študenta</h3>
+      <b-form-group label="Vpisna številka:">
+        <b-form-input v-bind:placeholder="student.vpisna_stevilka"
+                      id="exampleInput1"
+                      type="number"
+                      disabled>
         </b-form-input>
       </b-form-group>
-      <b-form-group id="exampleInputGroup2"
-                    label="Mobile phone:"
+      <b-form-group label="Ime in priimek:"
                     label-for="exampleInput2">
-        <b-form-input id="exampleInput2"
-                      type="number"
-                      required>
+        <b-form-input v-bind:placeholder="student.ime_priimek"
+                      id="exampleInput2"
+                      type="text"
+                      disabled>
         </b-form-input>
         
       </b-form-group>
-      <b-form-group id="exampleInputGroup2"
-                    label="Station phone:"
+      <b-form-group label="Naslov stalnega bivališča:"
                     label-for="exampleInput2">
-        <b-form-input id="exampleInput2"
-                      type="number"
-                      required>
+        <b-form-input v-bind:placeholder="student.naslov_sb"
+                      id="exampleInput2"
+                      type="text"
+                      disabled>
         </b-form-input>
         
       </b-form-group>
-    
-      <h3>Naslov za dostavo pošte</h3>
-      <b-form-group id="exampleInputGroup2"
-                    label="Država:"
+      <b-form-group label="Naslov za prejemanje pošte:"
                     label-for="exampleInput2">
-        <b-form-input id="exampleInput2"
-                      type="number"
-                      required>
+        <b-form-input v-bind:placeholder="student.naslov_pp"
+                      id="exampleInput2"
+                      type="text"
+                      disabled>
         </b-form-input>
       </b-form-group>
-      <b-form-group id="exampleInputGroup2"
-                    label="Ulica:"
+      <b-form-group label="Telefonska številka:"
                     label-for="exampleInput2">
-        <b-form-input id="exampleInput2"
+        <b-form-input v-bind:placeholder="student.tel_st"
+                      id="exampleInput2"
                       type="number"
-                      required>
+                      disabled>
         </b-form-input>
         
       </b-form-group>
-      <b-form-group id="exampleInputGroup2"
-                    label="Pošta:"
+      <b-form-group label="Elektronska pošta:"
                     label-for="exampleInput2">
-        <b-form-input id="exampleInput2"
+        <b-form-input v-bind:placeholder="student.email"
+                      id="exampleInput2"
                       type="number"
-                      required>
+                      disabled>
         </b-form-input>
         
       </b-form-group>
-      <b-form-group id="exampleInputGroup2"
-                    label="Občina:"
-                    label-for="exampleInput2">
-        <b-form-input id="exampleInput2"
-                      type="number"
-                      required>
-        </b-form-input>
-        
-      </b-form-group>
-
-      <b-button type="submit" variant="primary" @click.prevent="saveProfile">Shrani</b-button>
+      <h3>Podatki o vseh vpisih</h3>
+      <b-table stacked="md"
+             :items="student.vpisi"
+             :fields="student.polja">
+      </b-table>
       <b-button type="reset" variant="danger" @click.prevent="goHome">Nazaj</b-button>
     </b-form>
   </div>
@@ -103,7 +94,31 @@ import { Component, Vue } from 'vue-property-decorator';
     },
   },
 })
-export default class Profile extends Vue {}
+export default class Profile extends Vue {
+  data() {
+    return {
+      student: {
+        vpisna_stevilka: '6318022',
+        ime_priimek: 'Bob Klobasa',
+        naslov_sb: 'Večna Pot 113',
+        naslov_pp: 'Večna Pot 113',
+        tel_st: '031 255 011',
+        email: 'bb0001@student.uni-lj.si',
+        polja: [
+          { key: 'študijsko_leto' },
+          { key: 'letnik' },
+          { key: 'študijski_program' },
+          { key: 'vrsta_vpisa' },
+          { key: 'način_študija'}
+        ],
+        vpisi: [
+          { študijsko_leto: '2016/2017', letnik: '1', študijski_program: 'Računalništvo in informatika UN-I. ST', vrsta_vpisa: "Prvi vpis v letnik/dodatno leto", način_študija: "redni" },
+          { študijsko_leto: '2017/2018', letnik: '2', študijski_program: 'Računalništvo in informatika UN-I. ST', vrsta_vpisa: "Prvi vpis v letnik/dodatno leto", način_študija: "redni" },
+        ],
+      }
+    }
+  }
+}
 </script>
 
 <style lang="scss">
