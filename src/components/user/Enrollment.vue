@@ -1,272 +1,238 @@
 <template>
-  <div>
-    <b-form @submit="onSubmit" @reset="onReset" v-if="true">
-      <h3>VPISNI LIST {{(new Date()).getFullYear()}}/{{(new Date()).getFullYear()+1}} za študente</h3>
-      <h4>Fakulteta za računalništvo in informatiko</h4>
-      <div class="text-center university-image">
-          <img src="https://petra-education.eu/wp-content/uploads/sites/29/2016/07/111.png" class="img-thumbnail">
-      </div>
-      <h4>Osebni podatki</h4>
-
-      <b-form-group id="exampleInputGroup1"
-                    label="Vpisna številka:"
-                    label-for="exampleInput1">
-        <b-form-input id="exampleInput1"
-                      placeholder="62130075"
-                      type="number"
-                      disabled
-                      required>
-        </b-form-input>
-      </b-form-group>
-      <b-form-group id="exampleInputGroup2"
-                    label="Ime in Priimek:"
-                    label-for="exampleInput2">
-        <b-form-input id="exampleInput2"
-                      type="text"
-                      required>
-        </b-form-input>
-        
-      </b-form-group>
-       <b-form-group id="exampleInputGroup2"
-                    label="Datum rojstva:"
-                    label-for="exampleInput2">
-        <b-form-input id="exampleInput2"
-                      type="date"
-                      required>
-        </b-form-input>
-        
-      </b-form-group>
-      <b-form-group id="exampleInputGroup2"
-                    label="Kraj rojstva:"
-                    label-for="exampleInput2">
-        <b-form-select v-model="selectedCountry" :options="countries" class="mb-3">
-        </b-form-select>
-      </b-form-group>
-      <b-form-group id="exampleInputGroup2"
-                    label="Regija:"
-                    label-for="exampleInput2">
-        <b-form-select v-model="selectedPost" :options="posts" class="mb-3">
-        </b-form-select>
-        
-      </b-form-group>
-      <b-form-group id="exampleInputGroup2"
-                    label="Država:"
-                    label-for="exampleInput2">
-        <b-form-select :options="posts" class="mb-3">
-        </b-form-select>
-        
-      </b-form-group>
-      <b-form-group id="exampleInputGroup2"
-                    label="Spol:"
-                    label-for="exampleInput2">
-        <b-form-select :options="['Moški', 'Ženska']" class="mb-3">
-        </b-form-select>
-      </b-form-group>
-         <b-form-group id="exampleInputGroup2"
-                    label="EMŠO:"
-                    label-for="exampleInput2">
-        <b-form-input id="exampleInput2"
-                      type="text" 
-                      pattern="\d*" 
-                      maxlength="13"
-                      required>
-        </b-form-input>
-        
-      </b-form-group>
-          <b-form-group id="exampleInputGroup2"
-                    label="Davčna številka:"
-                    label-for="exampleInput2">
-        <b-form-input id="exampleInput2"
-                      type="text" 
-                      pattern="\d*" 
-                      maxlength="8"
-                      required>
-        </b-form-input>
-        
-      </b-form-group>
-      <b-form-group id="exampleInputGroup2"
-                    label="Elektronski naslov: "
-                    label-for="exampleInput2">
-        <b-form-input id="exampleInput2"
-                      type="email" 
-                      required>
-        </b-form-input>
-        
-      </b-form-group>
-      <b-form-group id="exampleInputGroup2"
-                    label="Telefonska številka:"
-                    label-for="exampleInput2">
-        <b-form-input id="exampleInput2"
-                      type="tel" 
-                      required>
-        </b-form-input>
-        
-      </b-form-group>
-      <h4>Stalno prebivališče</h4>
-          <b-form-group id="exampleInputGroup2"
-                    label="Občina:"
-                    label-for="exampleInput2">
-        <b-form-select v-model="selectedPost" :options="posts" class="mb-3">
-        </b-form-select>
-        
-      </b-form-group>
-      <b-form-group id="exampleInputGroup2"
-                    label="Država:"
-                    label-for="exampleInput2">
-        <b-form-select v-model="selectedCountry" :options="countries" class="mb-3">
-        </b-form-select>
-      </b-form-group>
-       <b-form-group id="exampleInputGroup2"
-                    label="Naslov:"
-                    label-for="exampleInput2">
-        <b-form-input id="exampleInput2"
-                      type="text" 
-                      required>
-        </b-form-input>
-        
-      </b-form-group>
-        <b-form-group id="exampleInputGroup2"
-                    label="Poštna številka:"
-                    label-for="exampleInput2">
-         <b-form-select :options="postNumbers" class="mb-3">
-        </b-form-select>
-
-        
-      </b-form-group>
-        <h4>Začasno prebivališče</h4>
-            <b-form-group id="exampleInputGroup2"
-                    label="Občina:"
-                    label-for="exampleInput2">
-        <b-form-select v-model="selectedPost" :options="posts" class="mb-3">
-        </b-form-select>
-        
-      </b-form-group>
-      <b-form-group id="exampleInputGroup2"
-                    label="Država:"
-                    label-for="exampleInput2">
-        <b-form-select v-model="selectedCountry" :options="countries" class="mb-3">
-        </b-form-select>
-      </b-form-group>
-       <b-form-group id="exampleInputGroup2"
-                    label="Naslov:"
-                    label-for="exampleInput2">
-        <b-form-input id="exampleInput2"
-                      type="text" 
-                      required>
-        </b-form-input>
-      </b-form-group>
-        <b-form-group id="exampleInputGroup2"
-                    label="Poštna številka:"
-                    label-for="exampleInput2">
-         <b-form-select :options="postNumbers" class="mb-3">
-        </b-form-select>
-
-        
-      </b-form-group>
-<h4>Vročanje</h4>
-     <b-form-group id="exampleInputGroup2"
-                    label="Naslov za vročanje:"
-                    label-for="exampleInput2">
-        <b-form-select :options="['Stalno prebivališče', 'Začasno prebivališče']" class="mb-3">
-        </b-form-select>
+<div>
+  <b-form @submit="onSubmit" @reset="onReset" v-if="true">
+    <h3>VPISNI LIST {{(new Date()).getFullYear()}}/{{(new Date()).getFullYear()+1}} za študente</h3>
+    <h4>Fakulteta za računalništvo in informatiko</h4>
+    <div class="text-center university-image">
+      <img src="https://petra-education.eu/wp-content/uploads/sites/29/2016/07/111.png" class="img-thumbnail">
+    </div>
+    <h4>Osebni podatki</h4>
+    <b-form-group label="Vpisna številka:"
+      label-for="exampleInput1">
+      <b-form-input v-model="vpisniList.vpisnaStevilka"
+        placeholder="62130075"
+        type="number"
+        disabled
+        required>
+      </b-form-input>
     </b-form-group>
-
-  
-      
-
-      <h3>PODATKI O VPISU</h3>
-      <b-form-group id="exampleInputGroup2"
-                    label="Študijski program:"
-                    label-for="exampleInput2">
-       <b-form-select v-model="selectedCourse" :options="courses" class="mb-3">
-       </b-form-select>        
-      </b-form-group>
-
-      <b-form-group id="exampleInputGroup2"
-                    label="Kraj izvajanja:"
-                    label-for="exampleInput2">
-       <b-form-input id="exampleInput2"
-                      type="text"
-                      placeholder="Ljubljana"
-                      disabled 
-                      required>
-        </b-form-input>
-        
-      </b-form-group>
-
-      <b-form-group id="exampleInputGroup2"
-                    label="Izbirna skupina:"
-                    label-for="exampleInput2">
-       <b-form-input id="exampleInput2"
-                      type="text"
-                      disabled 
-                      required>
-        </b-form-input>
-        
-      </b-form-group>
-
-      <b-form-group id="exampleInputGroup2"
-                    label="Vrsta študija:"
-                    label-for="exampleInput2">
-       <b-form-select v-model="selectedCourseType" :options="course_types" class="mb-3">
-       </b-form-select>
-      </b-form-group>
-
-      <b-form-group id="exampleInputGroup2"
-                    label="Vrsta vpisa:"
-                    label-for="exampleInput2">
-       <b-form-select v-model="selectedEnrollmentType" :options="enrollment_types" class="mb-3">
-       </b-form-select>
-      </b-form-group>
-
-      <b-form-group id="exampleInputGroup2"
-                    label="Letnik študija:"
-                    label-for="exampleInput2">
-        <b-form-select v-model="selectedStudyYear" :options="study_year" class="mb-3">
-       </b-form-select>
-      </b-form-group>
-
-      <b-form-group id="exampleInputGroup2"
-                    label="Način študija:"
-                    label-for="exampleInput2">
-        <b-form-select v-model="selectedStudyType" :options="study_type" class="mb-3">
-       </b-form-select>
-      </b-form-group>
-
-      <b-form-group id="exampleInputGroup2"
-                    label="Oblika študija:"
-                    label-for="exampleInput2">
-        <b-form-select v-model="selectedStudyForm" :options="study_form" class="mb-3">
-       </b-form-select>
-      </b-form-group>
-
-      <b-form-group id="exampleInputGroup2"
-                    label="Študijsko leto prvega vpisa v ta program:"
-                    label-for="exampleInput2">
-        <b-form-select v-model="selectedFirstYearStudy" :options="studyYears" class="mb-3">
-       </b-form-select>
-      </b-form-group>
-
-      <b-form-group id="exampleInputGroup2"
-                    label="Soglasje za koriščenje storitev knjižničnega sistema"
-                    label-for="exampleInput2">
-        <b-form-checkbox id="exampleInput2"
-                      type="checkbox" >
-        </b-form-checkbox>
-      </b-form-group>
-
-      <b-form-group id="exampleInputGroup2"
-                    label="Soglasje za obveščanje o aktualnih študijskih zadevah ter za karierno svetovanje in za druge aktivnosti, povezane z zagotavljanjem kakovosti"
-                    label-for="exampleInput2">
-        <b-form-checkbox id="exampleInput2"
-                      type="checkbox" >
-        </b-form-checkbox>
-      </b-form-group>
-      
-      <b-button type="submit" variant="primary" @click.prevent="saveProfile">Shrani</b-button>
-      <b-button type="reset" variant="danger" @click.prevent="goHome">Nazaj</b-button>
-    </b-form>
-  </div>
+    <b-form-group
+      label="Ime in Priimek:"
+      label-for="exampleInput2">
+      <b-form-input v-model="vpisniList.imePriimek"
+        type="text"
+        required>
+      </b-form-input>
+    </b-form-group>
+    <b-form-group
+      label="Datum rojstva:"
+      label-for="exampleInput2">
+      <b-form-input v-model="vpisniList.datumRojstva"
+        type="date"
+        required>
+      </b-form-input>
+    </b-form-group>
+    <b-form-group
+      label="Kraj rojstva:"
+      label-for="exampleInput2">
+      <b-form-select v-model="vpisniList.krajRojstva" :options="countries" class="mb-3">
+      </b-form-select>
+    </b-form-group>
+    <b-form-group
+      label="Regija:"
+      label-for="exampleInput2">
+      <b-form-select v-model="vpisniList.regija" :options="posts" class="mb-3">
+      </b-form-select>
+    </b-form-group>
+    <b-form-group
+      label="Država:"
+      label-for="exampleInput2">
+      <b-form-select v-model="vpisniList.drzava" :options="posts" class="mb-3">
+      </b-form-select>
+    </b-form-group>
+    <b-form-group
+      label="Spol:"
+      label-for="exampleInput2">
+      <b-form-select v-model="vpisniList.spol" :options="['Moški', 'Ženska']" class="mb-3">
+      </b-form-select>
+    </b-form-group>
+    <b-form-group
+      label="EMŠO:"
+      label-for="exampleInput2">
+      <b-form-input v-model="vpisniList.emso"
+        type="text" 
+        pattern="\d*" 
+        maxlength="13"
+        required>
+      </b-form-input>
+    </b-form-group>
+    <b-form-group
+      label="Davčna številka:"
+      label-for="exampleInput2">
+      <b-form-input v-model="vpisniList.davcnaStevilka"
+        type="text" 
+        pattern="\d*" 
+        maxlength="8"
+        required>
+      </b-form-input>
+    </b-form-group>
+    <b-form-group
+      label="Elektronski naslov: "
+      label-for="exampleInput2">
+      <b-form-input v-model="vpisniList.elektronskiNaslov"
+        type="email" 
+        required>
+      </b-form-input>
+    </b-form-group>
+    <b-form-group
+      label="Telefonska številka:"
+      label-for="exampleInput2">
+      <b-form-input v-model="vpisniList.telefonskaStevilka"
+        type="tel" 
+        required>
+      </b-form-input>
+    </b-form-group>
+    <h4>Stalno prebivališče</h4>
+    <b-form-group
+      label="Občina:"
+      label-for="exampleInput2">
+      <b-form-select v-model="vpisniList.stalnoPrebivalisceObcina" :options="posts" class="mb-3">
+      </b-form-select>
+    </b-form-group>
+    <b-form-group
+      label="Država:"
+      label-for="exampleInput2">
+      <b-form-select v-model="vpisniList.stalnoPrebivalisceDrzava" :options="countries" class="mb-3">
+      </b-form-select>
+    </b-form-group>
+    <b-form-group
+      label="Naslov:"
+      label-for="exampleInput2">
+      <b-form-input v-model="vpisniList.stalnoPrebivalisceNaslov"
+        type="text" 
+        required>
+      </b-form-input>
+    </b-form-group>
+    <b-form-group
+      label="Poštna številka:"
+      label-for="exampleInput2">
+      <b-form-select v-model="vpisniList.stalnoPrebivaliscePosta" :options="postNumbers" class="mb-3">
+      </b-form-select>
+    </b-form-group>
+    <h4>Začasno prebivališče</h4>
+    <b-form-group
+      label="Občina:"
+      label-for="exampleInput2">
+      <b-form-select v-model="vpisniList.zacasnoPrebivalisceObcina" :options="posts" class="mb-3">
+      </b-form-select>
+    </b-form-group>
+    <b-form-group
+      label="Država:"
+      label-for="exampleInput2">
+      <b-form-select v-model="vpisniList.zacasnoPrebivalisceDrzava" :options="countries" class="mb-3">
+      </b-form-select>
+    </b-form-group>
+    <b-form-group
+      label="Naslov:"
+      label-for="exampleInput2">
+      <b-form-input v-model="vpisniList.zacasnoPrebivalisceNaslov"
+        type="text" 
+        required>
+      </b-form-input>
+    </b-form-group>
+    <b-form-group
+      label="Poštna številka:"
+      label-for="exampleInput2">
+      <b-form-select :options="vpisniList.zacasnoPrebivaliscePosta" class="mb-3">
+      </b-form-select>
+    </b-form-group>
+    <h4>Vročanje</h4>
+    <b-form-group
+      label="Naslov za vročanje:"
+      label-for="exampleInput2">
+      <b-form-select v-model="vpisniList.naslovZaVrocanje" :options="['Stalno prebivališče', 'Začasno prebivališče']" class="mb-3">
+      </b-form-select>
+    </b-form-group>
+    <h3>PODATKI O VPISU</h3>
+    <b-form-group
+      label="Študijski program:"
+      label-for="exampleInput2">
+      <b-form-select v-model="vpisniList.studijskiProgram" :options="courses" class="mb-3">
+      </b-form-select>
+    </b-form-group>
+    <b-form-group
+      label="Kraj izvajanja:"
+      label-for="exampleInput2">
+      <b-form-input v-model="vpisniList.krajIzvajanja"
+        type="text"
+        placeholder="Ljubljana"
+        disabled 
+        required>
+      </b-form-input>
+    </b-form-group>
+    <b-form-group
+      label="Izbirna skupina:"
+      label-for="exampleInput2">
+      <b-form-input v-model="vpisniList.izbirnaSkupina"
+        type="text"
+        disabled 
+        required>
+      </b-form-input>
+    </b-form-group>
+    <b-form-group
+      label="Vrsta študija:"
+      label-for="exampleInput2">
+      <b-form-select v-model="vpisniList.vrstaStudija" :options="course_types" class="mb-3">
+      </b-form-select>
+    </b-form-group>
+    <b-form-group
+      label="Vrsta vpisa:"
+      label-for="exampleInput2">
+      <b-form-select v-model="vpisniList.vrstaVpisa" :options="enrollment_types" class="mb-3">
+      </b-form-select>
+    </b-form-group>
+    <b-form-group
+      label="Letnik študija:"
+      label-for="exampleInput2">
+      <b-form-select v-model="vpisniList.letnikStudija" :options="study_year" class="mb-3">
+      </b-form-select>
+    </b-form-group>
+    <b-form-group
+      label="Način študija:"
+      label-for="exampleInput2">
+      <b-form-select v-model="vpisniList.nacinStudija" :options="study_type" class="mb-3">
+      </b-form-select>
+    </b-form-group>
+    <b-form-group
+      label="Oblika študija:"
+      label-for="exampleInput2">
+      <b-form-select v-model="vpisniList.oblikaStudija" :options="study_form" class="mb-3">
+      </b-form-select>
+    </b-form-group>
+    <b-form-group
+      label="Študijsko leto prvega vpisa v ta program:"
+      label-for="exampleInput2">
+      <b-form-select v-model="vpisniList.studijskoLetoPrvegaVpisaVTaProgram" :options="studyYears" class="mb-3">
+      </b-form-select>
+    </b-form-group>
+    <b-form-group
+      label="Soglasje za koriščenje storitev knjižničnega sistema"
+      label-for="exampleInput2">
+      <b-form-checkbox v-model="vpisniList.soglasjeKnjiz"
+        type="checkbox" >
+      </b-form-checkbox>
+    </b-form-group>
+    <b-form-group
+      label="Soglasje za obveščanje o aktualnih študijskih zadevah ter za karierno svetovanje in za druge aktivnosti, povezane z zagotavljanjem kakovosti"
+      label-for="exampleInput2">
+      <b-form-checkbox v-model="vpisniList.soglasjeObves"
+        type="checkbox" >
+      </b-form-checkbox>
+    </b-form-group>
+    <b-button type="submit" variant="primary" @click.prevent="saveProfile">Shrani</b-button>
+    <b-button type="reset" variant="danger" @click.prevent="goHome">Nazaj</b-button>
+  </b-form>
+</div>
 </template>
 
 <script lang="ts">
@@ -1248,16 +1214,49 @@ import { Component, Vue } from 'vue-property-decorator';
       enrollment_types: [
         '01 - Prvi vpis v letnik/dodatno leto',
         '02 - Ponavljanje letnika',
-        '03 - Nadeljevanje letnika',
+        '03 - Nadaljevanje letnika',
         '04 - Podaljšanje statusa študenta',
         '05 - Vpis po merilih za prehode v višji letnik',
         '06 - Vpis v semester skupnega št. programa',
         '07 - Vpis po merilih za prehode v isti letnik',
       ],
       study_year: ['1.', '2.', '3.', '4.', '5.', '6.', 'dodatno leto',],
-      study_type: ['1 redni', '3 izredni'],
-      study_form: ['1 na lokaciji', '2 na daljavo', '3 e-študij'],
-      studyYears
+      study_type: ['redni', 'izredni'],
+      study_form: ['na lokaciji', 'na daljavo', 'e-študij'],
+      studyYears: studyYears,
+      vpisniList: {
+        vpisnaStevilka: '',
+        imePriimek: '',
+        datumRojstva: '',
+        krajRojstva: '',
+        regija: '',
+        drzava: '',
+        spol: '',
+        emso: '',
+        davcnaStevilka: '',
+        elektronskiNaslov: '',
+        telefonskaStevilka: '',
+        stalnoPrebivalisceObcina: '',
+        stalnoPrebivalisceDrzava: '',
+        stalnoPrebivalisceNaslov: '',
+        stalnoPrebivaliscePosta: '',
+        zacasnoPrebivalisceObcina: '',
+        zacasnoPrebivalisceDrzava: '',
+        zacasnoPrebivalisceNaslov: '',
+        zacasnoPrebivaliscePosta: '',
+        naslovZaVrocanje: '',
+        studijskiProgram: '',
+        krajIzvajanja: '',
+        izbirnaSkupina: '',
+        vrstaStudija: '',
+        vrstaVpisa: '',
+        letnikStudija: '',
+        nacinStudija: '',
+        oblikaStudija: '',
+        studijskoLetoPrvegaVpisaVTaProgram: '',
+        soglasjeKnjiz: '',
+        soglasjeObves: '',
+      }
     }
   },
   components: {
