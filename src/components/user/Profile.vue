@@ -58,7 +58,7 @@
              :items="student.vpisi"
              :fields="student.polja">
       </b-table>
-      <b-button type="submit" variant="primary" @click.prevent="saveProfile">Shrani</b-button>
+      <b-button type="reset" variant="danger" @click.prevent="goHome">Nazaj</b-button>
     </b-form>
   </div>
 </template>
