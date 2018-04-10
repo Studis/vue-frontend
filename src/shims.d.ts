@@ -6,3 +6,4 @@ declare module 'bootstrap-vue';
 
 
 declare module 'vue-snotify';
+

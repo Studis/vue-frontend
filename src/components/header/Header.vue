@@ -47,6 +47,7 @@
 <script>
 
 import { mapState, mapGetters } from 'vuex';
+import rest from './../../rest.js'
 
 export default {
   name: 'studis-header',
@@ -54,9 +55,9 @@ export default {
   },
   methods: {
     signOut () {
-      this.$router.push({name: 'login'})
-      this.$store.commit('cAuth', false)
+      this.$store.commit('cAuth', rest.setAuthorizationToken())
       this.isAuthorised = false
+      this.$router.push({name: 'login'})
     },
     goToProfile () {
       this.$router.push({name: 'profile'})
@@ -80,7 +81,7 @@ export default {
     }),
     isAuthorised: {
       get () {
-        return this.$store.state.isAuth || localStorage.getItem('loggedIn') === 'true'
+        return this.$store.state.token !== ''
       },
       set (val) {
         localStorage.setItem('loggedIn', val)
@@ -88,6 +89,7 @@ export default {
     }
   },
   created () {
+    this.$store.commit('cAuth', localStorage.getItem('token'))
   },
 }
 

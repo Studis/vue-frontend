@@ -3,19 +3,20 @@
     <b-row>
       <b-col>
         <b-form-text tag="h1" id="logintext">
-          Pošlji mi pozabljeno geslo
+          Pozabljeno geslo
         </b-form-text>
       </b-col>
     </b-row>
     <b-row>
       <b-col></b-col>
       <b-col sm="8">
-        <b-form @submit.prevent="onSubmit" @reset.prevent="onReset" v-if="true">
+        <b-form @reset.prevent="onReset" v-if="true">
           <b-form-group id="exampleInputGroup1"
             label="Študijska identiteta"
             label-for="exampleInput1">
             <b-form-input id="exampleInput1"
               type="email"
+              v-model="email"
               required
               placeholder="">
             </b-form-input>
@@ -28,7 +29,7 @@
       <b-col sm="2"></b-col>
       <b-col sm="8">
         <b-button @click.prevent="goBack" class="backBtn">Nazaj</b-button>
-        <b-button type="submit" variant="primary" class="forgotBtn">Pošlji</b-button>
+        <b-button type="submit" variant="primary" class="forgotBtn" @click.prevent="onSubmit">Pošlji</b-button>
       </b-col>
       <b-col sm="2"></b-col>
     </b-row>
@@ -37,13 +38,25 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import axios from 'axios';
+declare module 'vue/types/vue' {
 
+  interface Vue {
+    email: string
+  }
+}
 @Component({
   name: 'forgotPassword',
   components: {
   },
   methods: {
     onSubmit () {
+      axios.put('management/password', this.email, 
+        {headers: {'Content-Type': 'text/plain'}}).then((data) => {
+        console.log(data)
+      }).catch(e => {
+        console.log(e)
+      })
     this.$router.push({name: 'login'})
     },
     goBack () {
@@ -53,7 +66,9 @@ import { Component, Vue } from 'vue-property-decorator';
     }
   }
 })
-export default class ForgotPassword extends Vue {}
+export default class ForgotPassword extends Vue {
+  email: string = ''
+}
 </script>
 
 <style lang="scss">

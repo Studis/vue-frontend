@@ -6,6 +6,11 @@ import BootstrapVue from 'bootstrap-vue';
 import Snotify from 'vue-snotify';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
+import axios from 'axios';
+
+
+// @ts-ignore
+import rest from './rest'
 
 Vue.use(BootstrapVue);
 Vue.use(Snotify);
@@ -32,8 +37,10 @@ router.beforeEach(
   }
 )
 
+axios.defaults.baseURL = 'http://localhost:8080/v1'; //TODO: append the trailing slash
+
 function isAuthenticated ():boolean {
-  return localStorage.getItem('loggedIn') === 'true' && store.getters.getRole !== 'none'
+  return rest.getToken()
 }
 
 

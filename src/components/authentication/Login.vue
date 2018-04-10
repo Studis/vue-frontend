@@ -15,8 +15,9 @@
           label="Študijska identiteta"
           label-for="exampleInput1">
           <b-form-input id="exampleInput1"
-            type="email"
+            type="text"
             required
+            v-model="username"
             placeholder="">
           </b-form-input>
         </b-form-group>
@@ -25,14 +26,12 @@
             label-for="exampleInput3">
           <b-form-input id="exampleInput3"
             type="password"
+            v-model="password"
             required
             >
           </b-form-input>
         </b-form-group>
         <b-form-group id="exampleGroup4">
-          <b-form-checkbox-group  id="exampleChecks">
-            <b-form-checkbox value="me">Prijava brez digitalnega potrdila</b-form-checkbox>
-          </b-form-checkbox-group>
           <b-link @click.prevent="forgotPassword">Pozabil sem geslo</b-link>
         </b-form-group>
         <b-button type="submit" variant="primary">Prijava</b-button>
@@ -46,15 +45,30 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import Router from 'vue-router'
+import axios from 'axios';
+import rest from './../../rest.js'
+declare module 'vue/types/vue' {
+  // 3. Declare augmentation for Vue
+  interface Vue {
+    username: string
+    password: string
+  }
+}
 
 @Component({
   components: {
   },
   methods: {
     onSubmit () {
-      localStorage.setItem('loggedIn', 'true');
-      this.$store.commit('cAuth', true)
-      this.$router.push({name: 'home'})
+      this.$store.commit('cAuth', rest.setAuthorizationToken({
+        username: this.username,
+        password: this.password
+      }))
+      axios.get('students/health').then(response => {
+        this.$router.push({name: 'home'})
+      }).catch(err => {
+        console.log(err)
+      })
     },
     onReset () {
     },
@@ -63,7 +77,10 @@ import Router from 'vue-router'
     },
   },
 })
-export default class Login extends Vue {}
+export default class Login extends Vue {
+  username: string = ''
+  password: string = ''
+}
 </script>
 
 <style lang="scss">
