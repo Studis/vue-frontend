@@ -65,9 +65,8 @@ declare module 'vue/types/vue' {
         username: this.username,
         password: this.password
       }))
-      this.$router.push({name: 'home'})
-      axios.get('students/health').then(response => {
-        
+      axios.get('students/health').then(() => {
+        this.$router.push({name: 'home'})
       }).catch(err => {
         console.log(err)
       })
