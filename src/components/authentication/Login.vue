@@ -46,6 +46,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import Router from 'vue-router'
 import axios from 'axios';
+// @ts-ignore
 import rest from './../../rest.js'
 declare module 'vue/types/vue' {
   // 3. Declare augmentation for Vue
