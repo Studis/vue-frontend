@@ -43,10 +43,11 @@ declare module 'vue/types/vue' {
   interface Vue {
     totalRows: number
     currentPage: number
+    items: Array<itemFieldsType>
   }
 }
 import { Component, Vue } from 'vue-property-decorator';
-
+import axios from 'axios'
 
 @Component({
   components: {
@@ -68,16 +69,13 @@ import { Component, Vue } from 'vue-property-decorator';
       this.totalRows = filteredItems.length
       this.currentPage = 1
     },
-    saveProfile () {
-      this.$snotify.async('Saved', 'saved', () => new Promise((resolve, reject) =>
-        resolve({
-          config: {
-            closeOnClick: true,
-            timeout: 2000
-          }
-        })
-      ));
-    },
+    mounted() {
+      axios.get(`students`).then((response) => {
+        this.items = response.data;
+      }).catch((err) => {
+        console.log(err)
+      })
+    }
   },
 })
 
@@ -104,8 +102,6 @@ export default class SearchStudent extends Vue {
   ]
   currentPage: number = 1
   perPage: number = 5
-  // @ts-ignore
-  // totalRows: number = items.length
   pageOptions: Array<number> = [ 5, 10, 15 ]
   filter = null
 }
