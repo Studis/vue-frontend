@@ -99,6 +99,13 @@ declare module 'vue/types/vue' {
       ));
     },
   },
+  mounted () {
+    axios.get(`students/me`).then((data) => {
+      this.student = data
+    }).catch((err) => {
+      console.log(err)
+    })
+  }
 })
 export default class Profile extends Vue {
   data() {
