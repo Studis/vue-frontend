@@ -7,6 +7,7 @@ let rest = {
         if(token) {
             localStorage.setItem('token', token)
             axios.defaults.headers.common['authorization'] = `Basic ${token}`;
+            axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
         } else {
             localStorage.removeItem('token')
             delete axios.defaults.headers.common['authorization'];
