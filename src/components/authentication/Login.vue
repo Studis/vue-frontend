@@ -46,6 +46,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import Router from 'vue-router'
 import axios from 'axios';
+// @ts-ignore
 import rest from './../../rest.js'
 declare module 'vue/types/vue' {
   // 3. Declare augmentation for Vue
@@ -64,7 +65,7 @@ declare module 'vue/types/vue' {
         username: this.username,
         password: this.password
       }))
-      axios.get('students/health').then(response => {
+      axios.get('students/me').then(() => {
         this.$router.push({name: 'home'})
       }).catch(err => {
         console.log(err)

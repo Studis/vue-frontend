@@ -19,6 +19,8 @@ Vue.config.productionTip = false;
 
 router.beforeEach(
   (to:any, from:any, next:any) => {
+    axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+    axios.defaults.headers.common['Authorization'] = `Basic ${localStorage.getItem('token')}`;
     if (to.matched.some((record:any) => record.meta.forVisitors)) {
       if (isAuthenticated()) {
         next({name: 'home'})

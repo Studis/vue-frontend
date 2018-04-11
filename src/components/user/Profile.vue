@@ -65,7 +65,13 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-
+import axios from 'axios';
+declare module 'vue/types/vue' {
+  // 3. Declare augmentation for Vue
+  interface Vue {
+    student: object
+  }
+}
 @Component({
   name: 'forgotPassword',
   components: {
@@ -93,6 +99,13 @@ import { Component, Vue } from 'vue-property-decorator';
       ));
     },
   },
+  mounted () {
+    axios.get(`students/me`).then((data) => {
+      this.student = data
+    }).catch((err) => {
+      console.log(err)
+    })
+  }
 })
 export default class Profile extends Vue {
   data() {
