@@ -2,13 +2,18 @@
   <div>
     <!--<b-table striped hover :items="items"></b-table>-->
     <h2>{{course.name}}</h2>
-    {{course.code}}
-    <!--<b-badge v-for="l in course.lecturers">
-      {{ l.name }} {{l.surname}}
-    </b-badge>-->
+    <p>Course code: {{course.code}}</p>
+    <p>Module: {{course.module.name}}</p>
+    <p>Semester: {{course.module.semester.toString}}</p>
+    <ul>
+      <li v-for="l in course.lecturers">
+        {{ l.name }} {{l.surname}}
+      </li>
+    </ul>
     <b-button variant="primary" v-bind:href="'http://localhost:8080/v1/courses/'+this.courseId+'/enrollments/pdf'">PDF</b-button> 
     <b-button variant="primary" v-bind:href="'http://localhost:8080/v1/courses/'+this.courseId+'/enrollments/csv'">CSV</b-button>
     <br><br>
+    <h3>Enrolled students</h3>
     <b-table :sort-by.sync="sortBy"
              :sort-desc.sync="sortDesc"
              :items="items"
