@@ -2,10 +2,12 @@
   <div>
     <!--<b-table striped hover :items="items"></b-table>-->
     <h2>{{course.name}}</h2>
+    {{course.code}}
     <!--<b-badge v-for="l in course.lecturers">
       {{ l.name }} {{l.surname}}
     </b-badge>-->
-    <b-badge>EE</b-badge>
+    <b-button variant="primary" v-bind:href="'http://localhost:8080/v1/courses/'+this.courseId+'/enrollments/pdf'">PDF</b-button> 
+    <b-button variant="primary" v-bind:href="'http://localhost:8080/v1/courses/'+this.courseId+'/enrollments/csv'">CSV</b-button>
     <br><br>
     <b-table :sort-by.sync="sortBy"
              :sort-desc.sync="sortDesc"
@@ -28,6 +30,9 @@ export default {
      load() {
       
     },
+  },
+  computed(){
+    return []
   },
   mounted(){
     axios.get(`courses/${this.courseId}/enrollments`)

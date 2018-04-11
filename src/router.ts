@@ -8,6 +8,7 @@ import SearchStudent from './components/user/SearchStudent.vue';
 import Enrollment from './components/user/Enrollment.vue';
 import SetPassword from './components/authentication/SetPassword.vue';
 import Course from './components/courses/Course.vue';
+import Courses from './components/courses/Courses.vue';
 Vue.use(Router);
 
 export default new Router({
@@ -67,9 +68,14 @@ export default new Router({
       }
     },
     {
-      path: '/course/:courseId',
+      name: 'course',
+      path: '/courses/:courseId',
       component: Course,
       props:true
+    },
+    {
+      path: '/courses',
+      component: Courses,
     }
   ],
   mode: 'history',
