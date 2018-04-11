@@ -27,17 +27,17 @@ export default {
       console.log(el)
     },
     clearFiles () {
-
     },
-    onSubmit (dat) {
-      axios.post('/import-students', this.datoteka, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
+    onSubmit () {
+      axios.post('/import-students', this.datoteka, 
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data'
         }
       }).then((data) => {
           console.log(data)
         }).catch((err) => {
-
+          console.log(err)
         })
       }
   }

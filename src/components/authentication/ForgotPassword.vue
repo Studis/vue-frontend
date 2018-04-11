@@ -37,54 +37,55 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import axios from 'axios';
-declare module 'vue/types/vue' {
-
+import { Component, Vue } from "vue-property-decorator"
+import axios from "axios"
+declare module "vue/types/vue" {
   interface Vue {
     email: string
   }
 }
 @Component({
-  name: 'forgotPassword',
-  components: {
-  },
+  name: "forgotPassword",
+  components: {},
   methods: {
-    onSubmit () {
-      axios.put('management/password', this.email, 
-        {headers: {'Content-Type': 'text/plain'}}).then((data) => {
-        console.log(data)
-      }).catch(e => {
-        console.log(e)
-      })
-    this.$router.push({name: 'login'})
+    onSubmit() {
+      axios
+        .put("management/password", this.email, {
+          headers: { "Content-Type": "text/plain" }
+        })
+        .then(data => {
+          console.log(data)
+        })
+        .catch(e => {
+          console.log(e)
+        })
+      this.$router.push({ name: "login" })
     },
-    goBack () {
-      this.$router.push({name: 'login'})
+    goBack() {
+      this.$router.push({ name: "login" })
     },
-    onReset () {
-    }
+    onReset() {}
   }
 })
 export default class ForgotPassword extends Vue {
-  email: string = ''
+  email: string = ""
 }
 </script>
 
 <style lang="scss">
-  #logintext {
-    padding: 0.3em;
-  }
-  .backBtn {
-    position: absolute;
-    left: 0;
-    box-sizing: border-box;
-    margin: 1em;
-  }
-  .forgotBtn {
-    margin: 1em;
-    position: absolute;
-    right: 0;
-    box-sizing: border-box;
-  }
+#logintext {
+  padding: 0.3em;
+}
+.backBtn {
+  position: absolute;
+  left: 0;
+  box-sizing: border-box;
+  margin: 1em;
+}
+.forgotBtn {
+  margin: 1em;
+  position: absolute;
+  right: 0;
+  box-sizing: border-box;
+}
 </style>

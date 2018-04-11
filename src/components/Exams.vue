@@ -6,14 +6,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator'
 import ExamSignUp from './exams/ExamSignUp.vue'
 @Component({
   components: {
     'exam-sign-up': ExamSignUp
   },
   methods: {
-  },
+  }
 })
 export default class Exams extends Vue {}
 </script>

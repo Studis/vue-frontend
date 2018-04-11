@@ -1,7 +1,7 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
+import Vue from 'vue'
+import Vuex from 'vuex'
 
-Vue.use(Vuex);
+Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
@@ -11,11 +11,11 @@ export default new Vuex.Store({
     userId: ''
   },
   mutations: {
-    cAuth(state, newValue) {
-      state.token = newValue;
+    cAuth (state, newValue) {
+      state.token = newValue
     },
-    updateUserId(state, newValue): void {
-      state.userId = newValue;
+    updateUserId (state, newValue): void {
+      state.userId = newValue
     }
   },
   actions: {
@@ -25,11 +25,11 @@ export default new Vuex.Store({
     }
   },
   getters: {
-    getRole (state):string {
+    getRole (state): string {
       return state.role
     },
-    getToken (state):string {
+    getToken (state): string {
       return state.token
     }
   }
-});
+})

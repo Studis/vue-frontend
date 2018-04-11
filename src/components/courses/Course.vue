@@ -23,9 +23,9 @@
 </template>
 
 <script>
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator'
 import Router from 'vue-router'
-import axios from 'axios';
+import axios from 'axios'
 import rest from './../../rest.js'
 
 export default {
@@ -43,24 +43,24 @@ export default {
     axios.get(`courses/${this.courseId}/enrollments`)
       .then((response) => {
         let students = response.data.map((x)=>{
-          let s = x.enrollment.token.student;
-          return {name: s.name, surname: s.surname, enrollment: s.enrollmentNumber};
-        });
-        console.log(students);
-        this.items = students;
+          let s = x.enrollment.token.student
+          return {name: s.name, surname: s.surname, enrollment: s.enrollmentNumber}
+        })
+        console.log(students)
+        this.items = students
       })
       .catch((error) => {
-        console.log(error);
-      });
+        console.log(error)
+      })
 
     axios.get(`courses/${this.courseId}`)
       .then((response) => {
-        console.log(response);
-        this.course = response.data;
+        console.log(response)
+        this.course = response.data
       })
       .catch((error) => {
-        console.log(error);
-      });
+        console.log(error)
+      })
   },
   data(){
     return {
@@ -73,7 +73,7 @@ export default {
       ],
       items: [],
       course: {}
-    };
+    }
   },
   props:["courseId"]
 }

@@ -27,16 +27,16 @@
 <script lang="ts">
 
 interface sortFieldsType {
-  key: string;
-  sortable: boolean;
+  key: string
+  sortable: boolean
 }
 interface itemFieldsType {
-  EnrollmentNumber: number;
-  first_name: string;
-  last_name: string;
-  address: string;
-  email: string;
-  enrollments: string;
+  EnrollmentNumber: number
+  first_name: string
+  last_name: string
+  address: string
+  email: string
+  enrollments: string
 }
 declare module 'vue/types/vue' {
   // 3. Declare augmentation for Vue
@@ -46,7 +46,7 @@ declare module 'vue/types/vue' {
     items: Array<itemFieldsType>
   }
 }
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator'
 import axios from 'axios'
 
 @Component({
@@ -71,7 +71,7 @@ import axios from 'axios'
     },
     mounted() {
       axios.get(`students`).then((response) => {
-        this.items = response.data;
+        this.items = response.data
       }).catch((err) => {
         console.log(err)
       })

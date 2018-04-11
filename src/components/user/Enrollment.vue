@@ -236,14 +236,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator'
 
 @Component({
   name: 'forgotPassword',
   data () {
-    var studyYears = [];
+    var studyYears = []
     for(var year = 1990; year < 2017; year++) {
-      studyYears.push(year + '/' + (year+1));
+      studyYears.push(year + '/' + (year+1))
     } 
     return {
       selectedCountry: '',
@@ -1263,25 +1263,25 @@ import { Component, Vue } from 'vue-property-decorator';
   },
   methods: {
     onSubmit() {
-      this.$router.push({name: 'login'});
+      this.$router.push({name: 'login'})
     },
     goBack() {
-      this.$router.push({name: 'login'});
+      this.$router.push({name: 'login'})
     },
     onReset() {
     },
     goHome() {
-      this.$router.push({name: 'home'});
+      this.$router.push({name: 'home'})
     },
     saveProfile() {
-      this.$snotify.async('Saved', 'saved', () => new Promise((resolve, reject) =>
-        resolve({
-          config: {
-            closeOnClick: true,
-            timeout: 2000,
-          },
-        })
-      ));
+      // this.$snotify.async('Saved', 'saved', () => new Promise((resolve, reject) =>
+      //   resolve({
+      //     config: {
+      //       closeOnClick: true,
+      //       timeout: 2000,
+      //     },
+      //   })
+      // ))
     },
   },
 })

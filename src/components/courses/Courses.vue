@@ -15,9 +15,9 @@
 </template>
 
 <script>
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator'
 import Router from 'vue-router'
-import axios from 'axios';
+import axios from 'axios'
 import rest from './../../rest.js'
 
 export default {
@@ -28,12 +28,12 @@ export default {
   mounted(){
     axios.get(`courses/`)
       .then((response) => {
-        console.log(response.data);
-        this.items = response.data;
+        console.log(response.data)
+        this.items = response.data
       })
       .catch((error) => {
-        console.log(error);
-      });
+        console.log(error)
+      })
   },
   data(){
     return {
@@ -46,7 +46,7 @@ export default {
       ],
       items: [],
       course: {}
-    };
+    }
   },
   props:["courseId"]
 }

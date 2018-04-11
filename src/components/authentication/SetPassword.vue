@@ -26,8 +26,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import axios from 'axios';
+import { Component, Vue } from 'vue-property-decorator'
+import axios from 'axios'
 declare module 'vue/types/vue' {
   // 3. Declare augmentation for Vue
   interface Vue {

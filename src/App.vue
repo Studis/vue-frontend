@@ -1,7 +1,7 @@
 
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator'
 import Header from './components/header/Header.vue'
 
 @Component({
@@ -15,8 +15,7 @@ import Header from './components/header/Header.vue'
         'class': 'main-content'
       },[
         h('router-view')
-      ]),
-      h('vue-snotify')
+      ])
     ])
   },
   components: {

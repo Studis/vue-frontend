@@ -64,8 +64,8 @@
 </template>
 
 <script>
-import { Component, Vue } from 'vue-property-decorator';
-import axios from 'axios';
+import { Component, Vue } from 'vue-property-decorator'
+import axios from 'axios'
 
 export default {
   name: 'forgotPassword',
@@ -97,15 +97,15 @@ export default {
   },
   methods: {
     onSubmit() {
-    this.$router.push({name: 'login'});
+      this.$router.push({name: 'login'})
     },
     goBack() {
-      this.$router.push({name: 'login'});
+      this.$router.push({name: 'login'})
     },
     onReset() {
     },
     goHome() {
-      this.$router.push({name: 'home'});
+      this.$router.push({name: 'home'})
     },
     saveProfile() {
       this.$snotify.async('Saved', 'saved', () => new Promise((resolve, reject) =>
@@ -115,16 +115,16 @@ export default {
             timeout: 2000,
           },
         })
-      ));
+      ))
     },
   },
   mounted () {
     axios.get(`students/me`).then((response) => {
-      this.userid = response.data.id;
+      this.userid = response.data.id
       axios.get(`students/${this.userid}`).then((response) => {
         this.student.vpisna_stevilka = response.data.enrollmentNumber
         this.student.ime_priimek = response.data.name + ' ' + response.data.surname
-        this.student.email = response.data.eMail;
+        this.student.email = response.data.eMail
       }).catch((err) => {
         console.log(err)
       })
