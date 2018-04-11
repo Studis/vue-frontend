@@ -1,10 +1,18 @@
 <template>
-  <!--<b-table striped hover :items="items"></b-table>-->
-  <b-table :sort-by.sync="sortBy"
+  <div>
+    <!--<b-table striped hover :items="items"></b-table>-->
+    <h2>{{course.name}}</h2>
+    <!--<b-badge v-for="l in course.lecturers">
+      {{ l.name }} {{l.surname}}
+    </b-badge>-->
+    <b-badge>EE</b-badge>
+    <br><br>
+    <b-table :sort-by.sync="sortBy"
              :sort-desc.sync="sortDesc"
              :items="items"
              :fields="fields">
     </b-table>
+  </div>
 </template>
 
 <script>
@@ -38,7 +46,7 @@ export default {
     axios.get(`courses/${this.courseId}`)
       .then((response) => {
         console.log(response);
-        this.course = response;
+        this.course = response.data;
       })
       .catch((error) => {
         console.log(error);
