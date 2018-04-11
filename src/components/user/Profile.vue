@@ -63,18 +63,37 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import { Component, Vue } from 'vue-property-decorator';
 import axios from 'axios';
-declare module 'vue/types/vue' {
-  // 3. Declare augmentation for Vue
-  interface Vue {
-    student: object
-  }
-}
-@Component({
+
+export default {
   name: 'forgotPassword',
   components: {
+  },
+  data() {
+    return {
+      userid: '',
+      student: {
+        vpisna_stevilka: '6318022',
+        ime_priimek: 'Bob Klobasa',
+        naslov_sb: 'Večna Pot 113',
+        naslov_pp: 'Večna Pot 113',
+        tel_st: '031 255 011',
+        email: 'bb0001@student.uni-lj.si',
+        polja: [
+          { key: 'študijsko_leto' },
+          { key: 'letnik' },
+          { key: 'študijski_program' },
+          { key: 'vrsta_vpisa' },
+          { key: 'način_študija'}
+        ],
+        vpisi: [
+          { študijsko_leto: '2016/2017', letnik: '1', študijski_program: 'Računalništvo in informatika UN-I. ST', vrsta_vpisa: "Prvi vpis v letnik/dodatno leto", način_študija: "redni" },
+          { študijsko_leto: '2017/2018', letnik: '2', študijski_program: 'Računalništvo in informatika UN-I. ST', vrsta_vpisa: "Prvi vpis v letnik/dodatno leto", način_študija: "redni" },
+        ],
+      }
+    }
   },
   methods: {
     onSubmit() {
@@ -100,36 +119,18 @@ declare module 'vue/types/vue' {
     },
   },
   mounted () {
-    axios.get(`students/me`).then((data) => {
-      this.student = data
+    axios.get(`students/me`).then((response) => {
+      this.userid = response.data.id;
+      axios.get(`students/${this.userid}`).then((response) => {
+        this.student.vpisna_stevilka = response.data.enrollmentNumber
+        this.student.ime_priimek = response.data.name + ' ' + response.data.surname
+        this.student.email = response.data.eMail;
+      }).catch((err) => {
+        console.log(err)
+      })
     }).catch((err) => {
       console.log(err)
     })
-  }
-})
-export default class Profile extends Vue {
-  data() {
-    return {
-      student: {
-        vpisna_stevilka: '6318022',
-        ime_priimek: 'Bob Klobasa',
-        naslov_sb: 'Večna Pot 113',
-        naslov_pp: 'Večna Pot 113',
-        tel_st: '031 255 011',
-        email: 'bb0001@student.uni-lj.si',
-        polja: [
-          { key: 'študijsko_leto' },
-          { key: 'letnik' },
-          { key: 'študijski_program' },
-          { key: 'vrsta_vpisa' },
-          { key: 'način_študija'}
-        ],
-        vpisi: [
-          { študijsko_leto: '2016/2017', letnik: '1', študijski_program: 'Računalništvo in informatika UN-I. ST', vrsta_vpisa: "Prvi vpis v letnik/dodatno leto", način_študija: "redni" },
-          { študijsko_leto: '2017/2018', letnik: '2', študijski_program: 'Računalništvo in informatika UN-I. ST', vrsta_vpisa: "Prvi vpis v letnik/dodatno leto", način_študija: "redni" },
-        ],
-      }
-    }
   }
 }
 </script>

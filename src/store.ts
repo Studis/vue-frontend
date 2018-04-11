@@ -7,12 +7,16 @@ export default new Vuex.Store({
   state: {
     isAuth: false,
     role: 'skrbnik', // ['none',student', 'referent', 'ucitelj', 'skrbnik']
-    token: ''
+    token: '',
+    userId: ''
   },
   mutations: {
     cAuth(state, newValue) {
       state.token = newValue;
     },
+    updateUserId(state, newValue): void {
+      state.userId = newValue;
+    }
   },
   actions: {
     verifyToken (state, payload): boolean {

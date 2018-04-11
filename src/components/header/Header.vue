@@ -48,6 +48,7 @@
 
 import { mapState, mapGetters } from 'vuex';
 import rest from './../../rest.js'
+import axios from 'axios';
 
 export default {
   name: 'studis-header',
@@ -88,8 +89,13 @@ export default {
       }
     }
   },
-  created () {
+  mounted () {
     this.$store.commit('cAuth', localStorage.getItem('token'))
+    axios.get(`students/me`).then((response) => {
+      this.$store.commit('updateUserId', response.data.id)
+    }).catch((err) => {
+      console.log(err)
+    })
   },
 }
 
