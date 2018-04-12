@@ -55,8 +55,8 @@
       </b-form-group>
       <h3>Podatki o vseh vpisih</h3>
       <b-table stacked="md"
-             :items="student.vpisi"
-             :fields="student.polja">
+            :items="student.vpisi"
+            :fields="student.polja">
       </b-table>
       <b-button type="reset" variant="danger" @click.prevent="goHome">Nazaj</b-button>
     </b-form>
@@ -89,7 +89,7 @@ export default {
           { key: 'način_študija'}
         ],
         vpisi: [
-          { študijsko_leto: '2016/2017', letnik: '1', študijski_program: 'Računalništvo in informatika UN-I. ST', vrsta_vpisa: "Prvi vpis v letnik/dodatno leto", način_študija: "redni" },
+          { študijsko_leto: '2016/2017', letnik: '1', študijski_program: '', vrsta_vpisa: "Prvi vpis v letnik/dodatno leto", način_študija: "redni" },
           { študijsko_leto: '2017/2018', letnik: '2', študijski_program: 'Računalništvo in informatika UN-I. ST', vrsta_vpisa: "Prvi vpis v letnik/dodatno leto", način_študija: "redni" },
         ],
       }
@@ -119,12 +119,30 @@ export default {
     },
   },
   mounted () {
+    axios.defaults.baseURL = 'http://localhost:8080/v1'; //TODO: append the trailing slash
     axios.get(`students/me`).then((response) => {
       this.userid = response.data.id;
       axios.get(`students/${this.userid}`).then((response) => {
         this.student.vpisna_stevilka = response.data.enrollmentNumber
         this.student.ime_priimek = response.data.name + ' ' + response.data.surname
         this.student.email = response.data.eMail;
+        this.student.naslov_sb = response.data.permanent;
+        this.student.naslov_pp = response.data.temporary;
+        this.student.tel_st = response.data.phoneNumber;
+        axios.get(`students/${this.userid}/enrollments`).then((response) => {
+          this.student.vpisi = response.data.map(x => {
+            return {
+              študijski_program: x.semester1.program.title,
+              letnik: Math.floor(x.semester1.number/2),
+              vrsta_vpisa: x.type.name,
+              način_študija: 'na daljavo',
+              študijsko_leto: x.semester1.year.toString
+            }
+          })
+
+        }).catch((err) => {
+          console.log(err)
+        })
       }).catch((err) => {
         console.log(err)
       })

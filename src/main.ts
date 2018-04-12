@@ -21,6 +21,8 @@ router.beforeEach(
   (to:any, from:any, next:any) => {
     axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
     axios.defaults.headers.common['Authorization'] = `Basic ${localStorage.getItem('token')}`;
+    axios.defaults.baseURL = 'http://localhost:8080/v1'; //TODO: append the trailing slash
+
     if (to.matched.some((record:any) => record.meta.forVisitors)) {
       if (isAuthenticated()) {
         next({name: 'home'})
@@ -40,14 +42,18 @@ router.beforeEach(
 )
 
 axios.defaults.baseURL = 'http://localhost:8080/v1'; //TODO: append the trailing slash
-
 function isAuthenticated ():boolean {
   return rest.getToken()
 }
 
 
-new Vue({
+const vm = new Vue({
   router,
   store,
   render: (h) => h(App),
 }).$mount('#app');
+// @ts-ignore
+vm.$axios.Vue = vm
+// @ts-ignore
+Vue.vm = vm
+
