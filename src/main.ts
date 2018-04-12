@@ -42,10 +42,10 @@ router.beforeEach(
 )
 
 axios.defaults.baseURL = 'http://localhost:8080/v1'; //TODO: append the trailing slash
-function isAuthenticated ():boolean {
-  return rest.getToken()
-}
 
+function isAuthenticated ():boolean {
+  return localStorage.getItem('token') !== null
+}
 
 const vm = new Vue({
   router,

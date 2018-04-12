@@ -5,8 +5,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    isAuth: false,
-    role: 'skrbnik', // ['none',student', 'referent', 'ucitelj', 'skrbnik']
+    role: 'null', // ['ADMIN', 'CLERK', 'LECTURER', 'STUDENT']
     token: '',
     userId: ''
   },
@@ -16,6 +15,9 @@ export default new Vuex.Store({
     },
     updateUserId(state, newValue): void {
       state.userId = newValue;
+    },
+    updateRole (state, newRole) {
+      state.role = newRole
     }
   },
   actions: {

@@ -53,6 +53,7 @@ declare module 'vue/types/vue' {
   interface Vue {
     username: string
     password: string
+    setGetAuth: any
   }
 }
 
@@ -67,8 +68,17 @@ declare module 'vue/types/vue' {
       }))
       axios.get('students/me').then(() => {
         this.$router.push({name: 'home'})
+        this.setGetAuth()
+        this.$store.commit('cAuth', localStorage.getItem('token'))
       }).catch(err => {
         console.log(err)
+      })
+    },
+    setGetAuth () {
+      axios.get(`students/me`).then((response) => {
+        this.$store.commit('updateRole', response.data.role)
+        this.$store.commit('updateUserId', response.data.id)
+        return response.data.role
       })
     },
     onReset () {

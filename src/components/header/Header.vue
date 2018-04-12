@@ -26,18 +26,17 @@
         <b-dropdown-item href="#">RU</b-dropdown-item>
         <b-dropdown-item href="#">FA</b-dropdown-item>
       </b-nav-item-dropdown-->
-
-      <b-nav-item-dropdown right v-if="isAuthorised">
+      <b-nav-item-dropdown right v-if="$store.state.role !== 'null'">
         <!-- Using button-content slot -->
         <template slot="button-content">
           <em>User</em>
         </template>
-        <b-dropdown-item href="#" v-if="getRole === 'skrbnik'" @click.prevent="goToProfile">Profile</b-dropdown-item>
-        <b-dropdown-item href="#" v-if="getRole === 'skrbnik'" @click.prevent="goToStudents">Search students</b-dropdown-item>
-        <b-dropdown-item href="#" v-if="getRole === 'skrbnik'" @click.prevent="goToEnrollment">Enrollment</b-dropdown-item>
-        <b-dropdown-item href="#" v-if="getRole === 'skrbnik'" @click.prevent="goToCourses">Courses</b-dropdown-item>
-        <b-dropdown-item href="#" v-if="getRole === 'skrbnik'" @click.prevent="goToStudentsImport">Import students</b-dropdown-item>
-        <b-dropdown-item href="#" v-if="getRole === 'skrbnik'" @click.prevent="signOut">Signout</b-dropdown-item>
+        <b-dropdown-item href="#" v-if="getRole === 'STUDENT'" @click.prevent="goToProfile">Profile</b-dropdown-item>
+        <b-dropdown-item href="#" v-if="getRole === 'ADMIN' || getRole === 'LECTURER' || getRole === 'CLERK'" @click.prevent="goToStudents">Search students</b-dropdown-item>
+        <b-dropdown-item href="#" v-if="getRole === 'STUDENT'" @click.prevent="goToEnrollment">Enrollment</b-dropdown-item>
+        <b-dropdown-item href="#" v-if="getRole === 'LECTURER' || getRole === 'CLERK' || getRole === 'ADMIN'" @click.prevent="goToCourses">Courses</b-dropdown-item>
+        <b-dropdown-item href="#" v-if="getRole === 'ADMIN' || getRole === 'CLERK'" @click.prevent="goToStudentsImport">Import students</b-dropdown-item>
+        <b-dropdown-item href="#" @click.prevent="signOut">Signout</b-dropdown-item>
       </b-nav-item-dropdown>
     </b-navbar-nav>
 
@@ -59,6 +58,7 @@ export default {
   methods: {
     signOut () {
       this.$store.commit('cAuth', rest.setAuthorizationToken())
+      this.$store.commit('updateRole', 'null')
       this.isAuthorised = false
       this.$router.push({name: 'login'})
     },
@@ -79,6 +79,13 @@ export default {
     },
     goToStudentsImport () {
       this.$router.push({name: 'importStudents'})
+    },
+    setGetAuth () {
+      axios.get(`students/me`).then((response) => {
+        this.$store.commit('updateRole', response.data.role)
+        this.$store.commit('updateUserId', response.data.id)
+        return response.data.role
+      })
     }
   },
   computed: {
@@ -90,20 +97,19 @@ export default {
     }),
     isAuthorised: {
       get () {
-        return this.$store.state.token !== ''
+        return this.setGetAuth()
       },
       set (val) {
-        localStorage.setItem('loggedIn', val)
+        if (!val) {
+          localStorage.removeItem('token')
+        }
+        if (val) this.setGetAuth()
       }
     }
   },
   mounted () {
     this.$store.commit('cAuth', localStorage.getItem('token'))
-    axios.get(`students/me`).then((response) => {
-      this.$store.commit('updateUserId', response.data.id)
-    }).catch((err) => {
-      console.log(err)
-    })
+    this.isAuthorised = true
   },
 }
 
