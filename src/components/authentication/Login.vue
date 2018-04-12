@@ -34,6 +34,9 @@
         <b-form-group id="exampleGroup4">
           <b-link @click.prevent="forgotPassword">Pozabil sem geslo</b-link>
         </b-form-group>
+        <b-alert show dismissible v-if="locked">
+          You ip address is locked! </b>
+        </b-alert>
         <b-button type="submit" variant="primary">Prijava</b-button>
       </b-form>
       </b-col>
@@ -54,6 +57,7 @@ declare module 'vue/types/vue' {
     username: string
     password: string
     setGetAuth: any
+    locked: boolean
   }
 }
 
@@ -72,6 +76,13 @@ declare module 'vue/types/vue' {
         this.$store.commit('cAuth', localStorage.getItem('token'))
       }).catch(err => {
         console.log(err)
+        if (err == 'Error: Request failed with status code 406') {
+          this.locked = true
+          setTimeout(() => {
+            this.locked = false
+          }, 24*1000);
+        }
+        localStorage.removeItem('token')
       })
     },
     setGetAuth () {
@@ -91,6 +102,7 @@ declare module 'vue/types/vue' {
 export default class Login extends Vue {
   username: string = ''
   password: string = ''
+  locked: boolean = false
 }
 </script>
 

@@ -30,9 +30,16 @@
       <b-col sm="8">
         <b-button @click.prevent="goBack" class="backBtn">Nazaj</b-button>
         <b-button type="submit" variant="primary" class="forgotBtn" @click.prevent="onSubmit">Pošlji</b-button>
+        <br><br><br><br>
+       <b-alert show dismissible v-if="showed">
+         Mail was sent </b>
+        </b-alert>
       </b-col>
       <b-col sm="2"></b-col>
+       
     </b-row>
+   
+   
   </div>
 </template>
 
@@ -43,6 +50,7 @@ declare module 'vue/types/vue' {
 
   interface Vue {
     email: string
+    showed: boolean
   }
 }
 @Component({
@@ -54,10 +62,11 @@ declare module 'vue/types/vue' {
       axios.put('management/password', this.email, 
         {headers: {'Content-Type': 'text/plain'}}).then((data) => {
         console.log(data)
+        this.showed = true
       }).catch(e => {
         console.log(e)
       })
-    this.$router.push({name: 'login'})
+    // this.$router.push({name: 'login'})
     },
     goBack () {
       this.$router.push({name: 'login'})
@@ -68,6 +77,7 @@ declare module 'vue/types/vue' {
 })
 export default class ForgotPassword extends Vue {
   email: string = ''
+  showed: boolean = false
 }
 </script>
 
