@@ -23,7 +23,7 @@
              <b-btn @click="getVpis(data)">Show</b-btn>
              </template>
     </b-table>
-    <b-modal ref="vpisiPodatki" id="vpisiPodatki">
+    <b-modal ref="vpisiPodatki" id="vpisiPodatki" size="lg">
       <b-container fluid>
       <h3>Podatki o vseh vpisih</h3>
       <b-table stacked="md"

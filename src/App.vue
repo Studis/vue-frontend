@@ -15,8 +15,7 @@ import Header from './components/header/Header.vue'
         'class': 'main-content'
       },[
         h('router-view')
-      ]),
-      h('vue-snotify')
+      ])
     ])
   },
   components: {

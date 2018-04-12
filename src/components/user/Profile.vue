@@ -108,14 +108,14 @@ export default {
       this.$router.push({name: 'home'});
     },
     saveProfile() {
-      this.$snotify.async('Saved', 'saved', () => new Promise((resolve, reject) =>
-        resolve({
-          config: {
-            closeOnClick: true,
-            timeout: 2000,
-          },
-        })
-      ));
+      // this.$snotify.async('Saved', 'saved', () => new Promise((resolve, reject) =>
+      //   resolve({
+      //     config: {
+      //       closeOnClick: true,
+      //       timeout: 2000,
+      //     },
+      //   })
+      // ));
     },
   },
   mounted () {
