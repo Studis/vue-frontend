@@ -75,9 +75,16 @@ export default new Router({
       props:true
     },
     {
+      name: 'courses',
       path: '/courses',
       component: Courses,
+    },
+    {
+      name: 'importStudents',
+      path: '/importStudents',
+      component: UploadEnrollment
     }
+
   ],
   mode: 'history',
 });

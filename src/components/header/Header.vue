@@ -35,6 +35,7 @@
         <b-dropdown-item href="#" v-if="getRole === 'skrbnik'" @click.prevent="goToProfile">Edit Profile</b-dropdown-item>
         <b-dropdown-item href="#" v-if="getRole === 'skrbnik'" @click.prevent="goToStudents">Search students</b-dropdown-item>
         <b-dropdown-item href="#" v-if="getRole === 'skrbnik'" @click.prevent="goToEnrollment">Enrollment</b-dropdown-item>
+        <b-dropdown-item href="#" v-if="getRole === 'skrbnik'" @click.prevent="goToCourses">Courses</b-dropdown-item>
         <b-dropdown-item href="#" v-if="getRole === 'skrbnik'" @click.prevent="signOut">Signout</b-dropdown-item>
       </b-nav-item-dropdown>
     </b-navbar-nav>
@@ -71,6 +72,9 @@ export default {
     },
     goToEnrollment () {
       this.$router.push({name: 'enrollment'})
+    },
+    goToCourses () {
+      this.$router.push({name: 'courses'})
     }
   },
   computed: {
