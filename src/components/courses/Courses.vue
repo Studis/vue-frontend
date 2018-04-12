@@ -14,6 +14,8 @@
     </b-col>
     <b-table :sort-by.sync="sortBy"
              :sort-desc.sync="sortDesc"
+             :current-page="currentPage"
+             :per-page="perPage"
              :items="items"
              :filter="filter"
              @filtered="onFiltered"
@@ -22,6 +24,9 @@
         <b-link :to="{ name: 'course', params: { courseId: data.item.id }}">{{data.item.name}}</b-link>
       </template>
     </b-table>
+    <b-col md="6" class="my-1">
+      <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="my-0" />
+    </b-col>
   </div>
 </template>
 
