@@ -67,6 +67,16 @@ export default new Router({
       component: SetPassword,
       meta: {
       }
+    },
+    {
+      name: 'course',
+      path: '/courses/:courseId',
+      component: Course,
+      props:true
+    },
+    {
+      path: '/courses',
+      component: Courses,
     }
   ],
   mode: 'history',

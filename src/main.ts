@@ -52,8 +52,5 @@ const vm = new Vue({
   store,
   render: (h) => h(App),
 }).$mount('#app');
-// @ts-ignore
-vm.$axios.Vue = vm
-// @ts-ignore
-Vue.vm = vm
+
 

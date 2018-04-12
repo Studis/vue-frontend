@@ -8,7 +8,6 @@
              :fields="fields">
       <template slot="name" slot-scope="data">
         <b-link :to="{ name: 'course', params: { courseId: data.item.id }}">{{data.item.name}}</b-link>
-        
       </template>
     </b-table>
   </div>
@@ -25,7 +24,7 @@ export default {
   },
   methods: {
   },
-  mounted(){
+  created(){
     axios.get(`courses/`)
       .then((response) => {
         console.log(response.data);
@@ -43,6 +42,7 @@ export default {
         { key: 'name', sortable: true },
         { key: 'code', sortable: true },
         { key: 'module.name', sortable: true},
+        { key: 'module.semester.year.toString', sortable: true, label: "Year" },
       ],
       items: [],
       course: {}
