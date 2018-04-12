@@ -34,6 +34,9 @@
         <b-form-group id="exampleGroup4">
           <b-link @click.prevent="forgotPassword">Pozabil sem geslo</b-link>
         </b-form-group>
+        <b-alert show dismissible v-if="wrong">
+          Napačni prijavni podatki </b>
+        </b-alert>
         <b-alert show dismissible v-if="locked">
           You ip address is locked! </b>
         </b-alert>
@@ -58,6 +61,7 @@ declare module 'vue/types/vue' {
     password: string
     setGetAuth: any
     locked: boolean
+    wrong: boolean
   }
 }
 
@@ -81,6 +85,11 @@ declare module 'vue/types/vue' {
           setTimeout(() => {
             this.locked = false
           }, 24*1000);
+        } else {
+          this.wrong = true
+          setTimeout(() => {
+            this.wrong = false
+          }, 2000);
         }
         localStorage.removeItem('token')
       })
@@ -103,6 +112,7 @@ export default class Login extends Vue {
   username: string = ''
   password: string = ''
   locked: boolean = false
+  wrong: boolean = false
 }
 </script>
 

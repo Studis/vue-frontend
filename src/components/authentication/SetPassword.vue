@@ -15,6 +15,10 @@
           </b-form-input>
         </b-form-group>
         <b-button type="submit" variant="primary">Nastavi</b-button>
+        <br><br>
+        <b-alert show dismissible v-if="success">
+          Uspešno nastavljeno geslo </b>
+        </b-alert>
       </b-form>
       </b-col>
       <b-col sm="2"></b-col>
@@ -33,6 +37,7 @@ declare module 'vue/types/vue' {
   interface Vue {
     email: string
     token: string
+    success: boolean
   }
 }
 @Component({
@@ -44,10 +49,11 @@ declare module 'vue/types/vue' {
       axios.put(`management/password/${this.$route.params.token}`, this.password, 
         {headers: {"Content-Type": "text/plain"}}).then((data) => {
         console.log(data)
+        this.success = true
       }).catch(e => {
         console.log(e)
       })
-    this.$router.push({name: 'login'})
+    // this.$router.push({name: 'login'})
     },
     goBack () {
       this.$router.push({name: 'login'})
@@ -58,5 +64,6 @@ declare module 'vue/types/vue' {
 })
 export default class ForgotPassword extends Vue {
   password: string = ''
+  success: boolean = false
 }
 </script>

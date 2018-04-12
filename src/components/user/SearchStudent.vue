@@ -18,11 +18,16 @@
              :filter="filter"
              :sort-by.sync="sortBy"
              :sort-desc.sync="sortDesc"
+             :current-page="currentPage"
+             :per-page="perPage"
              @filtered="onFiltered">
              <template slot="enrollments" slot-scope="data">
              <b-btn @click="getVpis(data)">Show</b-btn>
              </template>
     </b-table>
+     <b-col md="6" class="my-1">
+        <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="my-0" />
+      </b-col>
     <b-modal ref="vpisiPodatki" id="vpisiPodatki" size="lg">
       <b-container fluid>
       <h3>Podatki o vseh vpisih</h3>
@@ -32,6 +37,7 @@
       </b-table>
       </b-container>    
     </b-modal>
+    <br><br>
     <b-button type="reset" variant="danger" @click.prevent="goHome">Nazaj</b-button>
   </div>
 </template>
@@ -87,12 +93,12 @@ import axios from 'axios'
       this.$router.push({name: 'home'})
     },
     onFiltered (filteredItems) {
-
       this.totalRows = filteredItems.length
       this.currentPage = 1
     },
     getVpis (data) {
       axios.get(`students/${data.item.id}/enrollments`).then((response: any) => {
+
       this.enrollments = response.data.map((x: any) => {
             return {
               studijski_program: x.semester1.program.title,
@@ -113,6 +119,7 @@ import axios from 'axios'
   mounted() {
     axios.get(`students`).then((response: any) => {
       this.items = response.data;
+      this.totalRows = response.data.length
     }).catch((err: any) => {
       console.log(err)
     })
@@ -152,6 +159,7 @@ export default class SearchStudent extends Vue {
   perPage: number = 5
   pageOptions: Array<number> = [ 5, 10, 15 ]
   filter = null
+  totalRows: number
 }
 </script>
 
