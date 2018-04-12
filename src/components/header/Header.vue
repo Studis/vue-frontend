@@ -32,7 +32,7 @@
         <template slot="button-content">
           <em>User</em>
         </template>
-        <b-dropdown-item href="#" v-if="getRole === 'skrbnik'" @click.prevent="goToProfile">Edit Profile</b-dropdown-item>
+        <b-dropdown-item href="#" v-if="getRole === 'skrbnik'" @click.prevent="goToProfile">Profile</b-dropdown-item>
         <b-dropdown-item href="#" v-if="getRole === 'skrbnik'" @click.prevent="goToStudents">Search students</b-dropdown-item>
         <b-dropdown-item href="#" v-if="getRole === 'skrbnik'" @click.prevent="goToEnrollment">Enrollment</b-dropdown-item>
         <b-dropdown-item href="#" v-if="getRole === 'skrbnik'" @click.prevent="goToCourses">Courses</b-dropdown-item>
