@@ -3,7 +3,7 @@
     <h2>Courses</h2>
     <br><br>
     <b-col md="6" class="my-1">
-        <b-form-group horizontal label="Search students" class="mb-0">
+        <b-form-group horizontal label="Search courses" class="mb-0">
           <b-input-group>
             <b-form-input v-model="filter" placeholder="Type to Search" />
             <b-input-group-append>
@@ -19,7 +19,10 @@
              :items="items"
              :filter="filter"
              @filtered="onFiltered"
-             :fields="fields">
+             :fields="fields">         
+    <template slot="index" slot-scope="data">
+      {{data.item.id}}
+    </template>
       <template slot="name" slot-scope="data">
         <b-link :to="{ name: 'course', params: { courseId: data.item.id }}">{{data.item.name}}</b-link>
       </template>
@@ -41,7 +44,6 @@ export default {
   },
   methods: {
     onFiltered (filteredItems) {
-
       this.totalRows = filteredItems.length
       this.currentPage = 1
     },
@@ -51,16 +53,19 @@ export default {
       .then((response) => {
         console.log(response.data);
         this.items = response.data;
+        this.totalRows = response.data.length
       })
       .catch((error) => {
         console.log(error);
       });
   },
-  data(){
+  data() {
+    // TODO: sorting on Module Name and Year is not working properly
     return {
-      sortBy: 'name',
+      sortBy: 'id',
       sortDesc: false,
       fields: [
+        { key: 'id', label: 'Zaporedje', sortable: true },
         { key: 'name', sortable: true },
         { key: 'code', sortable: true },
         { key: 'module.name', sortable: true},
@@ -69,9 +74,10 @@ export default {
       items: [],
       course: {},
       currentPage: 1,
-      perPage: 5,
+      perPage: 12,
       pageOptions: [ 5, 10, 15 ],
-      filter: null
+      filter: null,
+      totalRows: 0
     };
   },
   props:["courseId"]

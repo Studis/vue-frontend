@@ -29,14 +29,14 @@
       <b-nav-item-dropdown right v-if="$store.state.role !== 'null'">
         <!-- Using button-content slot -->
         <template slot="button-content">
-          <em>User</em>
+          <em>Uporabnik</em>
         </template>
-        <b-dropdown-item href="#" v-if="getRole === 'STUDENT'" @click.prevent="goToProfile">Profile</b-dropdown-item>
-        <b-dropdown-item href="#" v-if="getRole === 'ADMIN' || getRole === 'LECTURER' || getRole === 'CLERK'" @click.prevent="goToStudents">Search students</b-dropdown-item>
-        <b-dropdown-item href="#" v-if="getRole === 'STUDENT'" @click.prevent="goToEnrollment">Enrollment</b-dropdown-item>
-        <b-dropdown-item href="#" v-if="getRole === 'LECTURER' || getRole === 'CLERK' || getRole === 'ADMIN'" @click.prevent="goToCourses">Courses</b-dropdown-item>
-        <b-dropdown-item href="#" v-if="getRole === 'ADMIN' || getRole === 'CLERK'" @click.prevent="goToStudentsImport">Import students</b-dropdown-item>
-        <b-dropdown-item href="#" @click.prevent="signOut">Signout</b-dropdown-item>
+        <b-dropdown-item href="#" v-if="getRole === 'STUDENT'" @click.prevent="goToProfile">Osebni podatki študenta</b-dropdown-item>
+        <b-dropdown-item href="#" v-if="getRole === 'ADMIN' || getRole === 'LECTURER' || getRole === 'CLERK'" @click.prevent="goToStudents">Iskanje študentov</b-dropdown-item>
+        <b-dropdown-item href="#" v-if="getRole === 'STUDENT'" @click.prevent="goToEnrollment">Vpisni list</b-dropdown-item>
+        <b-dropdown-item href="#" v-if="getRole === 'LECTURER' || getRole === 'CLERK' || getRole === 'ADMIN'" @click.prevent="goToCourses">Predmeti</b-dropdown-item>
+        <b-dropdown-item href="#" v-if="getRole === 'ADMIN' || getRole === 'CLERK'" @click.prevent="goToStudentsImport">Uvoz študentov</b-dropdown-item>
+        <b-dropdown-item href="#" @click.prevent="signOut">Odjava</b-dropdown-item>
       </b-nav-item-dropdown>
     </b-navbar-nav>
 

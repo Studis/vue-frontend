@@ -25,6 +25,9 @@
              <b-btn @click="getVpis(data)">Show</b-btn>
              </template>
     </b-table>
+     <template slot="index" slot-scope="data">
+      {{data.item.id}}
+    </template>
      <b-col md="6" class="my-1">
         <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="my-0" />
       </b-col>
@@ -131,9 +134,10 @@ import axios from 'axios'
 export default class SearchStudent extends Vue {
   
   message: string = 'Hello!'
-  sortBy: string = 'first_name'
+  sortBy: string = 'id'
   sortDesc: boolean = false
   fields: Array<sortFieldsType> = [
+    { key: 'id', sortable: true },
     { key: 'enrollmentNumber', sortable: true },
     { key: 'name', sortable: true },
     { key: 'surname', sortable: true },
