@@ -7,3 +7,4 @@ declare module 'bootstrap-vue';
 
 declare module 'vue-snotify';
 
+declare module 'vue-router';

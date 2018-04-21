@@ -163,7 +163,7 @@ export default class SearchStudent extends Vue {
   perPage: number = 5
   pageOptions: Array<number> = [ 5, 10, 15 ]
   filter = null
-  totalRows: number
+  totalRows: number = 0
 }
 </script>
 
