@@ -7,6 +7,8 @@ import Snotify from 'vue-snotify';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import axios from 'axios';
+let axiosDefaults = require('axios/lib/defaults');
+
 
 
 // @ts-ignore
@@ -17,11 +19,17 @@ Vue.use(Snotify);
 
 Vue.config.productionTip = false;
 
+if (process.env.NODE_ENV === 'production') {
+	axiosDefaults.baseURL = 'http://api.studis.tk/v1';
+} else {
+	axiosDefaults.baseURL = 'http://localhost:8080/v1';
+}
+
 router.beforeEach(
   (to:any, from:any, next:any) => {
+
     axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
     axios.defaults.headers.common['Authorization'] = `Basic ${localStorage.getItem('token')}`;
-    axios.defaults.baseURL = 'http://localhost:8080/v1'; //TODO: append the trailing slash
 
     if (to.matched.some((record:any) => record.meta.forVisitors)) {
       if (isAuthenticated()) {
@@ -41,7 +49,6 @@ router.beforeEach(
   }
 )
 
-axios.defaults.baseURL = 'http://localhost:8080/v1'; //TODO: append the trailing slash
 
 function isAuthenticated ():boolean {
   return localStorage.getItem('token') !== null
