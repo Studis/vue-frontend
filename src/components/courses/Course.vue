@@ -10,8 +10,8 @@
         {{ l.name }} {{l.surname}}
       </li>
     </ul>
-    <b-button variant="primary" v-bind:href="'http://localhost:8080/v1/courses/'+this.courseId+'/enrollments/pdf'">PDF</b-button> 
-    <b-button variant="primary" v-bind:href="'http://localhost:8080/v1/courses/'+this.courseId+'/enrollments/csv'">CSV</b-button>
+    <b-button variant="primary" v-bind:href="`http://${axios.defaults.baseURL}/v1/courses/'+this.courseId+'/enrollments/pdf`">PDF</b-button> 
+    <b-button variant="primary" v-bind:href="`http://${axios.defaults.baseURL}/v1/courses/'+this.courseId+'/enrollments/csv`">CSV</b-button>
     <br><br>
     <h3>Enrolled students</h3>
     <b-table :sort-by.sync="sortBy"
@@ -27,6 +27,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import Router from 'vue-router'
 import axios from 'axios';
 import rest from './../../rest.js'
+let axiosDefaults = require('axios/lib/defaults');
 
 export default {
   components: {

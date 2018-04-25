@@ -119,7 +119,6 @@ export default {
     },
   },
   mounted () {
-    axios.defaults.baseURL = 'http://localhost:8080/v1'; //TODO: append the trailing slash
     axios.get(`students/me`).then((response) => {
       this.userid = response.data.id;
       axios.get(`students/${this.userid}`).then((response) => {
