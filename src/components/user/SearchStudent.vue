@@ -1,13 +1,13 @@
 <template>
   <div>
 
-    <h3>Search students</h3>
+    <h3>Osnovni podatki študentov</h3>
     <b-col md="6" class="my-1">
-        <b-form-group horizontal label="Search students" class="mb-0">
+        <b-form-group horizontal label="Iskanje" class="mb-0">
           <b-input-group>
-            <b-form-input v-model="filter" placeholder="Type to Search" />
+            <b-form-input v-model="filter" placeholder="Vpišite iskalni niz..." />
             <b-input-group-append>
-              <b-btn :disabled="!filter" @click="filter = ''">Clear</b-btn>
+              <b-btn :disabled="!filter" @click="filter = ''">Izbriši</b-btn>
             </b-input-group-append>
           </b-input-group>
         </b-form-group>
@@ -60,7 +60,7 @@ interface enrollment {
   nacin_studija: string 
 }
 interface itemFieldsType {
-  EnrollmentNumber: number;
+  enrollmentNumber: number;
   first_name: string;
   last_name: string;
   address: string;
