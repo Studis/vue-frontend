@@ -75,22 +75,22 @@ export default {
     return {
       userid: '',
       student: {
-        vpisna_stevilka: '6318022',
-        ime_priimek: 'Bob Klobasa',
-        naslov_sb: 'Večna Pot 113',
-        naslov_pp: 'Večna Pot 113',
-        tel_st: '031 255 011',
-        email: 'bb0001@student.uni-lj.si',
+        vpisna_stevilka: '',
+        ime_priimek: '',
+        naslov_sb: '',
+        naslov_pp: '',
+        tel_st: '',
+        email: '',
         polja: [
-          { key: 'študijsko_leto' },
+          { key: 'študijsko_leto', label: 'Študijsko leto' },
           { key: 'letnik' },
-          { key: 'študijski_program' },
-          { key: 'vrsta_vpisa' },
-          { key: 'način_študija'}
+          { key: 'študijski_program', label: 'Študijski program' },
+          { key: 'vrsta_vpisa', label: 'Vrsta vpisa' },
+          { key: 'način_študija', label: 'Način študija' }
         ],
         vpisi: [
-          { študijsko_leto: '2016/2017', letnik: '1', študijski_program: '', vrsta_vpisa: "Prvi vpis v letnik/dodatno leto", način_študija: "redni" },
-          { študijsko_leto: '2017/2018', letnik: '2', študijski_program: 'Računalništvo in informatika UN-I. ST', vrsta_vpisa: "Prvi vpis v letnik/dodatno leto", način_študija: "redni" },
+          { študijsko_leto: '', letnik: '', študijski_program: '', vrsta_vpisa: "", način_študija: "" },
+          { študijsko_leto: '', letnik: '', študijski_program: '', vrsta_vpisa: "", način_študija: "" },
         ],
       }
     }

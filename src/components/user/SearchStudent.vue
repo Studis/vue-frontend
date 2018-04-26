@@ -49,6 +49,7 @@
 
 interface sortFieldsType {
   key: string;
+  label: string;
   sortable: boolean;
 }
 interface enrollment {
@@ -137,26 +138,22 @@ export default class SearchStudent extends Vue {
   sortBy: string = 'id'
   sortDesc: boolean = false
   fields: Array<sortFieldsType> = [
-    { key: 'id', sortable: true },
-    { key: 'enrollmentNumber', sortable: true },
-    { key: 'name', sortable: true },
-    { key: 'surname', sortable: true },
-    { key: 'permanent', sortable: true },
-    { key: 'temporary', sortable: true },
-    { key: 'enrollments', sortable: false },
+    { key: 'id', label: '#', sortable: true },
+    { key: 'enrollmentNumber', label: 'Vpisna številka', sortable: true },
+    { key: 'name', label: 'Ime', sortable: true },
+    { key: 'surname', label: 'Priimek', sortable: true },
+    { key: 'permanent.placeOfResidence', label: 'Naslov stalnega prebivališča', sortable: true },
+    { key: 'temporary.placeOfResidence', label: 'Naslov začasnega prebivališča', sortable: true },
+    { key: 'phoneNumber', label: 'Telefonska številka', sortable: true },
+    { key: 'universityEmail', label: 'Elektronski naslov', sortable: true},
+    { key: 'enrollments', label: 'Podatki o vpisih', sortable: false },
   ]
   modalFields: Array<sortFieldsType> = [
-    { key: 'studijsko_leto', sortable: true },
-    { key: 'letnik', sortable: true }, 
-    { key: 'studijski_program', sortable: true },
-    { key: 'vrsta_vpisa', sortable: true },
-    { key: 'nacin_studija', sortable: true }
-  ]
-  items: Array<itemFieldsType> = [
-    { EnrollmentNumber: 6318001, first_name: 'Bob', last_name: 'Bogi', address: "Celovska cesta 30", email: "bb0001@student.uni-lj.si", enrollments: "-"},
-    { EnrollmentNumber: 6318002, first_name: 'Annie', last_name: 'Shaw', address: "Celovska cesta 2", email: "as0001@student.uni-lj.si", enrollments: "-" },
-    { EnrollmentNumber: 6318003, first_name: 'Geneva', last_name: 'Wilson', address: "Celovska cesta 33", email: "gw0001@student.uni-lj.si", enrollments: "-" },
-    { EnrollmentNumber: 6318004, first_name: 'Jami', last_name: 'Carney', address: "Celovska cesta 10", email: "jc0001@student.uni-lj.si", enrollments: "-" },
+    { key: 'studijsko_leto', label: 'Študijsko leto', sortable: true },
+    { key: 'letnik', label: 'Letnik', sortable: true }, 
+    { key: 'studijski_program', label: 'Študijski program', sortable: true },
+    { key: 'vrsta_vpisa', label: 'Vrsta vpisa', sortable: true },
+    { key: 'nacin_studija', label: 'Način študija', sortable: true }
   ]
   enrollments: Array<enrollment> = []
   currentPage: number = 1
@@ -168,4 +165,5 @@ export default class SearchStudent extends Vue {
 </script>
 
 <style lang="scss">
+  table { font-size: 14px; }
 </style>
