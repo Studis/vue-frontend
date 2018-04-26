@@ -55,6 +55,7 @@ function isAuthenticated ():boolean {
 }
 
 const vm = new Vue({
+  //@ts-ignore
   router,
   store,
   render: (h) => h(App),

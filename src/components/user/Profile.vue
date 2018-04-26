@@ -125,9 +125,10 @@ export default {
         this.student.vpisna_stevilka = response.data.enrollmentNumber
         this.student.ime_priimek = response.data.name + ' ' + response.data.surname
         this.student.email = response.data.eMail;
-        this.student.naslov_sb = response.data.permanent;
-        this.student.naslov_pp = response.data.temporary;
+        this.student.naslov_sb = response.data.permanent.placeOfResidence + ', ' + response.data.permanent.postalNumber + ' ' + response.data.permanent.municipality.name;
+        this.student.naslov_pp = response.data.temporary.placeOfResidence + ', ' + response.data.temporary.postalNumber + ' ' + response.data.temporary.municipality.name;
         this.student.tel_st = response.data.phoneNumber;
+        this.student.email = response.data.universityEmail;
         axios.get(`students/${this.userid}/enrollments`).then((response) => {
           this.student.vpisi = response.data.map(x => {
             return {

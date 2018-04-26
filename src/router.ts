@@ -10,6 +10,7 @@ import SetPassword from './components/authentication/SetPassword.vue';
 import Course from './components/courses/Course.vue';
 import Courses from './components/courses/Courses.vue';
 import UploadEnrollment from './components/user/UploadEnrollment.vue';
+import EnrollmentToken from './components/user/EnrollmentToken.vue';
 Vue.use(Router);
 
 export default new Router({
@@ -83,6 +84,11 @@ export default new Router({
       name: 'importStudents',
       path: '/importStudents',
       component: UploadEnrollment
+    },
+    {
+      name: 'enrollmentToken',
+      path: '/enrollmentToken',
+      component: EnrollmentToken
     }
 
   ],
