@@ -2,15 +2,10 @@
   <div>
     <h3>Uvoz podatkov</h3>
     <br>
-          <b-form-group id="exampleInputGroup1"
-            label="Uvozi podatke o vpisih"
-            label-for="exampleInput1">
-   
-
-
-    <b-form-file :change="onFileChange(el)" id="uvozVpis" accept="*.txt" v-model="datoteka" :state="Boolean(datoteka)" placeholder="Izberi datoteko..."></b-form-file>
-
-
+    <b-form-group id="exampleInputGroup1"
+      label="Uvozi podatke o vpisih"
+      label-for="exampleInput1">
+      <b-form-file :change="onFileChange(el)" id="uvozVpis" accept="*.txt" v-model="datoteka" :state="Boolean(datoteka)" placeholder="Izberi datoteko..."></b-form-file>
     </b-form-group>
     <br>
     <b-button type="submit" variant="primary" @click.prevent="onSubmit()">Naloži</b-button>

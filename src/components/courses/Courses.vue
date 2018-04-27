@@ -1,13 +1,13 @@
 <template>
   <div>
-    <h2>Courses</h2>
+    <h2>Predmeti</h2>
     <br><br>
     <b-col md="6" class="my-1">
-        <b-form-group horizontal label="Search courses" class="mb-0">
+        <b-form-group horizontal label="Iskanje" class="mb-0">
           <b-input-group>
-            <b-form-input v-model="filter" placeholder="Type to Search" />
+            <b-form-input v-model="filter" placeholder="Vpišite iskalni niz..." />
             <b-input-group-append>
-              <b-btn :disabled="!filter" @click="filter = ''">Clear</b-btn>
+              <b-btn :disabled="!filter" @click="filter = ''">Izbriši</b-btn>
             </b-input-group-append>
           </b-input-group>
         </b-form-group>
@@ -65,11 +65,11 @@ export default {
       sortBy: 'id',
       sortDesc: false,
       fields: [
-        { key: 'id', label: 'Zaporedje', sortable: true },
-        { key: 'name', sortable: true },
-        { key: 'code', sortable: true },
-        { key: 'module.name', sortable: true},
-        { key: 'module.semester.year.toString', sortable: true, label: "Year" },
+        { key: 'id', label: '#', sortable: true },
+        { key: 'name', label: 'Ime', sortable: true },
+        { key: 'code', label: 'Šifra', sortable: true },
+        { key: 'module.name', label: 'Modul', sortable: true},
+        { key: 'module.semester.year.toString', label: 'Semester', sortable: true },
       ],
       items: [],
       course: {},

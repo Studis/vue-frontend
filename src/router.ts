@@ -90,7 +90,6 @@ export default new Router({
       path: '/enrollmentToken',
       component: EnrollmentToken
     }
-
   ],
   mode: 'history'
 })

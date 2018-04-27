@@ -47,7 +47,7 @@
     <b-form-group
       label="Država:"
       label-for="exampleInput2">
-      <b-form-select v-model="vpisniList.drzava" :options="posts" class="mb-3">
+      <b-form-select v-model="vpisniList.drzava" :options="countries" class="mb-3">
       </b-form-select>
     </b-form-group>
     <b-form-group
@@ -1212,17 +1212,17 @@ import { Component, Vue } from 'vue-property-decorator';
         '18202 Doktorat znanosti (tretja bolonjska stopnja)',
       ],
       enrollment_types: [
-        '01 - Prvi vpis v letnik/dodatno leto',
-        '02 - Ponavljanje letnika',
-        '03 - Nadaljevanje letnika',
-        '04 - Podaljšanje statusa študenta',
-        '05 - Vpis po merilih za prehode v višji letnik',
-        '06 - Vpis v semester skupnega št. programa',
-        '07 - Vpis po merilih za prehode v isti letnik',
+        '01 Prvi vpis v letnik/dodatno leto',
+        '02 Ponavljanje letnika',
+        '03 Nadaljevanje letnika',
+        '04 Podaljšanje statusa študenta',
+        '05 Vpis po merilih za prehode v višji letnik',
+        '06 Vpis v semester skupnega št. programa',
+        '07 Vpis po merilih za prehode v isti letnik',
       ],
       study_year: ['1.', '2.', '3.', '4.', '5.', '6.', 'dodatno leto',],
-      study_type: ['redni', 'izredni'],
-      study_form: ['na lokaciji', 'na daljavo', 'e-študij'],
+      study_type: ['1 redni', '3 izredni'],
+      study_form: ['1 na lokaciji', '2 na daljavo', '3 e-študij'],
       studyYears: studyYears,
       vpisniList: {
         vpisnaStevilka: '',

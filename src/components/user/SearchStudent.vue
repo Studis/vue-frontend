@@ -22,7 +22,7 @@
              :per-page="perPage"
              @filtered="onFiltered">
              <template slot="enrollments" slot-scope="data">
-             <b-btn @click="getVpis(data)">Show</b-btn>
+             <b-btn size="sm" variant="success" @click="getVpis(data)">Prikaži</b-btn>
              </template>
     </b-table>
      <template slot="index" slot-scope="data">
@@ -165,5 +165,7 @@ export default class SearchStudent extends Vue {
 </script>
 
 <style lang="scss">
-  table { font-size: 14px; }
+  table { 
+    font-size: 14px; 
+  }
 </style>
