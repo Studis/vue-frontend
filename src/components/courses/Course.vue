@@ -6,7 +6,7 @@
     <p>Module: {{course.module.name}}</p>
     <p>Semester: {{course.module.semester.toString}}</p>
     <ul>
-      <li v-for="l in course.lecturers">
+      <li v-for="(l, index) in course.lecturers" :key="index">
         {{ l.name }} {{l.surname}}
       </li>
     </ul>

@@ -1,17 +1,17 @@
-import Vue from 'vue';
-import Router from 'vue-router';
-import Login from './components/authentication/Login.vue';
-import Exams from './components/Exams.vue';
-import ForgotPassword from './components/authentication/ForgotPassword.vue';
-import Profile from './components/user/Profile.vue';
-import SearchStudent from './components/user/SearchStudent.vue';
-import Enrollment from './components/user/Enrollment.vue';
-import SetPassword from './components/authentication/SetPassword.vue';
-import Course from './components/courses/Course.vue';
-import Courses from './components/courses/Courses.vue';
-import UploadEnrollment from './components/user/UploadEnrollment.vue';
-import EnrollmentToken from './components/user/EnrollmentToken.vue';
-Vue.use(Router);
+import Vue from 'vue'
+import Router from 'vue-router'
+import Login from './components/authentication/Login.vue'
+import Exams from './components/Exams.vue'
+import ForgotPassword from './components/authentication/ForgotPassword.vue'
+import Profile from './components/user/Profile.vue'
+import SearchStudent from './components/user/SearchStudent.vue'
+import Enrollment from './components/user/Enrollment.vue'
+import SetPassword from './components/authentication/SetPassword.vue'
+import Course from './components/courses/Course.vue'
+import Courses from './components/courses/Courses.vue'
+import UploadEnrollment from './components/user/UploadEnrollment.vue'
+import EnrollmentToken from './components/user/EnrollmentToken.vue'
+Vue.use(Router)
 
 export default new Router({
   routes: [
@@ -73,12 +73,12 @@ export default new Router({
       name: 'course',
       path: '/courses/:courseId',
       component: Course,
-      props:true
+      props: true
     },
     {
       name: 'courses',
       path: '/courses',
-      component: Courses,
+      component: Courses
     },
     {
       name: 'importStudents',
@@ -92,5 +92,5 @@ export default new Router({
     }
 
   ],
-  mode: 'history',
-});
+  mode: 'history'
+})

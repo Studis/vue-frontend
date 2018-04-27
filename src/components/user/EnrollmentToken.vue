@@ -13,7 +13,7 @@
         </b-form-group>
       </b-col>
     <b-table stacked="md"
-             :items="items"
+             :items="enrollmentTokens"
              :fields="fields"
              :filter="filter"
              :sort-by.sync="sortBy"
@@ -21,7 +21,7 @@
              :current-page="currentPage"
              :per-page="perPage"
              @filtered="onFiltered">
-             <template slot="enrollments" slot-scope="data">
+             <template slot="tokens" slot-scope="data">
              <b-btn @click="getVpis(data)">Show</b-btn>
              </template>
     </b-table>
@@ -57,7 +57,7 @@ interface enrollment {
   letnik: string
   studijski_program: string
   vrsta_vpisa: string
-  nacin_studija: string 
+  nacin_studija: string
   poljubni_predmeti: string
 }
 interface itemFieldsType {
@@ -73,9 +73,9 @@ declare module 'vue/types/vue' {
   interface Vue {
     totalRows: number
     currentPage: number
-    items: Array<itemFieldsType>
+    enrollmentTokens: Array<itemFieldsType>
     $axios: any
-    enrollments: Array<enrollment>
+    tokens: Array<enrollment>
     show: any
   }
 }
@@ -104,7 +104,7 @@ import axios from 'axios'
     getVpis (data) {
       axios.get(`students/${data.item.id}/enrollments`).then((response: any) => {
 
-      this.enrollments = response.data.map((x: any) => {
+      this.tokens = response.data.map((x: any) => {
             return {
               studijski_program: x.semester1.program.title,
               letnik: Math.floor(x.semester1.number/2),
@@ -113,7 +113,7 @@ import axios from 'axios'
               studijsko_leto: x.semester1.year.toString
             }
           })
-      //@ts-ignore
+      // @ts-ignore
       this.$refs.vpisiPodatki.show();
 
     }).catch((err: any) => {
@@ -123,7 +123,7 @@ import axios from 'axios'
   },
   mounted() {
     axios.get(`students`).then((response: any) => {
-      this.items = response.data;
+      this.enrollmentTokens = response.data;
       this.totalRows = response.data.length
     }).catch((err: any) => {
       console.log(err)
@@ -134,7 +134,6 @@ import axios from 'axios'
 
 
 export default class SearchStudent extends Vue {
-  
   message: string = 'Hello!'
   sortBy: string = 'id'
   sortDesc: boolean = false
@@ -146,17 +145,19 @@ export default class SearchStudent extends Vue {
   ]
   modalFields: Array<sortFieldsType> = [
     { key: 'studijsko_leto', label: 'Študijsko leto', sortable: true },
-    { key: 'letnik', label: 'Letnik', sortable: true }, 
+    { key: 'letnik', label: 'Letnik', sortable: true },
     { key: 'studijski_program', label: 'Študijski program', sortable: true },
     { key: 'vrsta_vpisa', label: 'Vrsta vpisa', sortable: true },
     { key: 'nacin_studija', label: 'Način in oblika študija', sortable: true },
     { key: 'poljubni_predmeti', label: 'Pravica do proste izbire predmetov', sortable: true }
   ]
-  enrollments: Array<enrollment> = []
+  tokens: Array<enrollment> = []
   currentPage: number = 1
   perPage: number = 5
   pageOptions: Array<number> = [ 5, 10, 15 ]
   filter = null
+  enrollmentTokens = []
+  enrollments = []
   totalRows: number = 0
 }
 </script>
