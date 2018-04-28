@@ -1,5 +1,8 @@
 # Vue frontend for studis
 
+
+[![Build Status](https://img.shields.io/travis/Studis/vue-frontend/master.svg?style=flat)](https://travis-ci.org/Studis/vue-frontend)
+
 Frontend for information system used for enrolling students in universities.
 
 ## Getting Started
@@ -23,8 +26,8 @@ A step by step series of examples that tell you have to get a development env ru
 
 
 ```
-git clone https://domengasperlin@bitbucket.org/tpo2018/vue-frontend.git
-cd studis-vue
+git clone https://github.com/Studis/vue-frontend.git
+cd vue-frontend
 yarn
 yarn serve
 ```
