@@ -1,64 +1,56 @@
 <template>
 <div>
-  <b-form @submit="onSubmit" @reset="onReset" v-if="true">
+  <b-form v-on:submit.prevent="onSubmit(vpisniList)" @reset="onReset" v-if="true">
     <h3>VPISNI LIST {{(new Date()).getFullYear()}}/{{(new Date()).getFullYear()+1}} za študente</h3>
     <h4>Fakulteta za računalništvo in informatiko</h4>
-    <div class="text-center university-image">
+    <div>
       <img src="https://petra-education.eu/wp-content/uploads/sites/29/2016/07/111.png" class="img-thumbnail">
     </div>
-    <h4>Osebni podatki</h4>
-    <b-form-group label="Vpisna številka:"
-      label-for="exampleInput1">
+    <h3>OSEBNI PODATKI</h3>
+    <b-form-group 
+      label="Vpisna številka:">
       <b-form-input v-model="vpisniList.vpisnaStevilka"
-        placeholder="62130075"
         type="number"
         disabled
         required>
       </b-form-input>
     </b-form-group>
     <b-form-group
-      label="Ime in Priimek:"
-      label-for="exampleInput2">
+      label="Ime in Priimek:">
       <b-form-input v-model="vpisniList.imePriimek"
         type="text"
         required>
       </b-form-input>
     </b-form-group>
     <b-form-group
-      label="Datum rojstva:"
-      label-for="exampleInput2">
+      label="Datum rojstva:">
       <b-form-input v-model="vpisniList.datumRojstva"
         type="date"
         required>
       </b-form-input>
     </b-form-group>
     <b-form-group
-      label="Kraj rojstva:"
-      label-for="exampleInput2">
-      <b-form-select v-model="vpisniList.krajRojstva" :options="countries" class="mb-3">
+      label="Kraj rojstva:">
+      <b-form-select v-model="vpisniList.krajRojstva" :options="posts" class="mb-3">
       </b-form-select>
     </b-form-group>
     <b-form-group
-      label="Regija:"
-      label-for="exampleInput2">
+      label="Regija:">
       <b-form-select v-model="vpisniList.regija" :options="posts" class="mb-3">
       </b-form-select>
     </b-form-group>
     <b-form-group
-      label="Država:"
-      label-for="exampleInput2">
+      label="Država:">
       <b-form-select v-model="vpisniList.drzava" :options="countries" class="mb-3">
       </b-form-select>
     </b-form-group>
     <b-form-group
-      label="Spol:"
-      label-for="exampleInput2">
+      label="Spol:">
       <b-form-select v-model="vpisniList.spol" :options="['Moški', 'Ženska']" class="mb-3">
       </b-form-select>
     </b-form-group>
     <b-form-group
-      label="EMŠO:"
-      label-for="exampleInput2">
+      label="EMŠO:">
       <b-form-input v-model="vpisniList.emso"
         type="text" 
         pattern="\d*" 
@@ -67,8 +59,7 @@
       </b-form-input>
     </b-form-group>
     <b-form-group
-      label="Davčna številka:"
-      label-for="exampleInput2">
+      label="Davčna številka:">
       <b-form-input v-model="vpisniList.davcnaStevilka"
         type="text" 
         pattern="\d*" 
@@ -77,16 +68,14 @@
       </b-form-input>
     </b-form-group>
     <b-form-group
-      label="Elektronski naslov: "
-      label-for="exampleInput2">
+      label="Elektronski naslov: ">
       <b-form-input v-model="vpisniList.elektronskiNaslov"
         type="email" 
         required>
       </b-form-input>
     </b-form-group>
     <b-form-group
-      label="Telefonska številka:"
-      label-for="exampleInput2">
+      label="Telefonska številka:">
       <b-form-input v-model="vpisniList.telefonskaStevilka"
         type="tel" 
         required>
@@ -94,75 +83,64 @@
     </b-form-group>
     <h4>Stalno prebivališče</h4>
     <b-form-group
-      label="Občina:"
-      label-for="exampleInput2">
+      label="Občina:">
       <b-form-select v-model="vpisniList.stalnoPrebivalisceObcina" :options="posts" class="mb-3">
       </b-form-select>
     </b-form-group>
     <b-form-group
-      label="Država:"
-      label-for="exampleInput2">
+      label="Država:">
       <b-form-select v-model="vpisniList.stalnoPrebivalisceDrzava" :options="countries" class="mb-3">
       </b-form-select>
     </b-form-group>
     <b-form-group
-      label="Naslov:"
-      label-for="exampleInput2">
+      label="Naslov:">
       <b-form-input v-model="vpisniList.stalnoPrebivalisceNaslov"
         type="text" 
         required>
       </b-form-input>
     </b-form-group>
     <b-form-group
-      label="Poštna številka:"
-      label-for="exampleInput2">
+      label="Poštna številka:">
       <b-form-select v-model="vpisniList.stalnoPrebivaliscePosta" :options="postNumbers" class="mb-3">
       </b-form-select>
     </b-form-group>
     <h4>Začasno prebivališče</h4>
     <b-form-group
-      label="Občina:"
-      label-for="exampleInput2">
+      label="Občina:">
       <b-form-select v-model="vpisniList.zacasnoPrebivalisceObcina" :options="posts" class="mb-3">
       </b-form-select>
     </b-form-group>
     <b-form-group
-      label="Država:"
-      label-for="exampleInput2">
+      label="Država:">
       <b-form-select v-model="vpisniList.zacasnoPrebivalisceDrzava" :options="countries" class="mb-3">
       </b-form-select>
     </b-form-group>
     <b-form-group
-      label="Naslov:"
-      label-for="exampleInput2">
+      label="Naslov:">
       <b-form-input v-model="vpisniList.zacasnoPrebivalisceNaslov"
         type="text" 
         required>
       </b-form-input>
     </b-form-group>
     <b-form-group
-      label="Poštna številka:"
-      label-for="exampleInput2">
-      <b-form-select :options="vpisniList.zacasnoPrebivaliscePosta" class="mb-3">
+      label="Poštna številka:">
+      <b-form-select v-model="vpisniList.zacasnoPrebivaliscePosta" :options="postNumbers" class="mb-3">
       </b-form-select>
     </b-form-group>
     <h4>Vročanje</h4>
     <b-form-group
-      label="Naslov za vročanje:"
-      label-for="exampleInput2">
+      label="Naslov za vročanje:">
       <b-form-select v-model="vpisniList.naslovZaVrocanje" :options="['Stalno prebivališče', 'Začasno prebivališče']" class="mb-3">
       </b-form-select>
     </b-form-group>
     <h3>PODATKI O VPISU</h3>
     <b-form-group
-      label="Študijski program:"
-      label-for="exampleInput2">
+      label="Študijski program:">
       <b-form-select v-model="vpisniList.studijskiProgram" :options="courses" class="mb-3">
       </b-form-select>
     </b-form-group>
     <b-form-group
-      label="Kraj izvajanja:"
-      label-for="exampleInput2">
+      label="Kraj izvajanja:">
       <b-form-input v-model="vpisniList.krajIzvajanja"
         type="text"
         placeholder="Ljubljana"
@@ -171,8 +149,7 @@
       </b-form-input>
     </b-form-group>
     <b-form-group
-      label="Izbirna skupina:"
-      label-for="exampleInput2">
+      label="Izbirna skupina:">
       <b-form-input v-model="vpisniList.izbirnaSkupina"
         type="text"
         disabled 
@@ -180,65 +157,60 @@
       </b-form-input>
     </b-form-group>
     <b-form-group
-      label="Vrsta študija:"
-      label-for="exampleInput2">
+      label="Vrsta študija:">
       <b-form-select v-model="vpisniList.vrstaStudija" :options="course_types" class="mb-3">
       </b-form-select>
     </b-form-group>
     <b-form-group
-      label="Vrsta vpisa:"
-      label-for="exampleInput2">
+      label="Vrsta vpisa:">
       <b-form-select v-model="vpisniList.vrstaVpisa" :options="enrollment_types" class="mb-3">
       </b-form-select>
     </b-form-group>
     <b-form-group
-      label="Letnik študija:"
-      label-for="exampleInput2">
+      label="Letnik študija:">
       <b-form-select v-model="vpisniList.letnikStudija" :options="study_year" class="mb-3">
       </b-form-select>
     </b-form-group>
     <b-form-group
-      label="Način študija:"
-      label-for="exampleInput2">
+      label="Način študija:">
       <b-form-select v-model="vpisniList.nacinStudija" :options="study_type" class="mb-3">
       </b-form-select>
     </b-form-group>
     <b-form-group
-      label="Oblika študija:"
-      label-for="exampleInput2">
+      label="Oblika študija:">
       <b-form-select v-model="vpisniList.oblikaStudija" :options="study_form" class="mb-3">
       </b-form-select>
     </b-form-group>
     <b-form-group
-      label="Študijsko leto prvega vpisa v ta program:"
-      label-for="exampleInput2">
+      label="Študijsko leto prvega vpisa v ta program:">
       <b-form-select v-model="vpisniList.studijskoLetoPrvegaVpisaVTaProgram" :options="studyYears" class="mb-3">
       </b-form-select>
     </b-form-group>
-    <b-form-group
-      label="Soglasje za koriščenje storitev knjižničnega sistema"
-      label-for="exampleInput2">
+    <b-form-group>
       <b-form-checkbox v-model="vpisniList.soglasjeKnjiz"
         type="checkbox" >
+        Soglasje za koriščenje storitev knjižničnega sistema
       </b-form-checkbox>
     </b-form-group>
-    <b-form-group
-      label="Soglasje za obveščanje o aktualnih študijskih zadevah ter za karierno svetovanje in za druge aktivnosti, povezane z zagotavljanjem kakovosti"
-      label-for="exampleInput2">
+    <b-form-group>
       <b-form-checkbox v-model="vpisniList.soglasjeObves"
         type="checkbox" >
+        Soglasje za obveščanje o aktualnih študijskih zadevah ter za karierno svetovanje in za druge aktivnosti, povezane z zagotavljanjem kakovosti
       </b-form-checkbox>
     </b-form-group>
-    <b-button type="submit" variant="primary" @click.prevent="saveProfile">Shrani</b-button>
-    <b-button type="reset" variant="danger" @click.prevent="goHome">Nazaj</b-button>
+    <b-form-group>
+      <b-button type="submit" variant="primary">Shrani</b-button>
+      <b-button type="reset" variant="danger" @click.prevent="goHome" style="margin-left: 1em">Nazaj</b-button>
+    </b-form-group>
   </b-form>
 </div>
 </template>
 
-<script lang="ts">
+<script>
 import { Component, Vue } from 'vue-property-decorator';
+import axios from 'axios';
 
-@Component({
+export default {
   name: 'forgotPassword',
   data () {
     var studyYears = [];
@@ -878,7 +850,7 @@ import { Component, Vue } from 'vue-property-decorator';
         '2394,	Kotlje',
         '6240,	Kozina',
         '3260,	Kozje',
-        '4000,	Kranj ',
+        '4000,	Kranj',
         '4001,	Kranj - poštni predali',
         '4280,	Kranjska Gora',
         '1281,	Kresnice',
@@ -903,7 +875,7 @@ import { Component, Vue } from 'vue-property-decorator';
         '2341,	Limbuš',
         '1270,	Litija',
         '3202,	Ljubečna',
-        '1000,	Ljubljana ',
+        '1000,	Ljubljana',
         '1001,	Ljubljana - poštni predali',
         '1231,	Ljubljana - Črnuče',
         '1261,	Ljubljana - Dobrunje',
@@ -931,7 +903,7 @@ import { Component, Vue } from 'vue-property-decorator';
         '9243,	Mala Nedelja',
         '2229,	Malečnik',
         '6273,	Marezige',
-        '2000,	Maribor ',
+        '2000,	Maribor',
         '2001,	Maribor - poštni predali',
         '2206,	Marjeta na Dravskem polju',
         '2281,	Markovci',
@@ -955,14 +927,14 @@ import { Component, Vue } from 'vue-property-decorator';
         '5216,	Most na Soči',
         '1221,	Motnik',
         '3330,	Mozirje',
-        '9000,	Murska Sobota ',
+        '9000,	Murska Sobota',
         '9001,	Murska Sobota - poštni predali',
         '2366,	Muta',
         '4202,	Naklo',
         '3331,	Nazarje',
         '1357,	Notranje Gorice',
         '3203,	Nova Cerkev',
-        '5000,	Nova Gorica ',
+        '5000,	Nova Gorica',
         '5001,	Nova Gorica - poštni predali',
         '1385,	Nova vas',
         '8000,	Novo mesto',
@@ -1144,7 +1116,7 @@ import { Component, Vue } from 'vue-property-decorator';
         '9224,	Turnišče',
         '8323,	Uršna sela',
         '1252,	Vače',
-        '3320,	Velenje ',
+        '3320,	Velenje',
         '3322,	Velenje - poštni predali',
         '8212,	Velika Loka',
         '2274,	Velika Nedelja',
@@ -1262,8 +1234,15 @@ import { Component, Vue } from 'vue-property-decorator';
   components: {
   },
   methods: {
-    onSubmit() {
-      this.$router.push({name: 'login'});
+    onSubmit(vpisniList) {
+      // Testing data sending...
+      console.log(vpisniList)
+      /*axios.post('', vpisniList).then(response => {
+        console.log(response)
+      }, response => {
+        console.log(response)
+      })*/
+      this.$router.push({name: 'home'});
     },
     goBack() {
       this.$router.push({name: 'login'});
@@ -1273,19 +1252,33 @@ import { Component, Vue } from 'vue-property-decorator';
     goHome() {
       this.$router.push({name: 'home'});
     },
-    saveProfile() {
-      // this.$snotify.async('Saved', 'saved', () => new Promise((resolve, reject) =>
-      //   resolve({
-      //     config: {
-      //       closeOnClick: true,
-      //       timeout: 2000,
-      //     },
-      //   })
-      // ));
-    },
   },
+  mounted() {
+    axios.get(`students/me`).then((response) => {
+      var userid = response.data.id;
+      axios.get(`students/${userid}`).then((response) => {
+        this.vpisniList.vpisnaStevilka = response.data.enrollmentNumber;
+        this.vpisniList.imePriimek = response.data.name + ' ' + response.data.surname;
+        this.vpisniList.krajRojstva = response.data.placeOfBirth;
+        this.vpisniList.spol = response.data.gender;
+        this.vpisniList.stalnoPrebivalisceObcina = response.data.permanent.municipality.name + ' ';
+        this.vpisniList.zacasnoPrebivalisceObcina = response.data.temporary.municipality.name + ' ';
+        this.vpisniList.stalnoPrebivalisceDrzava = 'Slovenija'
+        this.vpisniList.zacasnoPrebivalisceDrzava = 'Slovenija'
+        this.vpisniList.stalnoPrebivaliscePosta = response.data.permanent.postalNumber + ',	' + response.data.permanent.municipality.name;
+        this.vpisniList.zacasnoPrebivaliscePosta = response.data.temporary.postalNumber + ',	' + response.data.temporary.municipality.name;
+        this.vpisniList.elektronskiNaslov = response.data.universityEmail;
+        this.vpisniList.stalnoPrebivalisceNaslov = response.data.permanent.placeOfResidence + ', ' + response.data.permanent.postalNumber + ' ' + response.data.permanent.municipality.name;
+        this.vpisniList.zacasnoPrebivalisceNaslov = response.data.temporary.placeOfResidence + ', ' + response.data.temporary.postalNumber + ' ' + response.data.temporary.municipality.name;
+        this.vpisniList.telefonskaStevilka = response.data.phoneNumber;
+      }).catch((err) => {
+        console.log(err)
+      })
+    }).catch((err) => {
+      console.log(err)
 })
-export default class Profile extends Vue {}
+  }
+}
 </script>
 
 <style lang="scss">
@@ -1306,5 +1299,9 @@ export default class Profile extends Vue {}
     margin-top: 3em;
     margin-bottom: 3em;
   }
- 
+  .img-thumbnail {
+    width: 70%;
+    height: 20%;
+    margin-bottom: 1em;
+  }
 </style>
