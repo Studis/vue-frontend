@@ -1,10 +1,10 @@
 sudo: required
 
-language: generic 
+language: bash 
 services:
   - docker
 
-install:
+before_script:
   - docker build -t dgaspe/studis-vue .
 
 dist: trusty
