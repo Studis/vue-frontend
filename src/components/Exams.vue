@@ -1,7 +1,7 @@
 <template>
   <div class="">
     <b-alert show>Pozdravljeni v sistemu Studis TPO 7</b-alert>
-    <!--exam-sign-up></exam-sign-up-->
+    <exam-sign-up></exam-sign-up>
   </div>
 </template>
 
