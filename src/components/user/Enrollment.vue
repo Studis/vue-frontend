@@ -1235,6 +1235,9 @@ export default {
   },
   methods: {
     onSubmit(vpisniList) {
+      if(validEmso(vpisniList.emso)) {
+        //...
+      }
       // Testing data sending...
       console.log(vpisniList)
       /*axios.post('', vpisniList).then(response => {
@@ -1252,6 +1255,20 @@ export default {
     goHome() {
       this.$router.push({name: 'home'});
     },
+    validEmso(emso) {
+      if (emso.length < 13) return false;
+      var check = parseInt(emso[12])
+      var factors = [7, 6, 5, 4, 3, 2, 7, 6, 5, 4, 3, 2];
+      emso = emso.substring(0, emso.length - 1);
+      var sum = 0;
+      for (var i = 0; i < 12; i++) {
+        sum += (parseInt(emso[i]) * factors[i])
+      }
+      var remainder = sum % 11;
+      remainder = 11 - remainder;
+      if (remainder == check) return true;
+      else return false;
+    } 
   },
   mounted() {
     axios.get(`students/me`).then((response) => {
