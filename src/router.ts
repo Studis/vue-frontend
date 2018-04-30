@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Login from './components/authentication/Login.vue';
 import Exams from './components/Exams.vue';
+import Results from './components/Results.vue';
 import ForgotPassword from './components/authentication/ForgotPassword.vue';
 import Profile from './components/user/Profile.vue';
 import SearchStudent from './components/user/SearchStudent.vue';
@@ -10,6 +11,7 @@ import SetPassword from './components/authentication/SetPassword.vue';
 import Course from './components/courses/Course.vue';
 import Courses from './components/courses/Courses.vue';
 import UploadEnrollment from './components/user/UploadEnrollment.vue';
+
 Vue.use(Router);
 
 export default new Router({
@@ -78,6 +80,11 @@ export default new Router({
       name: 'courses',
       path: '/courses',
       component: Courses,
+    },
+    {
+      name: 'results',
+      path: '/results',
+      component: Results,
     },
     {
       name: 'importStudents',

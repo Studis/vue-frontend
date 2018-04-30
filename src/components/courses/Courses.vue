@@ -49,12 +49,12 @@ export default {
   mounted(){
     axios.get(`courses/`)
       .then((response) => {
-        console.log(response.data);
-        this.items = response.data;
+        console.log(response.data)
+        this.items = response.data
       })
       .catch((error) => {
-        console.log(error);
-      });
+        console.log(error)
+      })
   },
   data(){
     return {
