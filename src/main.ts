@@ -20,7 +20,7 @@ Vue.use(Snotify)
 Vue.config.productionTip = false
 
 if (process.env.NODE_ENV === 'production') {
-  axiosDefaults.baseURL = 'http://api.studis.tk/v1'
+  axiosDefaults.baseURL = 'https://api.studis.tk/v1'
 } else {
   axiosDefaults.baseURL = 'http://localhost:8080/v1'
 }
