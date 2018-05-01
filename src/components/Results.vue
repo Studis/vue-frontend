@@ -154,25 +154,37 @@ export default {
       }
       doc.save("table.pdf");
     },
-    generateCSV(){
-      
+    download(filename, text) {
+      var element = document.createElement("a");
+      element.setAttribute(
+        "href",
+        "data:text/plain;charset=utf-8," + encodeURIComponent(text)
+      );
+      element.setAttribute("download", filename);
+
+      element.style.display = "none";
+      document.body.appendChild(element);
+
+      element.click();
+
+      document.body.removeChild(element);
+    },
+    generateCSV() {
+      var csvContent = "";
+      for (var lineKey in this.items) {
+        var line = this.items[lineKey];
+        console.log(line);
+        for (var columnKeyIndex in this.fields) {
+          var columnKey = this.fields[columnKeyIndex]
+          console.log(columnKey);
+          csvContent += (line[columnKey.key]?line[columnKey.key]:"") + ",";
+        }
+        csvContent += "\r\n";
+      }
+      this.download("export.csv", csvContent);
     }
   },
   mounted() {
-    /*this.updateContent(
-      [
-        { name: "Žan" },
-        { name: "Domen" },
-        { name: "Jaka", surname: "Kordez" },
-        { name: "RobiČŠŽčšž" }
-      ],
-      null,
-      [
-        { title: "Year", value: "201/18" },
-        { title: "Lecturer", value: "Viljan Mahnič" }
-      ],
-      false
-    );*/
   },
   data() {
     return {
