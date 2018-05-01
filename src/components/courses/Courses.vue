@@ -23,8 +23,8 @@
     <template slot="index" slot-scope="data">
       {{data.item.id}}
     </template>
-      <template slot="name" slot-scope="data">
-        <b-link :to="{ name: 'course', params: { courseId: data.item.id }}">{{data.item.name}}</b-link>
+      <template slot="course.name" slot-scope="data">
+        <b-link :to="{ name: 'course', params: { courseId: data.item.id }}">{{data.item.course.name}}</b-link>
       </template>
     </b-table>
     <b-col md="6" class="my-1">
@@ -54,6 +54,10 @@ export default {
         console.log(response.data);
         this.items = response.data;
         this.totalRows = response.data.length
+        for(var x in this.items) {
+          if(this.items[x].winter) this.items[x].winter = 'Zimski'
+          else this.items[x].winter = 'Letni'
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -66,10 +70,11 @@ export default {
       sortDesc: false,
       fields: [
         { key: 'id', label: '#', sortable: true },
-        { key: 'name', label: 'Ime', sortable: true },
-        { key: 'code', label: 'Šifra', sortable: true },
+        { key: 'course.name', label: 'Ime', sortable: true },
+        { key: 'course.id', label: 'Šifra', sortable: true },
         { key: 'module.name', label: 'Modul', sortable: true},
-        { key: 'module.semester.year.toString', label: 'Semester', sortable: true },
+        { key: 'winter', label: 'Semester', sortable: true },
+        { key: 'curriculum.year.toString', label: 'Leto izvajanja', sortable: true }
       ],
       items: [],
       course: {},
