@@ -1,6 +1,11 @@
-<template>
+<template id="results">
   <div>
-    <h2>Courses</h2>
+    <h2>{{this.title}}</h2>
+    <b-list-group>
+        <b-list-group-item v-for="detail in details" :key="detail.title">
+            {{detail.title}} <strong>{{detail.value}}</strong>
+        </b-list-group-item>
+    </b-list-group>
     <br><br>
     <b-col md="6" class="my-1">
         <b-form-group horizontal label="Search" class="mb-0">
@@ -10,7 +15,7 @@
               <b-btn :disabled="!filter" @click="filter = ''">Clear</b-btn>
             </b-input-group-append>
             <b-button v-on:click="generatePDF">PDF</b-button>
-            <b-button v-on:click="generatePDF">CSV</b-button>
+            <b-button v-on:click="generateCSV">CSV</b-button>
           </b-input-group>
         </b-form-group>
     </b-col>
@@ -23,7 +28,7 @@
              :filter="filter"
              @filtered="onFiltered"
              :fields="fields">
-      <template slot="name" slot-scope="data">
+      <template :v-if="entityName" slot="name" slot-scope="data">
         <b-link :v-if="entityName" :to="{ name: entityName, params: { courseId: data.item.id }}">{{data.item.name}}</b-link>
       </template>
     </b-table>
@@ -43,46 +48,78 @@ import jspdfautotable from "jspdf-autotable";
 
 export default {
   components: {},
+  watch: {
+    content: {
+      handler: function(newVal, oldVal) {
+        console.log("Prop changed: ", newVal, " | was: ", oldVal);
+
+        this.entityName = newVal.entityName;
+        this.details = newVal.details;
+        var content = newVal.content;
+        var fieldNames = newVal.fieldNames;
+
+        if (this.indexes) {
+          content = content.map((e, i) => {
+            e["#"] = i + 1;
+            return e;
+          });
+        }
+
+        if (!fieldNames) {
+          this.totalRows = content.length;
+          var columns = {};
+          content.forEach(e => {
+            for (var prop in e) {
+              columns[prop] = true;
+            }
+          });
+          this.fields = [];
+          for (var columnName in columns) {
+            var element = {
+              key: columnName,
+              sortable: true,
+              title: this.capitalizeFirstLetter(columnName),
+              dataKey: columnName
+            };
+            if (columnName == "#") this.fields.unshift(element);
+            else this.fields.push(element);
+          }
+        } else this.fields = fieldNames;
+        this.sortBy = this.fields[0].key;
+
+        this.items = content;
+      }
+    }
+  },
   methods: {
     onFiltered(filteredItems) {
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
     },
-    setContent(content, fieldNames, entityName, indexes) {
-      if (!indexes) indexes = false;
-
-      this.entityName = entityName;
-
-      if (!fieldNames) {
-        this.totalRows = content.length;
-        var columns = {};
-        content.forEach(e => {
-          for (var prop in e) {
-            columns[prop] = true;
-          }
-        });
-        this.fields = [];
-        for (var columnName in columns) {
-          this.fields.push({ key: columnName, sortable: true, title: this.capitalizeFirstLetter(columnName), dataKey: columnName });
-        }
-      } else this.fields = fieldNames;
-      this.sortBy = this.fields[0].key;
-
-      this.items = content;
-    },
     capitalizeFirstLetter(string) {
-        return string.charAt(0).toUpperCase() + string.slice(1);
+      return string.charAt(0).toUpperCase() + string.slice(1);
     },
-    generatePDF() {      
+    generatePDF() {
       var doc = new jsPDF();
       var totalPagesExp = "{total_pages_count_string}";
 
-      var pageContent = function(data) {
+      var pageContent = data => {
         // HEADER
         doc.setFontSize(20);
         doc.setTextColor(40);
         doc.setFontStyle("normal");
-        doc.text("Report", data.settings.margin.left + 15, 22);
+        doc.text(this.title, data.settings.margin.left + 15, 20);
+
+        doc.setFontSize(8);
+        for (var i in this.details) {
+          var property = this.details[i];
+          var value = property.value.replace("č", "c").replace("Č", "C");
+          doc.text(
+            property.title + ": " + value,
+            data.settings.margin.left + 20,
+            26 + i * 5
+          );
+        }
 
         // FOOTER
         var str = "Page " + data.pageCount;
@@ -97,10 +134,18 @@ export default {
           doc.internal.pageSize.height - 10
         );
       };
-
-      doc.autoTable(this.fields, this.items, {
+      var clearedContent = this.items.map(c => {
+        for (var i in c) {
+          if (typeof c[i] === "string") {
+            c[i] = c[i].replace("č", "c");
+            c[i] = c[i].replace("Č", "C");
+          }
+        }
+        return c;
+      });
+      doc.autoTable(this.fields, clearedContent, {
         addPageContent: pageContent,
-        margin: { top: 30 }
+        margin: { top: 25 + this.details.length * 5 }
       });
 
       // Total page number plugin only available in jspdf v1.0+
@@ -108,31 +153,32 @@ export default {
         doc.putTotalPages(totalPagesExp);
       }
       doc.save("table.pdf");
+    },
+    generateCSV(){
+      
     }
   },
   mounted() {
-    this.setContent(
+    /*this.updateContent(
       [
         { name: "Žan" },
         { name: "Domen" },
         { name: "Jaka", surname: "Kordez" },
-        { name: "Robi" }
+        { name: "RobiČŠŽčšž" }
       ],
       null,
-      false,
+      [
+        { title: "Year", value: "201/18" },
+        { title: "Lecturer", value: "Viljan Mahnič" }
+      ],
       false
-    );
+    );*/
   },
   data() {
     return {
       sortBy: "name",
       sortDesc: false,
-      fields: [
-        { key: "name", sortable: true },
-        { key: "code", sortable: true },
-        { key: "module.name", sortable: true },
-        { key: "module.semester.year.toString", sortable: true, label: "Year" }
-      ],
+      fields: [],
       items: [],
       course: {},
       currentPage: 1,
@@ -140,10 +186,11 @@ export default {
       pageOptions: [5, 10, 15],
       filter: null,
       totalRows: 0,
-      entityName: false
+      entityName: false,
+      details: []
     };
   },
-  props: ["courseId"]
+  props: ["title", "indexes", "content"]
 };
 </script>
 
