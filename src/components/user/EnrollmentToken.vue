@@ -22,13 +22,13 @@
              :per-page="perPage"
              @filtered="onFiltered">
              <template slot="new_token" slot-scope="data">
-             <b-btn size="sm" variant="success" @click="newToken(data)">Ustvari</b-btn>
+             <b-btn size="sm" variant="success" @click="show_newToken()">Ustvari</b-btn>
              </template>
              <template slot="edit_token" slot-scope="data">
-             <b-btn size="sm" variant="outline-primary" @click="editToken(data)">Uredi</b-btn>
+             <b-btn size="sm" variant="outline-primary" @click="show_editToken()">Uredi</b-btn>
              </template>
              <template slot="delete_token" slot-scope="data">
-             <b-btn size="sm" variant="danger" @click="deleteToken(data)">Izbriši</b-btn>
+             <b-btn size="sm" variant="danger" @click="show_deleteToken()">Izbriši</b-btn>
              </template>
     </b-table>
      <template slot="index" slot-scope="data">
@@ -37,7 +37,7 @@
      <b-col md="6" class="my-1">
         <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="my-0" />
       </b-col>
-    <b-modal ref="vpisiPodatki" id="vpisiPodatki" size="lg">
+    <b-modal ref="novZeton" size="lg">
       <b-container fluid>
       <h3>Ustvari nov žeton</h3>
       <br>
@@ -66,7 +66,51 @@
             Pravica do proste izbire predmetov
           </b-form-checkbox>
         </b-form-group>
-        
+      </b-container>    
+    </b-modal>
+    <b-modal ref="urediZeton" size="lg">
+      <b-container fluid>
+      <h3>Uredi žeton</h3>
+      <br>
+        <b-form-group label="Študijski program" label-for="exampleInput2">
+          <b-form-select :options="courses" class="mb-3">
+          </b-form-select>
+        </b-form-group>
+        <b-form-group label="Letnik" label-for="exampleInput2">
+          <b-form-select :options="study_year" class="mb-3">
+          </b-form-select>
+        </b-form-group>
+        <b-form-group label="Vrsta vpisa" label-for="exampleInput2">
+          <b-form-select :options="enrollment_types" class="mb-3">
+          </b-form-select>
+        </b-form-group>
+        <b-form-group label="Način študija" label-for="exampleInput2">
+          <b-form-select :options="study_type" class="mb-3">
+          </b-form-select>
+        </b-form-group>
+        <b-form-group label="Oblika študija" label-for="exampleInput2">
+          <b-form-select :options="study_form" class="mb-3">
+          </b-form-select>
+        </b-form-group>
+        <b-form-group>
+          <b-form-checkbox class="mb-3">
+            Pravica do proste izbire predmetov
+          </b-form-checkbox>
+        </b-form-group>
+      </b-container>    
+    </b-modal>
+    <b-modal ref="izbrisiZeton" size="lg" hide-footer="true" hide-header="true">
+      <b-container fluid>
+      <h3>Izbriši žeton</h3>
+        <br>
+        Ali ste prepričani da želite izbrisati žeton?
+        <br>
+        <b-btn size="md" variant="success" @click="deleteToken(data)" style="margin-top: 1em;">
+           Da
+         </b-btn>
+        <b-btn size="md" variant="danger" @click="cancel()" style="margin-left: 1em; margin-top: 1em;">
+           Ne
+         </b-btn>
       </b-container>    
     </b-modal>
     <br><br>
@@ -165,25 +209,13 @@ import axios from 'axios'
       this.totalRows = filteredItems.length
       this.currentPage = 1
     },
-    newToken (data) {
-      // get pre-defined values...
-      axios.get(`students/${data.item.id}/enrollments`).then((response: any) => {
-      this.tokens = response.data.map((x: any) => {
-            return {
-              studijski_program: x.semester1.program.title,
-              letnik: Math.floor(x.semester1.number/2),
-              vrsta_vpisa: x.type.name,
-              nacin_studija: 'na daljavo',
-              studijsko_leto: x.semester1.year.toString
-            }
-          })
-      // @ts-ignore
-      this.$refs.vpisiPodatki.show();
-
-    }).catch((err: any) => {
-      console.log(err)
-    })
-    }
+    show_newToken() {this.$refs.novZeton.show();},
+    show_editToken() {this.$refs.urediZeton.show();},
+    show_deleteToken() {this.$refs.izbrisiZeton.show();},
+    cancel() {this.$refs.izbrisiZeton.hide();},
+    newToken(data) {},
+    editToken(data) {},
+    deleteToken(data) {}
   },
   mounted() {
     axios.get(`students`).then((response: any) => {
