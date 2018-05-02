@@ -2,8 +2,10 @@
   <div>
     <results 
       title="Courses" 
-      :indexes="false"
+      :indexes="true"
       :content="content"
+      :details="details"
+      entityName="course"
       v-model="content"></results>
   </div>
 </template>
@@ -23,35 +25,35 @@ export default {
 
   },
   mounted(){
-    this.content = {
-      content: [
-        { name: "a" },
-        { name: "Domen" },
-        { name: "Jaka", surname: "Kordez" },
-        { name: "RobiČŠŽčšž" }
-      ],
-      fieldNames: null,
-      details: [{ title: "Year", value: "201/18" }, {title: "Lecturer", value: "Viljan Mahnič"}],
-      entityName: false
-    };
-    
-    /*axios.get(`courses/`)
+    axios.get(`courses/`)
       .then((response) => {
-        console.log(response.data)
-        this.items = response.data
+        var tableData = response.data.map((x)=>{
+            var r = {course: x.course.name, id: x.id};
+            if(x.module){
+              r.module = x.module.name;
+              r.year = x.module.curriculum.year.toString;
+            }
+            if(x.curriculum){
+              r.year = x.curriculum.year.toString
+            }
+            return r;
+          });
+        this.content = {
+          content: tableData,
+          fieldNames: null
+        };
       })
       .catch((error) => {
         console.log(error)
-      })*/
+      })
   },
   data(){
     return {
       content: {
         content: [],
-        fieldNames: null,
-        details: [],
-        entityName: false
-      }
+        fieldNames: null
+      },
+      details:[]
     };
   },
   props:["courseId"]

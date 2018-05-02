@@ -71,15 +71,15 @@ export default new Router({
       }
     },
     {
-      name: 'course',
-      path: '/courses/:courseId',
-      component: Course,
-      props:true
-    },
-    {
       name: 'courses',
       path: '/courses',
       component: Courses,
+    },
+    {
+      name: 'course',
+      path: '/courses/:id',
+      component: Course,
+      props:true
     },
     {
       name: 'results',

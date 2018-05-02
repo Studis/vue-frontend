@@ -1,4 +1,4 @@
-<template id="results">
+<template>
   <div>
     <h2>{{this.title}}</h2>
     <b-list-group>
@@ -19,7 +19,7 @@
           </b-input-group>
         </b-form-group>
     </b-col>
-    
+
     <b-table :sort-by.sync="sortBy"
              :sort-desc.sync="sortDesc"
              :current-page="currentPage"
@@ -28,8 +28,8 @@
              :filter="filter"
              @filtered="onFiltered"
              :fields="fields">
-      <template :v-if="entityName" slot="name" slot-scope="data">
-        <b-link :v-if="entityName" :to="{ name: entityName, params: { courseId: data.item.id }}">{{data.item.name}}</b-link>
+      <template slot="open" slot-scope="data">
+        <b-link :to="{ name: entityName, params: { id: data.item.id }}">Open</b-link>
       </template>
     </b-table>
     <b-col md="6" class="my-1">
@@ -51,10 +51,6 @@ export default {
   watch: {
     content: {
       handler: function(newVal, oldVal) {
-        console.log("Prop changed: ", newVal, " | was: ", oldVal);
-
-        this.entityName = newVal.entityName;
-        this.details = newVal.details;
         var content = newVal.content;
         var fieldNames = newVal.fieldNames;
 
@@ -73,7 +69,7 @@ export default {
               columns[prop] = true;
             }
           });
-          this.fields = [];
+          this.fields = [{key: "open", label: "Open"}];
           for (var columnName in columns) {
             var element = {
               key: columnName,
@@ -82,8 +78,9 @@ export default {
               dataKey: columnName
             };
             if (columnName == "#") this.fields.unshift(element);
-            else this.fields.push(element);
+            else if(columnName != "id") this.fields.push(element);
           }
+          
         } else this.fields = fieldNames;
         this.sortBy = this.fields[0].key;
 
@@ -111,9 +108,14 @@ export default {
         doc.text(this.title, data.settings.margin.left + 15, 20);
 
         doc.setFontSize(8);
+        
         for (var i in this.details) {
           var property = this.details[i];
-          var value = property.value.replace("č", "c").replace("Č", "C");
+          var value;
+          if (typeof property.value[i] === "string") {
+            value = property.value.replace("č", "c").replace("Č", "C");
+          }
+          else value = property.value;
           doc.text(
             property.title + ": " + value,
             data.settings.margin.left + 20,
@@ -173,10 +175,8 @@ export default {
       var csvContent = "";
       for (var lineKey in this.items) {
         var line = this.items[lineKey];
-        console.log(line);
         for (var columnKeyIndex in this.fields) {
           var columnKey = this.fields[columnKeyIndex]
-          console.log(columnKey);
           csvContent += (line[columnKey.key]?line[columnKey.key]:"") + ",";
         }
         csvContent += "\r\n";
@@ -197,12 +197,10 @@ export default {
       perPage: 5,
       pageOptions: [5, 10, 15],
       filter: null,
-      totalRows: 0,
-      entityName: false,
-      details: []
+      totalRows: 0
     };
   },
-  props: ["title", "indexes", "content"]
+  props: ["title", "indexes", "content", "entityName", "details"]
 };
 </script>
 
