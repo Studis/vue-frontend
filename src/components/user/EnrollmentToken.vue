@@ -118,44 +118,10 @@
   </div>
 </template>
 
-<script lang="ts">
-
-interface sortFieldsType {
-  key: string;
-  label: string;
-  sortable: boolean;
-}
-interface enrollment {
-  studijsko_leto: string
-  letnik: string
-  studijski_program: string
-  vrsta_vpisa: string
-  nacin_studija: string
-  poljubni_predmeti: string
-}
-interface itemFieldsType {
-  enrollmentNumber: number;
-  first_name: string;
-  last_name: string;
-  address: string;
-  email: string;
-  enrollmentTokens: string;
-}
-declare module 'vue/types/vue' {
-  // 3. Declare augmentation for Vue
-  interface Vue {
-    totalRows: number
-    currentPage: number
-    enrollmentTokens: Array<itemFieldsType>
-    $axios: any
-    tokens: Array<enrollment>
-    show: any
-  }
-}
-import { Component, Vue } from 'vue-property-decorator';
+<script>
 import axios from 'axios'
 
-@Component({
+export default {
   name: 'EnrollmentToken',
   data() {
     return {
@@ -189,6 +155,35 @@ import axios from 'axios'
       study_year: ['1.', '2.', '3.', '4.', '5.', '6.', 'dodatno leto',],
       study_type: ['1 redni', '3 izredni'],
       study_form: ['1 na lokaciji', '2 na daljavo', '3 e-študij'],
+      message: 'Hello!',
+      sortBy: 'id',
+      sortDesc: false,
+      fields: [
+        { key: 'id', label: '#', sortable: true },
+        { key: 'enrollmentNumber', label: 'Vpisna številka', sortable: true },
+        { key: 'name', label: 'Ime', sortable: true },
+        { key: 'surname', label: 'Priimek', sortable: true },
+        { key: 'new_token', label: 'Možnosti', sortable: false },
+        { key: 'edit_token', label: '', sortable: false },
+        { key: 'delete_token', label: '', sortable: false }
+      ],
+      modalFields: [
+        { key: 'studijsko_leto', label: 'Študijsko leto', sortable: true },
+        { key: 'letnik', label: 'Letnik', sortable: true },
+        { key: 'studijski_program', label: 'Študijski program', sortable: true },
+        { key: 'vrsta_vpisa', label: 'Vrsta vpisa', sortable: true },
+        { key: 'nacin_studija', label: 'Način in oblika študija', sortable: true },
+        { key: 'poljubni_predmeti', label: 'Pravica do proste izbire predmetov', sortable: true }
+      ],
+      tokens: [],
+      currentPage: 1,
+      perPage: 5,
+      pageOptions: [ 5, 10, 15 ],
+      filter: null,
+      enrollmentTokens: [],
+      enrollments: [],
+      totalRows: 0,
+      show: false
     }
   },
   components: {
@@ -218,46 +213,13 @@ import axios from 'axios'
     deleteToken(data) {}
   },
   mounted() {
-    axios.get(`students`).then((response: any) => {
+    axios.get(`students`).then((response) => {
       this.enrollmentTokens = response.data;
       this.totalRows = response.data.length
-    }).catch((err: any) => {
+    }).catch((err) => {
       console.log(err)
     })
   }
-})
-
-
-
-export default class SearchStudent extends Vue {
-  message: string = 'Hello!'
-  sortBy: string = 'id'
-  sortDesc: boolean = false
-  fields: Array<sortFieldsType> = [
-    { key: 'id', label: '#', sortable: true },
-    { key: 'enrollmentNumber', label: 'Vpisna številka', sortable: true },
-    { key: 'name', label: 'Ime', sortable: true },
-    { key: 'surname', label: 'Priimek', sortable: true },
-    { key: 'new_token', label: 'Možnosti', sortable: false },
-    { key: 'edit_token', label: '', sortable: false },
-    { key: 'delete_token', label: '', sortable: false }
-  ]
-  modalFields: Array<sortFieldsType> = [
-    { key: 'studijsko_leto', label: 'Študijsko leto', sortable: true },
-    { key: 'letnik', label: 'Letnik', sortable: true },
-    { key: 'studijski_program', label: 'Študijski program', sortable: true },
-    { key: 'vrsta_vpisa', label: 'Vrsta vpisa', sortable: true },
-    { key: 'nacin_studija', label: 'Način in oblika študija', sortable: true },
-    { key: 'poljubni_predmeti', label: 'Pravica do proste izbire predmetov', sortable: true }
-  ]
-  tokens: Array<enrollment> = []
-  currentPage: number = 1
-  perPage: number = 5
-  pageOptions: Array<number> = [ 5, 10, 15 ]
-  filter = null
-  enrollmentTokens = []
-  enrollments = []
-  totalRows: number = 0
 }
 </script>
 
