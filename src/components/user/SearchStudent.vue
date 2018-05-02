@@ -102,14 +102,13 @@ import axios from 'axios'
     },
     getVpis (data) {
       axios.get(`students/${data.item.id}/enrollments`).then((response: any) => {
-
       this.enrollments = response.data.map((x: any) => {
             return {
-              studijski_program: x.semester1.program.title,
-              letnik: Math.floor(x.semester1.number/2),
-              vrsta_vpisa: x.type.name,
-              nacin_studija: 'na daljavo',
-              studijsko_leto: x.semester1.year.toString
+              studijski_program: x.curriculum.program.id + " - " + x.curriculum.program.title,
+              letnik: x.curriculum.studyYear.id,
+              vrsta_vpisa: x.type.id + " - " + x.type.name,
+              nacin_studija: x.studyType.id + " - " + x.studyType.name,
+              studijsko_leto: x.curriculum.year.toString
             }
           })
       //@ts-ignore
