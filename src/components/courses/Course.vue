@@ -1,83 +1,81 @@
 <template>
   <div>
-    <!--<b-table striped hover :items="items"></b-table>-->
-    <h2>{{course.name}}</h2>
-    <p>Course code: {{course.code}}</p>
-    <p>Module: {{course.module.name}}</p>
-    <p>Semester: {{course.module.semester.toString}}</p>
-    <ul>
-      <li v-for="(l, index) in course.lecturers" :key="index">
-        {{ l.name }} {{l.surname}}
-      </li>
-    </ul>
-    <b-button variant="primary" v-bind:href="`http://${axios.defaults.baseURL}/v1/courses/'+this.courseId+'/enrollments/pdf`">PDF</b-button> 
-    <b-button variant="primary" v-bind:href="`http://${axios.defaults.baseURL}/v1/courses/'+this.courseId+'/enrollments/csv`">CSV</b-button>
-    <br><br>
-    <h3>Enrolled students</h3>
-    <b-table :sort-by.sync="sortBy"
-             :sort-desc.sync="sortDesc"
-             :items="items"
-             :fields="fields">
-    </b-table>
+    <results 
+      title="Course" 
+      :indexes="true"
+      :content="content"
+      :details="details"
+      entityName="student"
+      v-model="content"></results>
   </div>
 </template>
 
 <script>
-import { Component, Vue } from 'vue-property-decorator';
-import Router from 'vue-router'
-import axios from 'axios';
-import rest from './../../rest.js'
-let axiosDefaults = require('axios/lib/defaults');
+import { Component, Vue } from "vue-property-decorator";
+import Router from "vue-router";
+import axios from "axios";
+import rest from "./../../rest.js";
+import Results from "../Results.vue";
 
 export default {
   components: {
+    results: Results
   },
   methods: {
-     load() {
-      
-    },
+    load() {}
   },
-  computed(){
-    return []
-  },
-  mounted(){
-    axios.get(`courses/${this.courseId}/enrollments`)
+  mounted() {
+    axios.get(`courses/${this.id}/enrollments`)
       .then((response) => {
         let students = response.data.map((x)=>{
           let s = x.enrollment.token.student;
           return {name: s.name, surname: s.surname, enrollment: s.enrollmentNumber};
         });
         console.log(students);
-        this.items = students;
+        this.content = {content: students, fieldNames: false};
       })
       .catch((error) => {
         console.log(error);
       });
 
-    axios.get(`courses/${this.courseId}`)
-      .then((response) => {
-        console.log(response);
-        this.course = response.data;
+    axios.get(`courses/${this.id}`)
+      .then(response => {
+        var x = response.data;
+        var d = [
+            {title: "Name", value: x.course.name},
+            {title: "ECTS", value: x.course.ects},
+            {title: "Lecturer 1", value: x.lecturer1.name + " " + x.lecturer1.surname}
+        ];
+        if(x.lecturer2){
+          d.push({title: "Lecturer 2", value: x.lecturer2.name + " " + x.lecturer2.surname})
+        }
+        if(x.lecturer3){
+          d.push({title: "Lecturer 3", value: x.lecturer3.name + " " + x.lecturer3.surname})
+        }
+        if(x.curriculum){
+          d.push({title: "Year", value: x.curriculum.year.toString});
+        }
+        if(x.module){
+          d.push({title: "Year", value: x.module.curriculum.year.toString});
+          d.push({title: "Module", value: x.module.name});
+        }
+        this.details = d;
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
   },
-  data(){
+  data() {
     return {
-      sortBy: 'name',
-      sortDesc: false,
-      fields: [
-        { key: 'name', sortable: true },
-        { key: 'surname', sortable: true },
-        { key: 'enrollment', sortable: true },
-      ],
-      items: [],
-      course: {}
+      content: {
+        content: [],
+        fieldNames: null
+      },
+      details:[]
     };
   },
-  props:["courseId"]
-}
+  props: ["id"]
+};
 </script>
 
 <style lang="scss">

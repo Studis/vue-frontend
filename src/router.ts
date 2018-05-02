@@ -11,7 +11,9 @@ import Course from './components/courses/Course.vue'
 import Courses from './components/courses/Courses.vue'
 import UploadEnrollment from './components/user/UploadEnrollment.vue'
 import EnrollmentToken from './components/user/EnrollmentToken.vue'
-Vue.use(Router)
+import Results from './components/Results.vue';
+
+Vue.use(Router);
 
 export default new Router({
   routes: [
@@ -71,7 +73,7 @@ export default new Router({
     },
     {
       name: 'course',
-      path: '/courses/:courseId',
+      path: '/courses/:id',
       component: Course,
       props: true
     },
@@ -79,6 +81,11 @@ export default new Router({
       name: 'courses',
       path: '/courses',
       component: Courses
+    },
+    {
+      name: 'results',
+      path: '/results',
+      component: Results,
     },
     {
       name: 'importStudents',
