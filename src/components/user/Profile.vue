@@ -131,15 +131,15 @@ export default {
         this.student.email = response.data.universityEmail;
         axios.get(`students/${this.userid}/enrollments`).then((response) => {
           this.student.vpisi = response.data.map(x => {
+            console.log(x.curriculum.year.toString)
             return {
-              študijski_program: x.semester1.program.title,
-              letnik: Math.floor(x.semester1.number/2),
-              vrsta_vpisa: x.type.name,
-              način_študija: 'na daljavo',
-              študijsko_leto: x.semester1.year.toString
+              študijski_program: x.curriculum.program.id + " - " + x.curriculum.program.title,
+              letnik: x.curriculum.studyYear.id,
+              vrsta_vpisa: x.type.id + " - " + x.type.name,
+              način_študija: x.studyType.id + " - " + x.studyType.name,
+              študijsko_leto: x.curriculum.year.toString
             }
           })
-
         }).catch((err) => {
           console.log(err)
         })
