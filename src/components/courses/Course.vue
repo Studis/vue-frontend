@@ -44,13 +44,13 @@ export default {
         var d = [
             {title: "Name", value: x.course.name},
             {title: "ECTS", value: x.course.ects},
-            {title: "Lecturer 1", value: x.lecturer1.name + " " + x.lecturer1.surname}
+            {title: "Lecturer 1", value: x.lecturer1.name + " " + x.lecturer1.surname + " ("+x.lecturer1.code+")"}
         ];
         if(x.lecturer2){
-          d.push({title: "Lecturer 2", value: x.lecturer2.name + " " + x.lecturer2.surname})
+          d.push({title: "Lecturer 2", value: x.lecturer2.name + " " + x.lecturer2.surname + " ("+x.lecturer2.code+")"})
         }
         if(x.lecturer3){
-          d.push({title: "Lecturer 3", value: x.lecturer3.name + " " + x.lecturer3.surname})
+          d.push({title: "Lecturer 3", value: x.lecturer3.name + " " + x.lecturer3.surname + " ("+x.lecturer3.code+")"})
         }
         if(x.curriculum){
           d.push({title: "Year", value: x.curriculum.year.toString});
