@@ -1,6 +1,6 @@
 <template>
   <div>
-    <results 
+    <results v-if="getRole !== 'ADMIN'"
       title="Exams" 
       :indexes="true"
       :content="content"
@@ -16,6 +16,8 @@
 <script>
 import axios from 'axios'
 import Results from '../Results.vue'
+import { mapState, mapGetters } from 'vuex';
+
 
 export default {
   data () {
@@ -29,6 +31,11 @@ export default {
   },
    components: {
     'results': Results
+  },
+  computed: {
+    ...mapGetters([
+      'getRole'
+    ])
   },
   methods: {
   },
