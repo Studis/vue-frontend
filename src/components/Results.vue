@@ -9,11 +9,11 @@
     </b-list-group>
     <br><br>
     <b-col md="6" class="my-1">
-        <b-form-group horizontal label="Search" class="mb-0">
+        <b-form-group horizontal class="mb-0">
           <b-input-group>
-            <b-form-input v-model="filter" placeholder="Začni pisati za iskanje" />
+            <b-form-input v-model="filter" placeholder="Search" />
             <b-input-group-append>
-              <b-btn :disabled="!filter" @click="filter = ''">Počisti</b-btn>
+              <b-btn :disabled="!filter" @click="filter = ''">Clear</b-btn>
             </b-input-group-append>
             <b-button v-on:click="generatePDF">PDF</b-button>
             <b-button v-on:click="generateCSV">CSV</b-button>
@@ -71,6 +71,7 @@ export default {
             }
           });
           this.fields = [{key: "open", label: "Open"}];
+          this.printFields = [];
           for (var columnName in columns) {
             var element = {
               key: columnName,
@@ -78,11 +79,21 @@ export default {
               title: this.capitalizeFirstLetter(columnName),
               dataKey: columnName
             };
-            if (columnName == "#") this.fields.unshift(element);
-            else if(columnName != "id") this.fields.push(element);
+            if (columnName == "#") {
+              this.fields.unshift(element);
+              this.printFields.unshift(element);
+            }
+            else if(columnName != "id") {
+              this.fields.push(element);
+              this.printFields.push(element);
+            }
           }
           
-        } else this.fields = fieldNames;
+          
+        } else {
+          this.fields = fieldNames;
+          this.printFields = fieldNames;
+        }
         this.sortBy = this.fields[0].key;
 
         this.items = content;
@@ -109,12 +120,12 @@ export default {
         doc.text(this.title, data.settings.margin.left + 15, 20);
 
         doc.setFontSize(8);
-        
-        for (var i in this.details) {
-          var property = this.details[i];
+        var det = JSON.parse(JSON.stringify(this.details));
+        for (var i in det) {
+          var property = det[i];
           var value;
           if (typeof property.value[i] === "string") {
-            value = property.value.replace("č", "c").replace("Č", "C");
+            value = property.value.replace(/č/g, 'c').replace(/Č/g, 'C');
           }
           else value = property.value;
           doc.text(
@@ -138,15 +149,16 @@ export default {
         );
       };
       var clearedContent = this.items.map(c => {
+        var res = {};
         for (var i in c) {
           if (typeof c[i] === "string") {
-            c[i] = c[i].replace("č", "c");
-            c[i] = c[i].replace("Č", "C");
+            res[i] = c[i].replace(/č/g, 'c').replace(/Č/g, 'C');
           }
+          else res[i] = c[i]
         }
-        return c;
+        return res;
       });
-      doc.autoTable(this.fields, clearedContent, {
+      doc.autoTable(this.printFields, clearedContent, {
         addPageContent: pageContent,
         margin: { top: 25 + this.details.length * 5 }
       });
@@ -176,8 +188,8 @@ export default {
       var csvContent = "";
       for (var lineKey in this.items) {
         var line = this.items[lineKey];
-        for (var columnKeyIndex in this.fields) {
-          var columnKey = this.fields[columnKeyIndex]
+        for (var columnKeyIndex in this.printFields) {
+          var columnKey = this.printFields[columnKeyIndex]
           csvContent += (line[columnKey.key]?line[columnKey.key]:"") + ",";
         }
         csvContent += "\r\n";
@@ -198,7 +210,8 @@ export default {
       perPage: 5,
       pageOptions: [5, 10, 15],
       filter: null,
-      totalRows: 0
+      totalRows: 0,
+      printFields: []
     };
   },
   props: ["title", "indexes", "content", "entityName", "details"]
