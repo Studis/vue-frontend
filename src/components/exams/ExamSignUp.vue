@@ -24,7 +24,7 @@
             <th scope="row">2</th>
             <td>Programming 1</td>
             <td>Thornton</td>
-            <td>12.3.2019</td>
+            <td>{{'2018-01-23T17:37:59Z' | datum}}</td>
             <td><b-button type="" variant="">Sign up</b-button></td>
           </tr>
           <tr>

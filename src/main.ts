@@ -8,7 +8,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import axios from 'axios'
 let axiosDefaults = require('axios/lib/defaults')
-
+import moment from 'moment'
 
 
 // @ts-ignore
@@ -19,8 +19,12 @@ Vue.use(Snotify)
 
 Vue.config.productionTip = false
 
+Vue.filter('datum', function (value: any) {
+  return moment(value).format('YYYY-MM-DD HH:mm')
+})
+
 if (process.env.NODE_ENV === 'production') {
-  axiosDefaults.baseURL = 'https://api.studis.tk/v1'
+  axiosDefaults.baseURL = 'http://api.studis.tk/v1'
 } else {
   axiosDefaults.baseURL = 'http://localhost:8080/v1'
 }
