@@ -1,6 +1,7 @@
 <template>
   <div>
     <h2>{{this.title}}</h2>
+    <slot></slot>
     <b-list-group>
         <b-list-group-item v-for="detail in details" :key="detail.title">
             {{detail.title}} <strong>{{detail.value}}</strong>
@@ -10,9 +11,9 @@
     <b-col md="6" class="my-1">
         <b-form-group horizontal label="Search" class="mb-0">
           <b-input-group>
-            <b-form-input v-model="filter" placeholder="Type to Search" />
+            <b-form-input v-model="filter" placeholder="Začni pisati za iskanje" />
             <b-input-group-append>
-              <b-btn :disabled="!filter" @click="filter = ''">Clear</b-btn>
+              <b-btn :disabled="!filter" @click="filter = ''">Počisti</b-btn>
             </b-input-group-append>
             <b-button v-on:click="generatePDF">PDF</b-button>
             <b-button v-on:click="generateCSV">CSV</b-button>

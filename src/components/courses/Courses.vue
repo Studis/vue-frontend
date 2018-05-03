@@ -1,12 +1,17 @@
 <template>
   <div>
+
     <results 
       title="Courses" 
       :indexes="true"
       :content="content"
       :details="details"
       entityName="course"
-      v-model="content"></results>
+      >
+      <b-dropdown id="ddown1" text="Študijsko leto" class="m-md-2" >
+        <b-dropdown-item @click.prevent="updateYears(item)" :key="item" v-for="item in allYears">{{item}}</b-dropdown-item>
+      </b-dropdown>
+      </results>
   </div>
 </template>
 
@@ -22,6 +27,12 @@ export default {
     'results': Results
   },
   methods: {
+    updateYears (ele) {
+      // alert(JSON.stringify(this.content.content.filter(el => el.year == ele)))
+      this.content = {
+        content: this.originalContent.content.filter(el => el.year == ele)
+      }
+    }
   },
   mounted(){
     axios.get(`courses/`)
@@ -41,6 +52,9 @@ export default {
           content: tableData,
           fieldNames: null
         };
+        this.originalContent = this.content
+        this.allYears = this.content.content.map(e => e.year).filter((value,index,self) => self.indexOf(value)===index).filter(el => el != null)
+        this.updateYears(this.allYears[this.allYears.length-1])
       })
       .catch((error) => {
         console.log(error)
@@ -49,6 +63,8 @@ export default {
   data() {
     // TODO: sorting on Module Name and Year is not working properly
     return {
+      allYears: [],
+      originalContent: {},
       content: {
         content: [],
         fieldNames: null
