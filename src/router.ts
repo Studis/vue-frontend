@@ -10,6 +10,7 @@ import SetPassword from './components/authentication/SetPassword.vue'
 import Course from './components/courses/Course.vue'
 import Courses from './components/courses/Courses.vue'
 import UploadEnrollment from './components/user/UploadEnrollment.vue'
+import EnrollmentTokens from './components/user/EnrollmentTokens.vue'
 import EnrollmentToken from './components/user/EnrollmentToken.vue'
 import Results from './components/Results.vue';
 
@@ -93,9 +94,15 @@ export default new Router({
       component: UploadEnrollment
     },
     {
+      name: 'enrollmentTokens',
+      path: '/enrollmentTokens',
+      component: EnrollmentTokens
+    },
+    {
       name: 'enrollmentToken',
-      path: '/enrollmentToken',
-      component: EnrollmentToken
+      path: '/enrollmentTokens/:id',
+      component: EnrollmentToken,
+      props: true
     }
   ],
   mode: 'history'

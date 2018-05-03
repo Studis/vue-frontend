@@ -66,6 +66,7 @@ function isAuthenticated (): boolean {
 }
 
 new Vue({
+  // @ts-ignore
   router,
   store,
   render: (h) => h(App)

@@ -1,6 +1,16 @@
 <template>
   <div>
-    <h3>Urejanje žetonov za vpis</h3>
+    <h3>Kreiranje, urejanje in brisanje žetonov za vpis</h3>
+    <b-col md="6" class="my-1">
+        <b-form-group horizontal label="Iskanje" class="mb-0">
+          <b-input-group>
+            <b-form-input v-model="filter" placeholder="Vpišite iskalni niz..." />
+            <b-input-group-append>
+              <b-btn :disabled="!filter" @click="filter = ''">Izbriši</b-btn>
+            </b-input-group-append>
+          </b-input-group>
+        </b-form-group>
+      </b-col>
     <b-table stacked="md" hover
              :items="enrollmentTokens"
              :fields="fields"
@@ -10,11 +20,11 @@
              :current-page="currentPage"
              :per-page="perPage"
              @filtered="onFiltered">
-             <template slot="edit_token" slot-scope="data">
-             <b-btn size="sm" variant="success" @click="editToken(data)">Uredi žeton</b-btn>
+             <template slot="new_token" slot-scope="data">
+             <b-btn size="sm" variant="success" @click="show_newToken()">Ustvari nov žeton</b-btn>
              </template>
-             <template slot="delete_token" slot-scope="data">
-             <b-btn size="sm" variant="danger" @click="deleteToken(data)">Izbriši žeton</b-btn>
+             <template slot="edit_token" slot-scope="data">
+             <b-btn size="sm" variant="secondary" @click="show_editTokens(data.item.id)">Uredi žetone</b-btn>
              </template>
     </b-table>
      <template slot="index" slot-scope="data">
@@ -23,9 +33,9 @@
      <b-col md="6" class="my-1">
         <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="my-0" />
       </b-col>
-    <b-modal ref="urediZeton" size="lg">
+    <b-modal ref="novZeton" size="lg">
       <b-container fluid>
-      <h3>Uredi žeton</h3>
+      <h3>Ustvari nov žeton</h3>
       <br>
         <b-form-group label="Študijski program">
           <b-form-select :options="courses" class="mb-3">
@@ -54,6 +64,16 @@
         </b-form-group>
       </b-container>    
     </b-modal>
+    <b-modal ref="urediZetone" size="lg">
+      <b-container fluid>
+      <h3>Uredi žetone</h3>
+      <br>
+        <b-table stacked="md"
+          :items="tokens"
+          :fields="modalFields">
+        </b-table>
+      </b-container>    
+    </b-modal>
     <br><br>
     <b-button type="reset" variant="danger" @click.prevent="goHome">Nazaj</b-button>
   </div>
@@ -63,7 +83,7 @@
 import axios from 'axios'
 
 export default {
-  name: 'EnrollmentToken',
+  name: 'EnrollmentTokens',
   data() {
     return {
       courses: [
@@ -123,8 +143,7 @@ export default {
       enrollmentTokens: [],
       enrollments: [],
       totalRows: 0,
-      show: false,
-      props: ["id"]
+      show: false
     }
   },
   components: {
@@ -145,33 +164,18 @@ export default {
       this.totalRows = filteredItems.length
       this.currentPage = 1
     },
-    editToken(data) {
-      axios.get(`students/${data.item.id}/enrollments`).then((response) => {
-      this.enrollments = response.data.map((x) => {
-        return {
-          studijski_program: x.curriculum.program.id + " - " + x.curriculum.program.title,
-          letnik: x.curriculum.studyYear.id,
-          vrsta_vpisa: x.type.id + " - " + x.type.name,
-          nacin_studija: x.studyType.id + " - " + x.studyType.name,
-          studijsko_leto: x.curriculum.year.toString
-        }
-      })
-      this.$refs.urediZetone.show();
-      }).catch((err) => {
-        console.log(err)
-      })
+    show_newToken() {this.$refs.novZeton.show();},
+    show_editTokens(data) {
+      this.$router.push({name: 'enrollmentToken', params: { id: data } })
     }
   },
   mounted() {
-    /*
-    axios.get(`students/${this.id}/enrollments`)
-      .then((response) => {
-        console.log(response.data)
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    */
+    axios.get(`students`).then((response) => {
+      this.enrollmentTokens = response.data;
+      this.totalRows = response.data.length
+    }).catch((err) => {
+      console.log(err)
+    })
   }
 }
 </script>
