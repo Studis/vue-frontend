@@ -1,55 +1,59 @@
 <template>
   <div>
-    <h3>Exam dates</h3>
-    <div class="table-responsive">
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">Study year</th>
-            <th scope="col">Course</th>
-            <th scope="col">Professor</th>
-            <th scope="col">Date</th>
-            <th scope="col">Sign up</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Statisticsc</td>
-            <td>Otto</td>
-            <td>12.3.2019</td>
-            <td><b-button type="" variant="">Sign up</b-button></td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Programming 1</td>
-            <td>Thornton</td>
-            <td>{{'2018-01-23T17:37:59Z' | datum}}</td>
-            <td><b-button type="" variant="">Sign up</b-button></td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>Programming 2</td>
-            <td>the Bird</td>
-            <td>12.3.2019</td>
-            <td><b-button type="" variant="">Sign up</b-button></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <results 
+      title="Exams" 
+      :indexes="true"
+      :content="content"
+      :details="details"
+      entityName="course"
+      >
+      </results>
+
+  
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+<script>
+import axios from 'axios'
+import Results from '../Results.vue'
 
-@Component({
-  components: {
+export default {
+  data () {
+    return {
+      content: {
+        content: [],
+        fieldNames: null
+      },
+      details:[]
+    }
+  },
+   components: {
+    'results': Results
   },
   methods: {
+  },
+  mounted () {
+    axios.get('/exams/enrollments').then((response) => {
+        var tableData = response.data.map((x)=>{
+            console.log(x.exam.courseExecution)
+            var r = {
+              id: x.id,
+              // studyYear: (x.exam.courseExecution.curriculum) ? x.exam.courseExecution.curriculum.studyYear.id : '',
+              course: x.exam.courseExecution.course.name,
+              professor: x.exam.courseExecution.lecturer1.name + " " + x.exam.courseExecution.lecturer1.surname || x.exam.courseExecution.lecturer2.name + " " + x.exam.courseExecution.lecturer2.surname || x.exam.courseExecution.lecturer3.name + " " + x.exam.courseExecution.lecturer3.surname,
+              date: this.$options.filters.datum(x.exam.scheduledAt)
+            }
+            return r;
+          });
+        this.content = {
+          content: tableData,
+          fieldNames: null
+        };
+      }).catch(err => {
+        console.log(err)
+      })
   }
-})
-export default class ExamSignUp extends Vue {}
+}
 </script>
 
 <style lang="scss">
