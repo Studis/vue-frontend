@@ -71,6 +71,7 @@ export default {
   name: 'forgotPassword',
   components: {
   },
+  props: ['id'],
   data() {
     return {
       userid: '',
@@ -121,6 +122,7 @@ export default {
   mounted () {
     axios.get(`students/me`).then((response) => {
       this.userid = response.data.id;
+      if (this.$route.params.id) this.userid = this.$route.params.id
       axios.get(`students/${this.userid}`).then((response) => {
         this.student.vpisna_stevilka = response.data.enrollmentNumber
         this.student.ime_priimek = response.data.name + ' ' + response.data.surname
@@ -129,6 +131,7 @@ export default {
         this.student.naslov_pp = response.data.temporary.placeOfResidence + ', ' + response.data.temporary.postalNumber + ' ' + response.data.temporary.municipality.name;
         this.student.tel_st = response.data.phoneNumber;
         this.student.email = response.data.universityEmail;
+
         axios.get(`students/${this.userid}/enrollments`).then((response) => {
           this.student.vpisi = response.data.map(x => {
             console.log(x.curriculum.year.toString)

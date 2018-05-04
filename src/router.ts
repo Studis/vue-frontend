@@ -51,6 +51,14 @@ export default new Router({
       }
     },
     {
+      path: '/profile/:id',
+      name: 'student',
+      component: Profile,
+      meta: {
+        forAuth: true
+      },
+    },
+    {
       path: '/students',
       name: 'search-students',
       component: SearchStudent,
