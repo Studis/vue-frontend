@@ -42,7 +42,7 @@ export default {
       .then(response => {
         var x = response.data;
         var d = [
-            {title: "Name", value: x.course.name},
+            {title: "Name", value: x.course.name + " ("+x.course.id+")"},
             {title: "ECTS", value: x.course.ects},
             {title: "Lecturer 1", value: x.lecturer1.name + " " + x.lecturer1.surname + " ("+x.lecturer1.code+")"}
         ];
