@@ -6,6 +6,7 @@
       :content="content"
       :details="details"
       entityName="student"
+      sortByField="surname"
       v-model="content"></results>
   </div>
 </template>

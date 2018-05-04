@@ -94,7 +94,7 @@ export default {
           this.fields = fieldNames;
           this.printFields = fieldNames;
         }
-        this.sortBy = this.fields[0].key;
+        this.sortBy = this.sortByField || this.fields[0].key;
 
         this.items = content;
       }
@@ -214,7 +214,7 @@ export default {
       printFields: []
     };
   },
-  props: ["title", "indexes", "content", "entityName", "details"]
+  props: ["title", "indexes", "content", "entityName", "details", "sortByField"]
 };
 </script>
 
