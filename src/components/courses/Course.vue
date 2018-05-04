@@ -29,7 +29,9 @@ export default {
       .then((response) => {
         let students = response.data.map((x)=>{
           let s = x.enrollment.token.student;
-          return {name: s.name, surname: s.surname, enrollment: s.enrollmentNumber};
+          var r = {name: s.name, surname: s.surname, enrollment: s.enrollmentNumber};
+          r["study type"] = x.enrollment.studyType.name;
+          return r;
         });
         console.log(students);
         this.content = {content: students, fieldNames: false};
