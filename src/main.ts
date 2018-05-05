@@ -17,14 +17,14 @@ import rest from './rest'
 Vue.use(BootstrapVue)
 Vue.use(Snotify)
 
-Vue.config.productionTip = false
+Vue.config.productionTip = process.env.NODE_ENV === 'production'
 
 Vue.filter('datum', function (value: any) {
   return moment(value).format('YYYY-MM-DD HH:mm')
 })
 
-if (process.env.APIURL) {
-  axiosDefaults.baseURL = `http://${process.env.APIURL}/v1`
+if (process.env.VUE_APP_API_URL) {
+  axiosDefaults.baseURL = `http://${JSON.stringify(process.env.VUE_APP_API_URL)}/v1`
 } else if (process.env.NODE_ENV === 'production') { // If exposed port via docker image
   axiosDefaults.baseURL = 'http://api.studis.tk/v1'
 } else {
