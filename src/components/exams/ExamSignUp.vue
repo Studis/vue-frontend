@@ -1,11 +1,14 @@
 <template>
   <div>
+    {{rowData}}
     <results v-if="getRole !== 'ADMIN'"
       title="Exams" 
       :indexes="true"
       :content="content"
       :details="details"
       entityName="course"
+      v-on:b-click-id="btnClicked"
+      :actions="[{name: 'Apply',classColor: 'btn-success'},{name: 'Delete',classColor: 'btn-danger'}]"
       >
       </results>
 
@@ -26,7 +29,8 @@ export default {
         content: [],
         fieldNames: null
       },
-      details:[]
+      details:[],
+      rowData: {}
     }
   },
    components: {
@@ -38,6 +42,9 @@ export default {
     ])
   },
   methods: {
+    btnClicked(el) {
+      this.rowData = el
+    }
   },
   mounted () {
     axios.get('/exams/enrollments').then((response) => {
