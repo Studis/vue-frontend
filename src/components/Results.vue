@@ -32,6 +32,10 @@
       <template slot="open" slot-scope="data">
         <b-link :to="{ name: entityName, params: { id: data.item.id }}">Open</b-link>
       </template>
+
+      <template slot="btns" slot-scope="data" v-if="actions">
+        <b-button class="actionBtn" v-for="action in actions" :key="action.name" @click.prevent="updateButtons(data.item,action.name)" :ref="'btn-add-'+data.item.id" :class="action.classColor">{{action.name}}</b-button>
+      </template>
     </b-table>
     <b-col md="6" class="my-1">
       <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="my-0" />
@@ -72,6 +76,7 @@ export default {
           });
           this.fields = [{key: "open", label: "Open"}];
           this.printFields = [];
+          if (this.actions) this.fields.push({key: "btns", label: "Actions"})
           for (var columnName in columns) {
             var element = {
               key: columnName,
@@ -89,7 +94,6 @@ export default {
             }
           }
           
-          
         } else {
           this.fields = fieldNames;
           this.printFields = fieldNames;
@@ -101,6 +105,10 @@ export default {
     }
   },
   methods: {
+    updateButtons (item,actionName) {
+      this.$set(item, 'actionName', actionName)
+      this.$emit('b-click-id', item)
+    },
     onFiltered(filteredItems) {
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
@@ -214,10 +222,12 @@ export default {
       printFields: []
     };
   },
-  props: ["title", "indexes", "content", "entityName", "details", "sortByField"]
+  props: ["title", "indexes", "content", "entityName", "details", "sortByField","actions"]
 };
 </script>
 
 <style lang="scss">
-
+.actionBtn {
+  margin: 0.2em;
+}
 </style>
