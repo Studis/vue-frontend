@@ -23,10 +23,10 @@ Vue.filter('datum', function (value: any) {
   return moment(value).format('YYYY-MM-DD HH:mm')
 })
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.APIURL) {
+  axiosDefaults.baseURL = `http://${process.env.APIURL}/v1`
+} else if (process.env.NODE_ENV === 'production') { // If exposed port via docker image
   axiosDefaults.baseURL = 'http://api.studis.tk/v1'
-} else if (process.env.PORT === "8100") { // If exposed port via docker image
-  axiosDefaults.baseURL = 'http://studis-image/v1'  
 } else {
   axiosDefaults.baseURL = 'http://localhost:8080/v1'
 }
