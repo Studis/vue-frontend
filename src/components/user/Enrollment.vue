@@ -6,202 +6,210 @@
     <div>
       <img src="https://petra-education.eu/wp-content/uploads/sites/29/2016/07/111.png" class="img-thumbnail">
     </div>
+
     <h3>OSEBNI PODATKI</h3>
-    <b-form-group 
-      label="Vpisna številka:">
-      <b-form-input v-model="vpisniList.vpisnaStevilka"
-        type="number"
-        disabled
-        required>
-      </b-form-input>
-    </b-form-group>
-    <b-form-group
-      label="Ime in Priimek:">
-      <b-form-input v-model="vpisniList.imePriimek"
-        type="text"
-        required>
-      </b-form-input>
-    </b-form-group>
-    <b-form-group
-      label="Datum rojstva:">
-      <b-form-input v-model="vpisniList.datumRojstva"
-        type="date"
-        required>
-      </b-form-input>
-    </b-form-group>
-    <b-form-group
-      label="Kraj rojstva:">
-      <b-form-select v-model="vpisniList.krajRojstva" :options="posts" class="mb-3">
-      </b-form-select>
-    </b-form-group>
-    <b-form-group
-      label="Regija:">
-      <b-form-select v-model="vpisniList.regija" :options="posts" class="mb-3">
-      </b-form-select>
-    </b-form-group>
-    <b-form-group
-      label="Država:">
-      <b-form-select v-model="vpisniList.drzava" :options="countries" class="mb-3">
-      </b-form-select>
-    </b-form-group>
-    <b-form-group
-      label="Spol:">
-      <b-form-select v-model="vpisniList.spol" :options="['Moški', 'Ženska']" class="mb-3">
-      </b-form-select>
-    </b-form-group>
-    <b-form-group
-      label="EMŠO:">
-      <b-form-input v-model="vpisniList.emso"
-        type="text" 
-        pattern="\d*" 
-        maxlength="13"
-        required>
-      </b-form-input>
-    </b-form-group>
-    <b-form-group
-      label="Davčna številka:">
-      <b-form-input v-model="vpisniList.davcnaStevilka"
-        type="text" 
-        pattern="\d*" 
-        maxlength="8"
-        required>
-      </b-form-input>
-    </b-form-group>
-    <b-form-group
-      label="Elektronski naslov: ">
-      <b-form-input v-model="vpisniList.elektronskiNaslov"
-        type="email" 
-        required>
-      </b-form-input>
-    </b-form-group>
-    <b-form-group
-      label="Telefonska številka:">
-      <b-form-input v-model="vpisniList.telefonskaStevilka"
-        type="tel" 
-        required>
-      </b-form-input>
-    </b-form-group>
-    <h4>Stalno prebivališče</h4>
-    <b-form-group
-      label="Občina:">
-      <b-form-select v-model="vpisniList.stalnoPrebivalisceObcina" :options="posts" class="mb-3">
-      </b-form-select>
-    </b-form-group>
-    <b-form-group
-      label="Država:">
-      <b-form-select v-model="vpisniList.stalnoPrebivalisceDrzava" :options="countries" class="mb-3">
-      </b-form-select>
-    </b-form-group>
-    <b-form-group
-      label="Naslov:">
-      <b-form-input v-model="vpisniList.stalnoPrebivalisceNaslov"
-        type="text" 
-        required>
-      </b-form-input>
-    </b-form-group>
-    <b-form-group
-      label="Poštna številka:">
-      <b-form-select v-model="vpisniList.stalnoPrebivaliscePosta" :options="postNumbers" class="mb-3">
-      </b-form-select>
-    </b-form-group>
-    <h4>Začasno prebivališče</h4>
-    <b-form-group
-      label="Občina:">
-      <b-form-select v-model="vpisniList.zacasnoPrebivalisceObcina" :options="posts" class="mb-3">
-      </b-form-select>
-    </b-form-group>
-    <b-form-group
-      label="Država:">
-      <b-form-select v-model="vpisniList.zacasnoPrebivalisceDrzava" :options="countries" class="mb-3">
-      </b-form-select>
-    </b-form-group>
-    <b-form-group
-      label="Naslov:">
-      <b-form-input v-model="vpisniList.zacasnoPrebivalisceNaslov"
-        type="text" 
-        required>
-      </b-form-input>
-    </b-form-group>
-    <b-form-group
-      label="Poštna številka:">
-      <b-form-select v-model="vpisniList.zacasnoPrebivaliscePosta" :options="postNumbers" class="mb-3">
-      </b-form-select>
-    </b-form-group>
-    <h4>Vročanje</h4>
-    <b-form-group
-      label="Naslov za vročanje:">
-      <b-form-select v-model="vpisniList.naslovZaVrocanje" :options="['Stalno prebivališče', 'Začasno prebivališče']" class="mb-3">
-      </b-form-select>
-    </b-form-group>
+    <br>
+
+    <b-row class="my-1">
+      <b-col sm="2"><label>Vpisna številka: </label></b-col>
+      <b-col sm="4">
+        <b-form-input v-model="vpisniList.vpisnaStevilka" :state="null" type="text" disabled required/>
+      </b-col>
+      <b-col sm="2"><label>Ime in Priimek: </label></b-col>
+      <b-col sm="4">
+        <b-form-input v-model="vpisniList.imePriimek" :state="null" type="text" required/>
+      </b-col>
+    </b-row>
+
+    <b-row class="my-1">
+      <b-col sm="2"><label>Datum rojstva: </label></b-col>
+      <b-col sm="4">
+        <b-form-input v-model="vpisniList.datumRojstva" :state="null" type="date" required/>
+      </b-col>
+      <b-col sm="2"><label>Kraj rojstva: </label></b-col>
+      <b-col sm="4">
+        <b-form-select v-model="vpisniList.krajRojstva" :options="posts" :state="null" type="text" required/>
+      </b-col>
+    </b-row>
+
+    <b-row class="my-1">
+      <b-col sm="2"><label>Regija: </label></b-col>
+      <b-col sm="4">
+        <b-form-select v-model="vpisniList.regija" :options="posts" :state="null" type="text" required/>
+      </b-col>
+      <b-col sm="2"><label>Država: </label></b-col>
+      <b-col sm="4">
+        <b-form-select v-model="vpisniList.drzava" :options="countries" :state="null" type="text" required/>
+      </b-col>
+    </b-row>
+
+    <b-row class="my-1">
+      <b-col sm="2"><label>Spol: </label></b-col>
+      <b-col sm="4">
+        <b-form-select v-model="vpisniList.spol" :options="['Moški', 'Ženska']" :state="null" type="text" required/>
+      </b-col>
+      <b-col sm="2"><label>EMŠO: </label></b-col>
+      <b-col sm="4">
+        <b-form-input v-model="vpisniList.emso" :options="countries" :state="null" type="text" pattern="\d*" required maxlength="13"/>
+      </b-col>
+    </b-row>
+
+    <b-row class="my-1">
+      <b-col sm="2"><label>Davčna številka: </label></b-col>
+      <b-col sm="4">
+        <b-form-input v-model="vpisniList.davcnaStevilka" type="text" pattern="\d*" maxlength="8" required :state="null"/>
+      </b-col>
+      <b-col sm="2"><label>Elektronski naslov: </label></b-col>
+      <b-col sm="4">
+        <b-form-input v-model="vpisniList.elektronskiNaslov" :options="countries" :state="null" type="email" required/>
+      </b-col>
+    </b-row>
+
+    <b-row class="my-1">
+      <b-col sm="2"><label>Telefonska številka: </label></b-col>
+      <b-col sm="4">
+        <b-form-input v-model="vpisniList.telefonskaStevilka" pattern="\d*" required :state="null"/>
+      </b-col>
+    </b-row>
+
+    <br>
+    <b-row class="my-1">
+      <b-col sm="6"><h4>Stalno prebivališče</h4></b-col>
+      <b-col sm="6"><h4>Začasno prebivališče</h4></b-col>
+    </b-row>
+
+    <b-row class="my-1">
+      <b-col sm="2"><label>Država: </label></b-col>
+      <b-col sm="4">
+        <b-form-select v-model="vpisniList.stalnoPrebivalisceDrzava" :options="countries" required :state="null"/>
+      </b-col>
+      <b-col sm="2"><label>Država: </label></b-col>
+      <b-col sm="4">
+        <b-form-select v-model="vpisniList.zacasnoPrebivalisceDrzava" :options="countries" required :state="null"/>
+      </b-col>
+    </b-row>
+
+    <b-row class="my-1">
+      <b-col sm="2"><label>Občina: </label></b-col>
+      <b-col sm="4">
+        <b-form-select v-model="vpisniList.stalnoPrebivalisceObcina" :options="posts" :state="null" type="text" required/>
+      </b-col>
+
+      <b-col sm="2"><label>Občina: </label></b-col>
+      <b-col sm="4">
+        <b-form-select v-model="vpisniList.zacasnoPrebivalisceObcina" :options="posts" :state="null" type="text" required/>
+      </b-col>
+    </b-row>
+
+    <b-row class="my-1">
+      <b-col sm="2"><label>Poštna številka: </label></b-col>
+      <b-col sm="4">
+        <b-form-select v-model="vpisniList.stalnoPrebivaliscePosta" :options="postNumbers" required :state="null"/>
+      </b-col>
+      <b-col sm="2"><label>Poštna številka: </label></b-col>
+      <b-col sm="4">
+        <b-form-select v-model="vpisniList.zacasnoPrebivaliscePosta" :options="postNumbers" required :state="null"/>
+      </b-col>
+    </b-row>
+
+    <b-row class="my-1">
+      <b-col sm="2"><label>Naslov: </label></b-col>
+      <b-col sm="4">
+        <b-form-input v-model="vpisniList.stalnoPrebivalisceNaslov" :state="null" type="text" required/>
+      </b-col>
+      <b-col sm="2"><label>Naslov: </label></b-col>
+      <b-col sm="4">
+        <b-form-input v-model="vpisniList.zacasnoPrebivalisceNaslov" :state="null" type="text" required/>
+      </b-col>
+    </b-row>
+    
+    <br>
+    
+    <b-row class="my-1">
+      <b-col sm="2"><label>Naslov za vročanje: </label></b-col>
+      <b-col sm="4">
+        <b-form-select v-model="vpisniList.naslovZaVrocanje" :options="['Stalno prebivališče', 'Začasno prebivališče']" class="mb-3" required/>
+      </b-col>
+    </b-row>
+    <br>
+
     <h3>PODATKI O VPISU</h3>
-    <b-form-group
-      label="Študijski program:">
-      <b-form-select v-model="vpisniList.studijskiProgram" :options="courses" class="mb-3">
-      </b-form-select>
-    </b-form-group>
-    <b-form-group
-      label="Kraj izvajanja:">
-      <b-form-input v-model="vpisniList.krajIzvajanja"
-        type="text"
-        placeholder="Ljubljana"
-        disabled 
-        required>
-      </b-form-input>
-    </b-form-group>
-    <b-form-group
-      label="Izbirna skupina:">
-      <b-form-input v-model="vpisniList.izbirnaSkupina"
-        type="text"
-        disabled 
-        required>
-      </b-form-input>
-    </b-form-group>
-    <b-form-group
-      label="Vrsta študija:">
-      <b-form-select v-model="vpisniList.vrstaStudija" :options="course_types" class="mb-3">
-      </b-form-select>
-    </b-form-group>
-    <b-form-group
-      label="Vrsta vpisa:">
-      <b-form-select v-model="vpisniList.vrstaVpisa" :options="enrollment_types" class="mb-3">
-      </b-form-select>
-    </b-form-group>
-    <b-form-group
-      label="Letnik študija:">
-      <b-form-select v-model="vpisniList.letnikStudija" :options="study_year" class="mb-3">
-      </b-form-select>
-    </b-form-group>
-    <b-form-group
-      label="Način študija:">
-      <b-form-select v-model="vpisniList.nacinStudija" :options="study_type" class="mb-3">
-      </b-form-select>
-    </b-form-group>
-    <b-form-group
-      label="Oblika študija:">
-      <b-form-select v-model="vpisniList.oblikaStudija" :options="study_form" class="mb-3">
-      </b-form-select>
-    </b-form-group>
-    <b-form-group
-      label="Študijsko leto prvega vpisa v ta program:">
-      <b-form-select v-model="vpisniList.studijskoLetoPrvegaVpisaVTaProgram" :options="studyYears" class="mb-3">
-      </b-form-select>
-    </b-form-group>
-    <b-form-group>
-      <b-form-checkbox v-model="vpisniList.soglasjeKnjiz"
-        type="checkbox" >
+    <br>
+
+    <b-row class="my-1">
+      <b-col sm="2"><label>Študijski program: </label></b-col>
+      <b-col sm="10">
+        <b-form-select v-model="vpisniList.studijskiProgram" :options="courses" :state="null" type="text" required/>
+      </b-col>
+    </b-row>
+
+    <b-row class="my-1">
+      <b-col sm="2"><label>Vrsta študija: </label></b-col>
+      <b-col sm="10">
+        <b-form-select v-model="vpisniList.vrstaStudija" :options="course_types" type="text" required/>
+      </b-col>
+    </b-row>
+
+    <b-row class="my-1">
+      <b-col sm="2"><label>Vrsta vpisa: </label></b-col>
+      <b-col sm="10">
+        <b-form-select v-model="vpisniList.vrstaVpisa" :options="enrollment_types" required/>
+      </b-col>
+    </b-row>
+    <br>
+
+    <b-row class="my-1">
+      <b-col sm="2"><label>Kraj izvajanja: </label></b-col>
+      <b-col sm="4">
+        <b-form-input v-model="vpisniList.krajIzvajanja" placeholder="Ljubljana" type="text" disabled required/>
+      </b-col>
+      <b-col sm="2"><label>Izbirna skupina: </label></b-col>
+      <b-col sm="4">
+        <b-form-input disabled/>
+      </b-col>
+    </b-row>
+
+    
+
+    <b-row class="my-1">
+      <b-col sm="2"><label>Letnik študija: </label></b-col>
+      <b-col sm="4">
+        <b-form-select v-model="vpisniList.letnikStudija" :options="study_year" required/>
+      </b-col>
+      <b-col sm="2"><label>Način študija: </label></b-col>
+      <b-col sm="4">
+        <b-form-select v-model="vpisniList.nacinStudija" :options="study_type" required/>
+      </b-col>
+    </b-row>
+
+    <b-row class="my-1">
+      <b-col sm="2"><label>Oblika študija: </label></b-col>
+      <b-col sm="4">
+        <b-form-select v-model="vpisniList.oblikaStudija" :options="study_form" required/>
+      </b-col>
+      <b-col sm="2"><label>Študijsko leto prvega vpisa v ta program: </label></b-col>
+      <b-col sm="4">
+        <b-form-select v-model="vpisniList.studijskoLetoPrvegaVpisaVTaProgram" :options="studyYears" required/>
+      </b-col>
+    </b-row>
+
+    <b-row class="my-1">
+      <b-form-checkbox v-model="vpisniList.soglasjeKnjiz" type="checkbox" >
         Soglasje za koriščenje storitev knjižničnega sistema
       </b-form-checkbox>
-    </b-form-group>
-    <b-form-group>
-      <b-form-checkbox v-model="vpisniList.soglasjeObves"
-        type="checkbox" >
+    </b-row>
+
+    <b-row class="my-1">
+      <b-form-checkbox v-model="vpisniList.soglasjeObves" type="checkbox" >
         Soglasje za obveščanje o aktualnih študijskih zadevah ter za karierno svetovanje in za druge aktivnosti, povezane z zagotavljanjem kakovosti
       </b-form-checkbox>
-    </b-form-group>
-    <b-form-group>
+    </b-row>
+    <br>
+    <b-row class="my-1">
       <b-button type="submit" variant="primary">Shrani</b-button>
       <b-button type="reset" variant="danger" @click.prevent="goHome" style="margin-left: 1em">Nazaj</b-button>
-    </b-form-group>
+    </b-row>
+
   </b-form>
 </div>
 </template>
@@ -214,7 +222,7 @@ export default {
   name: 'forgotPassword',
   data () {
     var studyYears = [];
-    for(var year = 1990; year < 2017; year++) {
+    for(var year = 1990; year < 2019; year++) {
       studyYears.push(year + '/' + (year+1));
     } 
     return {
@@ -1285,8 +1293,8 @@ export default {
         this.vpisniList.stalnoPrebivaliscePosta = response.data.permanent.postalNumber + ',	' + response.data.permanent.municipality.name;
         this.vpisniList.zacasnoPrebivaliscePosta = response.data.temporary.postalNumber + ',	' + response.data.temporary.municipality.name;
         this.vpisniList.elektronskiNaslov = response.data.universityEmail;
-        this.vpisniList.stalnoPrebivalisceNaslov = response.data.permanent.placeOfResidence + ', ' + response.data.permanent.postalNumber + ' ' + response.data.permanent.municipality.name;
-        this.vpisniList.zacasnoPrebivalisceNaslov = response.data.temporary.placeOfResidence + ', ' + response.data.temporary.postalNumber + ' ' + response.data.temporary.municipality.name;
+        this.vpisniList.stalnoPrebivalisceNaslov = response.data.permanent.placeOfResidence;
+        this.vpisniList.zacasnoPrebivalisceNaslov = response.data.temporary.placeOfResidence;
         this.vpisniList.telefonskaStevilka = response.data.phoneNumber;
       }).catch((err) => {
         console.log(err)
