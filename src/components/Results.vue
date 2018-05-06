@@ -50,6 +50,9 @@ import axios from "axios";
 import rest from "./../rest.js";
 import jsPDF from "jspdf";
 import jspdfautotable from "jspdf-autotable";
+import pdfmake from "pdfmake/build/pdfmake.js";
+import pdfFonts from "pdfmake/build/vfs_fonts";
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 export default {
   components: {},
@@ -83,7 +86,6 @@ export default {
               key: columnName,
               sortable: true,
               title: this.capitalizeFirstLetter(columnName),
-              dataKey: columnName
             };
             if (columnName == "#") {
               this.fields.unshift(element);
@@ -119,65 +121,60 @@ export default {
       return string.charAt(0).toUpperCase() + string.slice(1);
     },
     generatePDF() {
-      var doc = new jsPDF();
-      var totalPagesExp = "{total_pages_count_string}";
 
-      var pageContent = data => {
-        // HEADER
-        doc.setFontSize(20);
-        doc.setTextColor(40);
-        doc.setFontStyle("normal");
-        doc.text(this.title, data.settings.margin.left + 15, 20);
-
-        doc.setFontSize(8);
-        var det = JSON.parse(JSON.stringify(this.details));
-        for (var i in det) {
-          var property = det[i];
-          var value;
-          if (typeof property.value[i] === "string") {
-            value = property.value.replace(/č/g, 'c').replace(/Č/g, 'C');
+        var docDefinition = {
+        content: [],
+        footer: (currentPage, pageCount, pageSize)=> { 
+          return [
+            { text: this.title+"  "+currentPage.toString() + ' of ' + pageCount+'         .', alignment: 'right'},
+            { canvas: [ { type: 'rect', x: 270, y: pageSize.height-132, w: pageSize.width - 170, h: 40 } ] }
+          ]
+        },
+        styles: {
+          header: {
+            fontSize: 22,
+            bold: true
+          },
+          propertyStyle:{
+            fontSize: 14
           }
-          else value = property.value;
-          doc.text(
-            property.title + ": " + value,
-            data.settings.margin.left + 20,
-            26 + i * 5
-          );
         }
-
-        // FOOTER
-        var str = "Page " + data.pageCount;
-        // Total page number plugin only available in jspdf v1.0+
-        if (typeof doc.putTotalPages === "function") {
-          str = str + " of " + totalPagesExp;
-        }
-        doc.setFontSize(10);
-        doc.text(
-          str,
-          data.settings.margin.left,
-          doc.internal.pageSize.height - 10
-        );
       };
-      var clearedContent = this.items.map(c => {
-        var res = {};
-        for (var i in c) {
-          if (typeof c[i] === "string") {
-            res[i] = c[i].replace(/č/g, 'c').replace(/Č/g, 'C');
-          }
-          else res[i] = c[i]
-        }
-        return res;
-      });
-      doc.autoTable(this.printFields, clearedContent, {
-        addPageContent: pageContent,
-        margin: { top: 25 + this.details.length * 5 }
-      });
-
-      // Total page number plugin only available in jspdf v1.0+
-      if (typeof doc.putTotalPages === "function") {
-        doc.putTotalPages(totalPagesExp);
+      docDefinition.content.push({ text: this.title, style: 'header' });
+      docDefinition.content.push(" ")
+      for (var i in this.details) {
+        var property = this.details[i].title + ": " + this.details[i].value;
+        docDefinition.content.push({text: property, style: 'propertyStyle'})
       }
-      doc.save("table.pdf");
+      docDefinition.content.push(" ")
+
+      var table = {
+        layout: 'lightHorizontalLines', // optional
+        table: {
+          headerRows: 1,
+          widths: [ ],
+          body: [
+            [  ]
+          ]
+        }
+      };
+      for(var column in this.printFields){
+        table.table.body[0].push(this.printFields[column].title)
+        table.table.widths.push('*')
+      }
+      for(var rowIndex in this.items){
+        var row = this.items[rowIndex]
+        var tableRow = []
+        for(var column in this.printFields){
+          var key = this.printFields[column].key
+          if(row[key]) tableRow.push(row[key])
+          else tableRow.push("")
+        }
+        table.table.body.push(tableRow)
+      }
+      docDefinition.content.push(table);
+
+      pdfMake.createPdf(docDefinition).download();
     },
     download(filename, text) {
       var element = document.createElement("a");
@@ -208,6 +205,7 @@ export default {
     }
   },
   mounted() {
+    
   },
   data() {
     return {
