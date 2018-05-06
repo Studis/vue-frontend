@@ -1,17 +1,18 @@
 <template>
   <div>
-    <h3>Uvoz podatkov</h3>
+    <h3>Students import</h3>
     <br>
     <b-form-group id="exampleInputGroup1"
-      label="Uvozi podatke o vpisih"
+      label="Import"
       label-for="exampleInput1">
-      <b-form-file :change="onFileChange(el)" id="uvozVpis" accept="*.txt" v-model="datoteka" :state="Boolean(datoteka)" placeholder="Izberi datoteko..."></b-form-file>
+      <b-form-file id="uvozVpis" accept="*.txt" v-model="datoteka" :state="Boolean(datoteka)" placeholder="Choose file..."></b-form-file>
     </b-form-group>
     <br>
-    <b-button type="submit" variant="primary" @click.prevent="onSubmit()">Naloži</b-button>
+    <b-button type="submit" variant="primary" @click.prevent="onSubmit()">Upload</b-button>
     <br><br>
-    <div v-if="zeNalozeno">
-    <b-table stacked="md"
+    <div>
+    <!-- 
+      <b-table stacked="md"
              :items="items"
              :fields="fields"
              :filter="filter"
@@ -21,20 +22,33 @@
               <template slot="index" slot-scope="data">
                 {{data.index + 1}}
               </template>
-    </b-table>
+    </b-table>-->
+      <results v-if="zeNalozeno"
+        title="Imported students"
+        :indexes="true"
+        :content="lala"
+        :details="details"
+        entityName="student">
+      </results>
     </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import Results from '../Results.vue'
 export default {
-  // TODO: add id to imported data for sorting, pagination?
+  components: {
+    'results': Results
+  },
   data () {
     return {
       datoteka: null,
       zeNalozeno: false,
-      sortBy: 'name',
+      content: {content:[], fieldNames: null},
+      details: [],
+      lala: {content:[], fieldNames: null}
+      /*sortBy: 'name',
       filter: null,
       sortDesc: false,
       sortDesc: false,
@@ -45,12 +59,25 @@ export default {
         { key: 'email', sortable: true },
         { key: 'username', sortable: true },
       ],
-      items: []
+      items: []*/
+    }
+  },
+  watch: {
+    content:{
+      handler: function(newValue, old){
+        console.log("Upload enrollment content changed")
+        //this.content = newValue
+        this.$set(this.content, "content", newValue.content)
+        this.$set(this.content, "fieldNames", null)
+        this.zeNalozeno = true
+        
+      },
+      deep: true
     }
   },
   methods: {
     onFileChange(el) {
-      console.log(el)
+      //console.log(el)
     },
     clearFiles () {
 
@@ -60,16 +87,25 @@ export default {
       const formData = new FormData()
       formData.append('file', this.datoteka)
       axios.post('/import-students', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
+        headers: {
+          'Content-Type': 'multipart/form-data'
         }
       }).then((response) => {
-          this.zeNalozeno = true
-          this.items = response.data
-        }).catch((err) => {
+        //this.items = response.data
+        
+        console.log(response.data)
+        this.$set(this.lala, "content", response.data)
+        this.$set(this.lala, "fieldNames", null)
+        /*this.content = {
+          content: response.data, 
+          fieldNames: null
+        }*/
+        //this.$forceUpdate();
+        //this.content = {content: [{"ime": "test"}], fieldNames: null};
+      }).catch((err) => {
 
-        })
-      }
+      })
+    }
   }
 }
 </script>

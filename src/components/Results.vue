@@ -56,6 +56,7 @@ export default {
   watch: {
     content: {
       handler: function(newVal, oldVal) {
+        console.log("updated")
         var content = newVal.content;
         var fieldNames = newVal.fieldNames;
 
@@ -101,7 +102,8 @@ export default {
         this.sortBy = this.sortByField || this.fields[0].key;
 
         this.items = content;
-      }
+      },
+      deep: true
     }
   },
   methods: {
