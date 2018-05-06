@@ -1,6 +1,7 @@
 <template>
   <div>
     <h3>Students import</h3>
+    {{content}}
     <br>
     <b-form-group id="exampleInputGroup1"
       label="Import"
@@ -8,7 +9,7 @@
       <b-form-file id="uvozVpis" accept="*.txt" v-model="datoteka" :state="Boolean(datoteka)" placeholder="Choose file..."></b-form-file>
     </b-form-group>
     <br>
-    <b-button type="submit" variant="primary" @click.prevent="onSubmit()">Upload</b-button>
+    <b-button type="submit" variant="primary" @click.prevent="submitUpload">Upload</b-button>
     <br><br>
     <div>
     <!-- 
@@ -23,13 +24,15 @@
                 {{data.index + 1}}
               </template>
     </b-table>-->
-      <results v-if="zeNalozeno"
+    <div v-show="zeNalozeno">
+      <results
         title="Imported students"
         :indexes="true"
-        :content="lala"
+        :content="content"
         :details="details"
         entityName="student">
       </results>
+    </div> 
     </div>
   </div>
 </template>
@@ -47,7 +50,6 @@ export default {
       zeNalozeno: false,
       content: {content:[], fieldNames: null},
       details: [],
-      lala: {content:[], fieldNames: null}
       /*sortBy: 'name',
       filter: null,
       sortDesc: false,
@@ -63,17 +65,6 @@ export default {
     }
   },
   watch: {
-    content:{
-      handler: function(newValue, old){
-        console.log("Upload enrollment content changed")
-        //this.content = newValue
-        this.$set(this.content, "content", newValue.content)
-        this.$set(this.content, "fieldNames", null)
-        this.zeNalozeno = true
-        
-      },
-      deep: true
-    }
   },
   methods: {
     onFileChange(el) {
@@ -82,7 +73,7 @@ export default {
     clearFiles () {
 
     },
-    onSubmit () {
+    submitUpload () {
       console.log(this.datoteka)
       const formData = new FormData()
       formData.append('file', this.datoteka)
@@ -94,14 +85,11 @@ export default {
         //this.items = response.data
         
         console.log(response.data)
-        this.$set(this.lala, "content", response.data)
-        this.$set(this.lala, "fieldNames", null)
-        /*this.content = {
-          content: response.data, 
-          fieldNames: null
-        }*/
-        //this.$forceUpdate();
-        //this.content = {content: [{"ime": "test"}], fieldNames: null};
+    
+        this.content = Object.assign({}, this.content,{ content: response.data, fieldNames: null })
+        this.zeNalozeno = true
+
+    
       }).catch((err) => {
 
       })
