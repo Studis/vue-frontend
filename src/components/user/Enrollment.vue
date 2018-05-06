@@ -1,10 +1,18 @@
 <template>
 <div>
-  <b-form v-on:submit.prevent="onSubmit(vpisniList)" @reset="onReset" v-if="true">
+  <b-form v-on:submit.prevent="checkForm" @reset="onReset" v-if="true">
     <h3>VPISNI LIST {{(new Date()).getFullYear()}}/{{(new Date()).getFullYear()+1}} za študente</h3>
     <h4>Fakulteta za računalništvo in informatiko</h4>
     <div>
       <img src="https://petra-education.eu/wp-content/uploads/sites/29/2016/07/111.png" class="img-thumbnail">
+    </div>
+
+    <div v-if="errors.length">
+      <div class="alert alert-danger">Med vnašanjem podatkov je prišlo do naslednjih napak:
+        <ul>
+          <li v-for="error in errors" :key="error">{{ error }}</li>
+        </ul>
+      </div>
     </div>
 
     <h3>OSEBNI PODATKI</h3>
@@ -1236,23 +1244,19 @@ export default {
         studijskoLetoPrvegaVpisaVTaProgram: '',
         soglasjeKnjiz: '',
         soglasjeObves: '',
-      }
+      },
+      errors: []
     }
   },
   components: {
   },
   methods: {
+    checkForm() {
+      this.errors = [];
+      this.validEmso();
+      this.validName();
+    },
     onSubmit(vpisniList) {
-      if(validEmso(vpisniList.emso)) {
-        //...
-      }
-      // Testing data sending...
-      console.log(vpisniList)
-      /*axios.post('', vpisniList).then(response => {
-        console.log(response)
-      }, response => {
-        console.log(response)
-      })*/
       this.$router.push({name: 'home'});
     },
     goBack() {
@@ -1263,19 +1267,39 @@ export default {
     goHome() {
       this.$router.push({name: 'home'});
     },
-    validEmso(emso) {
-      if (emso.length < 13) return false;
-      var check = parseInt(emso[12])
+    validEmso() {
+      if (this.vpisniList.emso.length < 13) {
+        this.errors.push("Vpisana EMŠO vsebuje premalo znakov.");
+        return;
+      }
       var factors = [7, 6, 5, 4, 3, 2, 7, 6, 5, 4, 3, 2];
-      emso = emso.substring(0, emso.length - 1);
+      var emso = this.vpisniList.emso;
+      var birthDay = this.vpisniList.datumRojstva;
+      var check = parseInt(emso[12])
       var sum = 0;
       for (var i = 0; i < 12; i++) {
         sum += (parseInt(emso[i]) * factors[i])
       }
       var remainder = sum % 11;
       remainder = 11 - remainder;
-      if (remainder == check) return true;
-      else return false;
+      if (remainder == check) {
+        var bday = birthDay.split("-")[2]
+        var bmonth = birthDay.split("-")[1]
+        var byear = birthDay.split("-")[0].substring(1,4)
+        if (bday != emso[0]+emso[1] || bmonth != emso[2]+emso[3] || byear != emso[4]+emso[5]+emso[6]) {
+          this.errors.push("Vpisana EMŠO se ne ujema z datumom rojstva.")
+          return;
+        }
+        return;
+      }
+      else this.errors.push("Vpisana EMŠO je neveljavna.");
+      return;
+    },
+    validName() {
+      if (!/^[a-zA-Z\s]*$/.test(this.vpisniList.imePriimek)) {
+        this.errors.push("Ime in priimek lahko vsebujeta samo črke.");
+        return;
+      }
     } 
   },
   mounted() {
