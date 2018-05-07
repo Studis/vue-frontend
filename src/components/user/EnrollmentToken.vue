@@ -14,7 +14,7 @@
              <b-btn size="sm" variant="success" @click="editToken(data)">Uredi žeton</b-btn>
              </template>
              <template slot="delete_token" slot-scope="data">
-             <b-btn size="sm" variant="danger" @click="deleteToken(data)">Izbriši žeton</b-btn>
+             <b-btn size="sm" variant="danger" @click="deleteToken(data)">Uredi žeton</b-btn>
              </template>
     </b-table>
      <template slot="index" slot-scope="data">
@@ -55,7 +55,7 @@
       </b-container>    
     </b-modal>
     <br><br>
-    <b-button type="reset" variant="danger" @click.prevent="goHome">Nazaj</b-button>
+    <b-button type="reset" variant="danger" @click.prevent="goBack">Nazaj</b-button>
   </div>
 </template>
 
@@ -96,18 +96,9 @@ export default {
       study_year: ['1.', '2.', '3.', '4.', '5.', '6.', 'dodatno leto',],
       study_type: ['1 redni', '3 izredni'],
       study_form: ['1 na lokaciji', '2 na daljavo', '3 e-študij'],
-      message: 'Hello!',
       sortBy: 'id',
       sortDesc: false,
       fields: [
-        { key: 'id', label: '#', sortable: true },
-        { key: 'enrollmentNumber', label: 'Vpisna številka', sortable: true },
-        { key: 'name', label: 'Ime', sortable: true },
-        { key: 'surname', label: 'Priimek', sortable: true },
-        { key: 'new_token', label: 'Možnosti', sortable: false },
-        { key: 'edit_token', label: '', sortable: false },
-      ],
-      modalFields: [
         { key: 'studijsko_leto', label: 'Študijsko leto', sortable: true },
         { key: 'letnik', label: 'Letnik', sortable: true },
         { key: 'studijski_program', label: 'Študijski program', sortable: true },
@@ -121,7 +112,6 @@ export default {
       pageOptions: [ 5, 10, 15 ],
       filter: null,
       enrollmentTokens: [],
-      enrollments: [],
       totalRows: 0,
       show: false,
       props: ["id"]
@@ -134,7 +124,7 @@ export default {
     this.$router.push({name: 'login'})
     },
     goBack () {
-      this.$router.push({name: 'login'})
+      this.$router.push({name: 'enrollmentTokens'})
     },
     onReset () {
     },
@@ -146,14 +136,10 @@ export default {
       this.currentPage = 1
     },
     editToken(data) {
-      axios.get(`students/${data.item.id}/enrollments`).then((response) => {
-      this.enrollments = response.data.map((x) => {
+      axios.get(`students/${route.params.id}/enrollments`).then((response) => {
+      this.enrollmentToken = response.data.map((x) => {
         return {
-          studijski_program: x.curriculum.program.id + " - " + x.curriculum.program.title,
-          letnik: x.curriculum.studyYear.id,
-          vrsta_vpisa: x.type.id + " - " + x.type.name,
-          nacin_studija: x.studyType.id + " - " + x.studyType.name,
-          studijsko_leto: x.curriculum.year.toString
+          // Fill modal with token data
         }
       })
       this.$refs.urediZetone.show();
@@ -163,7 +149,9 @@ export default {
     }
   },
   mounted() {
-    /*
+    // route.params.id - id študenta
+
+    /* Get this student's tokens
     axios.get(`students/${this.id}/enrollments`)
       .then((response) => {
         console.log(response.data)

@@ -36,18 +36,18 @@
       </b-col>
       <b-col sm="2"><label>Kraj rojstva: </label></b-col>
       <b-col sm="4">
-        <b-form-select v-model="vpisniList.krajRojstva" :options="posts" :state="null" type="text" required/>
+        <b-form-input v-model="vpisniList.krajRojstva" :state="null" type="text" required/>
       </b-col>
     </b-row>
 
     <b-row class="my-1">
-      <b-col sm="2"><label>Regija: </label></b-col>
-      <b-col sm="4">
-        <b-form-select v-model="vpisniList.regija" :options="posts" :state="null" type="text" required/>
-      </b-col>
       <b-col sm="2"><label>Država: </label></b-col>
       <b-col sm="4">
         <b-form-select v-model="vpisniList.drzava" :options="countries" :state="null" type="text" required/>
+      </b-col>
+      <b-col sm="2"><label>Regija: </label></b-col>
+      <b-col sm="4">
+        <b-form-select v-model="vpisniList.regija" :options="posts" :state="null" type="text" :disabled=isDisabled1 />
       </b-col>
     </b-row>
 
@@ -89,23 +89,23 @@
     <b-row class="my-1">
       <b-col sm="2"><label>Država: </label></b-col>
       <b-col sm="4">
-        <b-form-select v-model="vpisniList.stalnoPrebivalisceDrzava" :options="countries" required :state="null"/>
+        <b-form-select v-model="vpisniList.stalnoPrebivalisceDrzava" :options="countries" required/>
       </b-col>
       <b-col sm="2"><label>Država: </label></b-col>
       <b-col sm="4">
-        <b-form-select v-model="vpisniList.zacasnoPrebivalisceDrzava" :options="countries" required :state="null"/>
+        <b-form-select v-model="vpisniList.zacasnoPrebivalisceDrzava" :options="countries"/>
       </b-col>
     </b-row>
 
     <b-row class="my-1">
       <b-col sm="2"><label>Občina: </label></b-col>
       <b-col sm="4">
-        <b-form-select v-model="vpisniList.stalnoPrebivalisceObcina" :options="posts" :state="null" type="text" required/>
+        <b-form-select v-model="vpisniList.stalnoPrebivalisceObcina" :options="posts" type="text" :disabled=isDisabled2 />
       </b-col>
 
       <b-col sm="2"><label>Občina: </label></b-col>
       <b-col sm="4">
-        <b-form-select v-model="vpisniList.zacasnoPrebivalisceObcina" :options="posts" :state="null" type="text" required/>
+        <b-form-select v-model="vpisniList.zacasnoPrebivalisceObcina" :options="posts" type="text" :disabled=isDisabled3 />
       </b-col>
     </b-row>
 
@@ -116,7 +116,7 @@
       </b-col>
       <b-col sm="2"><label>Poštna številka: </label></b-col>
       <b-col sm="4">
-        <b-form-select v-model="vpisniList.zacasnoPrebivaliscePosta" :options="postNumbers" required :state="null"/>
+        <b-form-select v-model="vpisniList.zacasnoPrebivaliscePosta" :options="postNumbers" :state="null"/>
       </b-col>
     </b-row>
 
@@ -127,7 +127,7 @@
       </b-col>
       <b-col sm="2"><label>Naslov: </label></b-col>
       <b-col sm="4">
-        <b-form-input v-model="vpisniList.zacasnoPrebivalisceNaslov" :state="null" type="text" required/>
+        <b-form-input v-model="vpisniList.zacasnoPrebivalisceNaslov" :state="null" type="text"/>
       </b-col>
     </b-row>
     
@@ -1245,10 +1245,31 @@ export default {
         soglasjeKnjiz: '',
         soglasjeObves: '',
       },
-      errors: []
+      errors: [],
+      regija: false
     }
   },
   components: {
+  },
+  computed: {
+    isDisabled1() {
+      if (this.vpisniList.drzava != "Slovenija") {
+        this.vpisniList.regija = ""
+        return true
+      } else return false
+    },
+    isDisabled2() {
+      if (this.vpisniList.stalnoPrebivalisceDrzava != "Slovenija") {
+        this.vpisniList.stalnoPrebivalisceObcina = ""
+        return true
+      } else return false
+    },
+    isDisabled3() {
+      if (this.vpisniList.zacasnoPrebivalisceDrzava != "Slovenija") {
+        this.vpisniList.zacasnoPrebivalisceObcina = ""
+        return true
+      } else return false
+    }
   },
   methods: {
     checkForm() {
@@ -1306,6 +1327,7 @@ export default {
     axios.get(`students/me`).then((response) => {
       var userid = response.data.id;
       axios.get(`students/${userid}`).then((response) => {
+        console.log(response.data)
         this.vpisniList.vpisnaStevilka = response.data.enrollmentNumber;
         this.vpisniList.imePriimek = response.data.name + ' ' + response.data.surname;
         this.vpisniList.krajRojstva = response.data.placeOfBirth;
