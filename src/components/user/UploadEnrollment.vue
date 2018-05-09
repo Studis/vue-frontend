@@ -1,7 +1,6 @@
 <template>
   <div>
     <h3>Students import</h3>
-    {{content}}
     <br>
     <b-form-group id="exampleInputGroup1"
       label="Import"
@@ -12,18 +11,6 @@
     <b-button type="submit" variant="primary" @click.prevent="submitUpload">Upload</b-button>
     <br><br>
     <div>
-    <!-- 
-      <b-table stacked="md"
-             :items="items"
-             :fields="fields"
-             :filter="filter"
-             :sort-by.sync="sortBy"
-             :sort-desc.sync="sortDesc"
-             @filtered="onFiltered">
-              <template slot="index" slot-scope="data">
-                {{data.index + 1}}
-              </template>
-    </b-table>-->
     <div v-show="zeNalozeno">
       <results
         title="Imported students"
@@ -49,19 +36,7 @@ export default {
       datoteka: null,
       zeNalozeno: false,
       content: {content:[], fieldNames: null},
-      details: [],
-      /*sortBy: 'name',
-      filter: null,
-      sortDesc: false,
-      sortDesc: false,
-      fields: [
-        { key: 'index', sortable: true, label: 'Zaporedje'},
-        { key: 'name', sortable: true },
-        { key: 'surname', sortable: true },
-        { key: 'email', sortable: true },
-        { key: 'username', sortable: true },
-      ],
-      items: []*/
+      details: []
     }
   },
   watch: {
@@ -82,8 +57,6 @@ export default {
           'Content-Type': 'multipart/form-data'
         }
       }).then((response) => {
-        //this.items = response.data
-        
         console.log(response.data)
     
         this.content = Object.assign({}, this.content,{ content: response.data, fieldNames: null })
