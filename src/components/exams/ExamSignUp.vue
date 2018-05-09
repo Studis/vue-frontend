@@ -44,9 +44,22 @@ export default {
   methods: {
     btnClicked(el) {
       this.rowData = el
+      if(el.actionName == "Apply") {
+        var enrollmentCourseId = el.clickedItem.id
+        console.log(enrollmentCourseId)
+        axios.post('/exams/enrollments', { "enrollmentCourseId": enrollmentCourseId, "examId": examId })
+        .then(function(response){
+          
+        });  
+      }
     }
   },
   mounted () {
+    axios.get('courses/me').then((response) => {
+        console.log(response)
+      }).catch(err => {
+        console.log(err)
+      })
     axios.get('/exams/enrollments').then((response) => {
         var tableData = response.data.map((x)=>{
             console.log(x.exam.courseExecution)
