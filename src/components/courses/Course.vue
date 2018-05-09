@@ -30,7 +30,7 @@ export default {
       .then((response) => {
         let students = response.data.map((x)=>{
           let s = x.enrollment.token.student;
-          var r = {id: s.id, name: s.name, surname: s.surname, enrollment: s.enrollmentNumber};
+          var r = {surname: s.surname, name: s.name, id: s.id, enrollment: s.enrollmentNumber};
           r["study type"] = x.enrollment.studyType.name;
           return r;
         });

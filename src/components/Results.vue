@@ -71,24 +71,41 @@ export default {
     content: {
       handler: function(newVal, oldVal) {
         console.log("updated")
-        var content = newVal.content;
+        var content = JSON.parse(JSON.stringify(newVal.content));
         var fieldNames = newVal.fieldNames;
+        var columns = {};
+        content.forEach(e => {
+          for (var prop in e) {
+            columns[prop] = true;
+          }
+        });
+
+        content.sort(function(a,b){
+          for (var columnName in columns) {
+            if(columnName == "id") continue;
+            var v1 = a[columnName];
+            var v2 = b[columnName];
+            if(v1 != v2){
+              console.log(columnName+": "+v1+" vs "+v2)
+              return String(v1) > String(v2);
+            }
+          }
+          return 0;
+        });
 
         if (this.indexes) {
           content = content.map((e, i) => {
             e["#"] = i + 1;
             return e;
           });
+          columns["#"] = true;
         }
+
+        
 
         if (!fieldNames) {
           this.totalRows = content.length;
-          var columns = {};
-          content.forEach(e => {
-            for (var prop in e) {
-              columns[prop] = true;
-            }
-          });
+          
           // this.fields = [{key: "open", label: "Open"}];
           this.printFields = [];
           if (this.actions) this.fields.push({key: "btns", label: "Actions"})
@@ -98,6 +115,7 @@ export default {
               sortable: true,
               title: this.capitalizeFirstLetter(columnName),
             };
+            
             if (columnName == "#") {
               this.fields.unshift(element);
               this.printFields.unshift(element);
