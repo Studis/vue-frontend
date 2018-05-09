@@ -25,7 +25,7 @@
       </b-col>
       <b-col sm="2"><label>Ime in Priimek: </label></b-col>
       <b-col sm="4">
-        <b-form-input v-model="vpisniList.imePriimek" :state="null" type="text" required/>
+        <b-form-input v-model="vpisniList.imePriimek" :state="null" type="text" ref="errmsg" required/>
       </b-col>
     </b-row>
 
@@ -240,10 +240,15 @@
     </b-row>
     <br>
     <b-row class="my-1">
-      <b-button type="submit" variant="primary">Shrani</b-button>
-      <b-button type="reset" variant="danger" @click.prevent="goHome" style="margin-left: 1em">Nazaj</b-button>
+      <b-col sm="4">
+        <b-button onClick="window.print()" variant="warning">Natisni</b-button>
+      </b-col>
+      <b-col sm="4"></b-col>
+      <b-col sm="4">
+        <b-button type="reset" variant="danger" @click.prevent="goHome">Nazaj</b-button>
+        <b-button type="submit" variant="success" style="margin-left: 1em">Potrdi</b-button>
+      </b-col>
     </b-row>
-
   </b-form>
 </div>
 </template>
@@ -1391,6 +1396,7 @@ export default {
       this.errors = [];
       this.validEmso();
       this.validName();
+      if(this.errors.length > 0) this.$refs.errmsg.focus()
     },
     onSubmit(vpisniList) {
       this.$router.push({name: 'home'});
@@ -1436,7 +1442,8 @@ export default {
         this.errors.push("Ime in priimek lahko vsebujeta samo črke.");
         return;
       }
-    } 
+    },
+    
   },
   mounted() {
     axios.get(`students/me`).then((response) => {
@@ -1446,6 +1453,7 @@ export default {
         this.vpisniList.vpisnaStevilka = response.data.enrollmentNumber;
         this.vpisniList.imePriimek = response.data.name + ' ' + response.data.surname;
         this.vpisniList.krajRojstva = response.data.placeOfBirth;
+        this.vpisniList.datumRojstva = response.data.dateOfBirth.year + "-" + response.data.dateOfBirth.monthValue + "-" + response.data.dateOfBirth.dayOfMonth;
         this.vpisniList.spol = response.data.gender;
         this.vpisniList.stalnoPrebivalisceObcina = response.data.permanent.municipality.name + ' ';
         this.vpisniList.zacasnoPrebivalisceObcina = response.data.temporary.municipality.name + ' ';
