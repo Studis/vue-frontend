@@ -10,7 +10,6 @@ import axios from 'axios'
 let axiosDefaults = require('axios/lib/defaults')
 import moment from 'moment'
 
-
 // @ts-ignore
 import rest from './rest'
 
