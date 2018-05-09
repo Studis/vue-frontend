@@ -177,8 +177,6 @@
       </b-col>
     </b-row>
 
-    
-
     <b-row class="my-1">
       <b-col sm="2"><label>Letnik študija: </label></b-col>
       <b-col sm="4">
@@ -200,6 +198,34 @@
         <b-form-select v-model="vpisniList.studijskoLetoPrvegaVpisaVTaProgram" :options="studyYears" required/>
       </b-col>
     </b-row>
+    <br>
+
+    <h3>PODATKI O PREDMETIH</h3>
+    <br>
+
+    <b-row class="my-1">
+      <b-col sm="8"><h5>Predmetnik</h5></b-col>
+      <b-col sm="4"><h5>Splošni izbirni predmeti: </h5></b-col>
+    </b-row>
+
+    <b-row class="my-1">
+      <b-col sm="8">
+        <b-table :items="predmeti" :fields="polja"/>
+        <div class="col-md-4">
+            <b-button :variant="ects_button">
+                Število kreditnih točk: {{ ects_sum }} / 60
+            </b-button>
+        </div>
+      </b-col>
+      <b-col sm="4">
+        <multiselect @select="add" @remove="remove" v-model="value_splosni" :options="splosni" :multiple="true" :close-on-select=true :clear-on-select="false" :hide-selected="true" :preserve-search="true" label="name"  track-by="name"/>
+        <h5 class="boi">Strokovni izbirni predmeti: </h5>
+        <multiselect @select="add" @remove="remove" v-model="value_strokovni" :options="strokovni" :multiple="true" :close-on-select=true :clear-on-select="false" :hide-selected="true" :preserve-search="true" label="name"  track-by="name"/>
+        <h5 class="boi">Modulski izbirni predmeti</h5>
+        <multiselect @select="add" @remove="remove" v-model="value_modulski" :options="modulski" :multiple="true" :close-on-select=true group-values="subjects" group-label="module_name" :group-select="true" track-by="name" label="name" />
+      </b-col>
+    </b-row>
+    <br>
 
     <b-row class="my-1">
       <b-form-checkbox v-model="vpisniList.soglasjeKnjiz" type="checkbox" >
@@ -223,17 +249,73 @@
 </template>
 
 <script>
-import { Component, Vue } from 'vue-property-decorator';
 import axios from 'axios';
+import Multiselect from 'vue-multiselect'
 
 export default {
   name: 'forgotPassword',
+  components: {
+    Multiselect,
+  },
   data () {
     var studyYears = [];
     for(var year = 1990; year < 2019; year++) {
       studyYears.push(year + '/' + (year+1));
     } 
     return {
+      predmeti: [
+        { name: 'Osnove umetne inteligence', lecturer: "Zoran Bosnić", ects: 6 },
+        { name: 'Ekonomika in podjetništvo', lecturer: 'Mateja Drnovšek', ects: 6 },
+        { name: 'Diplomski seminar', lecturer: "Franc Solina",  ects: 6 },
+        
+      ],
+      splosni: [
+        { name: 'Angleški jezik nivo A', lecturer: "Mateja Drnovšek", ects: 6 },
+        { name: 'Računalništvo v praksi', lecturer: "Mateja Drnovšek", ects: 6 },
+        { name: 'Tehniške veščine', lecturer: "Mateja Drnovšek", ects: 6}
+      ],
+      strokovni: [
+        { name: 'Principi programskih jezikov', lecturer: "Mateja Drnovšek", ects: 6 },
+        { name: 'Matematično modeliranje', lecturer: "Mateja Drnovšek", ects: 6 },
+        { name: 'Računalniške tehnologije', lecturer: "Mateja Drnovšek", ects: 6 }
+      ],
+      modulski: [
+        {
+          module_name: 'Razvoj programske opreme',
+          subjects: [
+            { name: 'Spletno programiranje', lecturer: "Mateja Drnovšek", ects: 6 },
+            { name: 'Postopki razvoja programske opreme', lecturer: "Mateja Drnovšek", ects: 6 },
+            { name: 'Tehnologija programske opreme', lecturer: "Mateja Drnovšek", ects: 6 }
+          ]
+        },
+        {
+          module_name: 'Informacijski sistemi',
+          subjects: [
+            { name: 'Poslovna inteligenca', lecturer: "Mateja Drnovšek", ects: 6 },
+            { name: 'Ekonomsko poslovanje', lecturer: "Mateja Drnovšek", ects: 6 },
+            { name: 'Organizacija in management', lecturer: "Mateja Drnovšek", ects: 6 }
+          ]
+        },
+        {
+          module_name: 'Umetna inteligenca',
+          subjects: [
+            { name: 'Umetno zaznavanje', lecturer: "Mateja Drnovšek", ects: 6 },
+            { name: 'Razvoj inteligentnih sistemov', lecturer: "Mateja Drnovšek", ects: 6 },
+            { name: 'Inteligentni sistemi', lecturer: "Mateja Drnovšek", ects: 6 }
+          ]
+        }
+      ],
+      polja: [
+        
+        { key: 'name', label: 'Ime predmeta', sortable: true },
+        { key: 'lecturer', label: 'Izvajalec', sortable: true },
+        { key: 'ects', label: 'ECTS', sortable: true },
+      ],
+      value_splosni: [],
+      value_strokovni: [],
+      value_modulski: [],
+      ects_sum: null,
+      ects_button: 'secondary',
       selectedCountry: '',
       selectedPost: '',
       countries: [
@@ -1249,8 +1331,6 @@ export default {
       regija: false
     }
   },
-  components: {
-  },
   computed: {
     isDisabled1() {
       if (this.vpisniList.drzava != "Slovenija") {
@@ -1272,6 +1352,29 @@ export default {
     }
   },
   methods: {
+    add(selected, id) {
+      if(selected.constructor === Array) {
+        for(var x in selected) {
+          this.predmeti.push(selected[x])
+        }
+      } else this.predmeti.push(selected)
+      this.fixECTS()
+    },
+    remove(removed, id) {
+      for(var x = 0; x < this.predmeti.length; x++) {
+        if(this.predmeti[x].name == removed.name) {
+          this.predmeti.splice(x, 1)
+        }
+      }
+    },
+    fixECTS() {
+      this.ects_sum = 0
+      for(var x = 0; x < this.predmeti.length; x++) {
+        this.ects_sum += this.predmeti[x].ects
+      }
+      if(this.ects_sum < 60 || this.ects_sum > 60) this.ects_button = 'danger'
+      else this.ects_button = 'success'
+    },
     checkForm() {
       this.errors = [];
       this.validEmso();
@@ -1347,11 +1450,15 @@ export default {
       })
     }).catch((err) => {
       console.log(err)
-})
+    })
+    this.ects_sum = 0
+    for(var x = 0; x < this.predmeti.length; x++) {
+      this.ects_sum += this.predmeti[x].ects
+    }
   }
 }
 </script>
-
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style lang="scss">
   #logintext {
     padding: 0.3em;
@@ -1375,4 +1482,8 @@ export default {
     height: 20%;
     margin-bottom: 1em;
   }
+  .boi {
+    margin-top: 30%;
+  }
+  
 </style>
