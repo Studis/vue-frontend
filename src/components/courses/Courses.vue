@@ -7,6 +7,8 @@
       :content="content"
       :details="details"
       entityName="course"
+      v-on:b-click-id="btnClicked"
+      :actions="[{name: 'Open',classColor: 'btn-success'}]"
       >
       <b-dropdown id="ddown1" :text="selectedYear" class="m-md-2" >
         <b-dropdown-item @click.prevent="updateYears(item)" :key="item" v-for="item in allYears">{{item}}</b-dropdown-item>
@@ -27,6 +29,9 @@ export default {
     'results': Results
   },
   methods: {
+    btnClicked (el) {
+      if (el.actionName="Open") this.$router.push({name: 'course', params: { id: el.clickedItem.id }})
+    },
     updateYears (ele) {
       // alert(JSON.stringify(this.content.content.filter(el => el.year == ele)))
       this.content = {

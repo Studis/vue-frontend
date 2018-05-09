@@ -1,6 +1,7 @@
 <template>
   <div>
     <h2>{{this.title}}</h2>
+    <div v-show="!isBusy">
     <slot></slot>
     <b-list-group>
         <b-list-group-item v-for="detail in details" :key="detail.title">
@@ -8,20 +9,32 @@
         </b-list-group-item>
     </b-list-group>
     <br><br>
-    <b-col md="6" class="my-1">
-        <b-form-group horizontal class="mb-0">
+
+    <b-row>
+    <b-col md="5" class="my-0">
+      <div class="pull-left">
+        <div>
+          <b-button v-on:click="generatePDF" class="btn-warning mx-1">PDF</b-button>
+          <b-button v-on:click="generateCSV" class="btn-warning">CSV</b-button>
+        </div>
+      </div>
+    </b-col>
+    <b-col md="7" class="my-1">
+      <div class="pull-left">
+        <div>
           <b-input-group>
             <b-form-input v-model="filter" placeholder="Search" />
             <b-input-group-append>
-              <b-btn :disabled="!filter" @click="filter = ''">Clear</b-btn>
+              <b-button :disabled="!filter" @click="filter = ''" class="btn-danger">Clear</b-button>
             </b-input-group-append>
-            <b-button v-on:click="generatePDF">PDF</b-button>
-            <b-button v-on:click="generateCSV">CSV</b-button>
           </b-input-group>
-        </b-form-group>
+        </div>
+      </div>
     </b-col>
+    </b-row>
 
     <b-table :sort-by.sync="sortBy"
+             :busy.sync="isBusy"
              :sort-desc.sync="sortDesc"
              :current-page="currentPage"
              :per-page="perPage"
@@ -29,9 +42,6 @@
              :filter="filter"
              @filtered="onFiltered"
              :fields="fields">
-      <template slot="open" slot-scope="data">
-        <b-link :to="{ name: entityName, params: { id: data.item.id }}">Open</b-link>
-      </template>
 
       <template slot="btns" slot-scope="data" v-if="actions">
         <b-button class="actionBtn" v-for="action in actions" :key="action.name" @click.prevent="updateButtons(data.item,action.name)" :ref="'btn-add-'+data.item.id" :class="action.classColor">{{action.name}}</b-button>
@@ -40,6 +50,7 @@
     <b-col md="6" class="my-1">
       <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="my-0" />
     </b-col>
+    </div>
   </div>
 </template>
 
@@ -78,7 +89,7 @@ export default {
               columns[prop] = true;
             }
           });
-          this.fields = [{key: "open", label: "Open"}];
+          // this.fields = [{key: "open", label: "Open"}];
           this.printFields = [];
           if (this.actions) this.fields.push({key: "btns", label: "Actions"})
           for (var columnName in columns) {
@@ -104,14 +115,19 @@ export default {
         this.sortBy = this.sortByField || this.fields[0].key;
 
         this.items = content;
+        this.isBusy = false
       },
       deep: true
     }
   },
   methods: {
     updateButtons (item,actionName) {
-      this.$set(item, 'actionName', actionName)
-      this.$emit('b-click-id', item)
+      // this.$set(item, 'actionName', actionName)
+      let tmpObj = {}
+      tmpObj = Object.assign({}, tmpObj, { clickedItem: item, actionName: actionName })
+      // tmpObj.actionName = actionName
+      // this.$set(tmpObj, 'actionName', actionName)
+      this.$emit('b-click-id', tmpObj)
     },
     onFiltered(filteredItems) {
       this.totalRows = filteredItems.length;
@@ -209,6 +225,7 @@ export default {
   },
   data() {
     return {
+      isBusy: true,
       sortBy: "name",
       sortDesc: false,
       fields: [],
