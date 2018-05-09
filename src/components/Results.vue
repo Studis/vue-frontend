@@ -160,7 +160,7 @@ export default {
         content: [],
         footer: (currentPage, pageCount, pageSize)=> { 
           return [
-            { text: this.title+"  "+currentPage.toString() + ' of ' + pageCount+'         .', alignment: 'right'},
+            { text: this.title+"     | Page "+currentPage.toString() + ' of ' + pageCount+'         .', alignment: 'right'},
             { canvas: [ { type: 'rect', x: 270, y: pageSize.height-132, w: pageSize.width - 170, h: 40 } ] }
           ]
         },
