@@ -164,7 +164,7 @@
         <b-form-select v-model="vpisniList.vrstaVpisa" :options="enrollment_types" required/>
       </b-col>
     </b-row>
-    <br>
+  
 
     <b-row class="my-1">
       <b-col sm="2"><label>Kraj izvajanja: </label></b-col>
@@ -1333,19 +1333,19 @@ export default {
   },
   computed: {
     isDisabled1() {
-      if (this.vpisniList.drzava != "Slovenija") {
+      if (this.vpisniList.drzava != "Slovenija" && this.vpisniList.drzava != "") {
         this.vpisniList.regija = ""
         return true
       } else return false
     },
     isDisabled2() {
-      if (this.vpisniList.stalnoPrebivalisceDrzava != "Slovenija") {
+      if (this.vpisniList.stalnoPrebivalisceDrzava != "Slovenija" && this.vpisniList.stalnoPrebivalisceDrzava != "") {
         this.vpisniList.stalnoPrebivalisceObcina = ""
         return true
       } else return false
     },
     isDisabled3() {
-      if (this.vpisniList.zacasnoPrebivalisceDrzava != "Slovenija") {
+      if (this.vpisniList.zacasnoPrebivalisceDrzava != "Slovenija" && this.vpisniList.zacasnoPrebivalisceDrzava != "") {
         this.vpisniList.zacasnoPrebivalisceObcina = ""
         return true
       } else return false
@@ -1361,11 +1361,23 @@ export default {
       this.fixECTS()
     },
     remove(removed, id) {
-      for(var x = 0; x < this.predmeti.length; x++) {
-        if(this.predmeti[x].name == removed.name) {
-          this.predmeti.splice(x, 1)
+      if(removed.constructor === Array) {
+        for(var x in removed) {
+          console.log(removed[x])
+          for(var y = 0; y < this.predmeti.length; y++) {
+            if(this.predmeti[y].name == removed[x].name) {
+              this.predmeti.splice(y, 1)
+            }
+          }
         }
+      } else {
+        for(var y = 0; y < this.predmeti.length; y++) {
+            if(this.predmeti[y].name == removed.name) {
+              this.predmeti.splice(y, 1)
+            }
+          }
       }
+      this.fixECTS()
     },
     fixECTS() {
       this.ects_sum = 0
