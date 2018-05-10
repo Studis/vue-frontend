@@ -57,12 +57,13 @@ axios.interceptors.response.use(function (response) {
   // Do something with response data
   return response
 }, function (error) {
-  console.log(error)
-  if (!error.status) {
-    localStorage.removeItem('token')
-    router.push({name: 'login'})
-    return Promise.reject(error)
-  }
+  // console.log(error)
+  // JSON.stringify(error)
+  // if (!error.status) {
+  //   localStorage.removeItem('token')
+  //   router.push({name: 'login'})
+  //   return Promise.reject(error)
+  // }
 })
 
 

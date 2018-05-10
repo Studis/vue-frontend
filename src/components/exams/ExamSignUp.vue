@@ -1,6 +1,6 @@
 <template>
   <div>
-    {{rowData}}
+
     <results v-if="getRole !== 'ADMIN'"
       title="Exams" 
       :indexes="true"
@@ -8,9 +8,12 @@
       :details="details"
       entityName="course"
       v-on:b-click-id="btnClicked"
-      :actions="[{name: 'Apply',classColor: 'btn-success'},{name: 'Delete',classColor: 'btn-danger'}]"
+      :actions="[{name: 'Apply',classColor: 'btn-success'},{name: 'Delete apply',classColor: 'btn-danger'}]"
       >
+      <!-- dropdown: {id: 'examDates',items: [{name: 'dfsl',id: 1},{name: 'fds', id: 2}]}} -->
       </results>
+
+
 
   
   </div>
@@ -20,7 +23,7 @@
 import axios from 'axios'
 import Results from '../Results.vue'
 import { mapState, mapGetters } from 'vuex';
-
+import moment from 'moment'
 
 export default {
   data () {
@@ -30,7 +33,8 @@ export default {
         fieldNames: null
       },
       details:[],
-      rowData: {}
+      rowData: {},
+      responseData: {}
     }
   },
    components: {
@@ -46,32 +50,70 @@ export default {
       this.rowData = el
       if(el.actionName == "Apply") {
         var enrollmentCourseId = el.clickedItem.id
-        console.log(enrollmentCourseId)
+        var examDateSelected = el.clickedItem.date
+        console.log(examDateSelected)
+        
+        let examId = this.responseData.find(ek => ek.enrollmentCourse.id == enrollmentCourseId)
+        .examsAvailable[0].id
+        //.map(e => e.examsAvailable)
+        // .find(em => {
+        //   console.log(examDateSelected + "," + this.$options.filters.datum(em.scheduledAt))
+        //   if (examDateSelected === this.$options.filters.datum(em.scheduledAt))
+        //   return em
+        // })// .map(ev => ev.scheduledAt)
+        // alert(JSON.stringify(examId))
+        console.log(examId)
         axios.post('/exams/enrollments', { "enrollmentCourseId": enrollmentCourseId, "examId": examId })
         .then(function(response){
-          
+          if (response.data.message) {
+            alert(response.data.message)
+          } else {
+            alert('Successfully applied!')
+          }
+        }).catch((err) => {
+          alert(err.message)
+        });  
+      } else if (el.actionName == 'Delete apply') {
+        var enrollmentCourseId = el.clickedItem.id
+        
+        let examEnrollmentId = this.responseData.find(ek => ek.enrollmentCourse.id == enrollmentCourseId)
+        .examEnrollment.id
+
+        
+        //.map(e => e.examsAvailable)
+        // .find(em => {
+        //   console.log(examDateSelected + "," + this.$options.filters.datum(em.scheduledAt))
+        //   if (examDateSelected === this.$options.filters.datum(em.scheduledAt))
+        //   return em
+        // })// .map(ev => ev.scheduledAt)
+        // alert(JSON.stringify(examId))
+        console.log(examEnrollmentId)
+        axios.post('/exams/enrollments/cancel', { "examEnrollmentId": examEnrollmentId })
+        .then(function(response){
+          if (response.data.message) {
+            alert(response.data.message)
+          } else {
+            alert('Successfully deleted application!')
+          }
+        }).catch((err) => {
+          alert(err.message)
         });  
       }
-    }
-  },
-  mounted () {
-    axios.get('courses/me').then((response) => {
-        console.log(response)
-      }).catch(err => {
-        console.log(err)
-      })
-    axios.get('/exams/enrollments').then((response) => {
+      this.prepareComponent()
+    },
+    prepareComponent () {
+      axios.get('courses/me').then((response) => {
+        this.responseData = response.data
         var tableData = response.data.map((x)=>{
-            console.log(x.exam.courseExecution)
-            var r = {
-              id: x.id,
-              // studyYear: (x.exam.courseExecution.curriculum) ? x.exam.courseExecution.curriculum.studyYear.id : '',
-              course: x.exam.courseExecution.course.name,
-              professor: x.exam.courseExecution.lecturer1.name + " " + x.exam.courseExecution.lecturer1.surname || x.exam.courseExecution.lecturer2.name + " " + x.exam.courseExecution.lecturer2.surname || x.exam.courseExecution.lecturer3.name + " " + x.exam.courseExecution.lecturer3.surname,
-              date: this.$options.filters.datum(x.exam.scheduledAt)
-            }
-            return r;
-          });
+          console.log(x)
+          var r = {
+            id: x.enrollmentCourse.id,
+            course: x.enrollmentCourse.courseExecution.course.name,
+            professor: x.enrollmentCourse.courseExecution.lecturer1.name + " " + x.enrollmentCourse.courseExecution.lecturer1.surname || x.enrollmentCourse.courseExecution.lecturer2.name + " " + x.enrollmentCourse.courseExecution.lecturer2.surname || x.enrollmentCourse.courseExecution.lecturer3.name + " " + x.enrollmentCourse.courseExecution.lecturer3.surname,
+            date: this.$options.filters.datum(x.examsAvailable[0].scheduledAt)
+          }
+          return r;
+        });
         this.content = {
           content: tableData,
           fieldNames: null
@@ -79,6 +121,29 @@ export default {
       }).catch(err => {
         console.log(err)
       })
+    }
+  },
+  mounted () {
+    this.prepareComponent()
+    // axios.get('/exams/enrollments').then((response) => {
+    //     var tableData = response.data.map((x)=>{
+    //         console.log(x.exam.courseExecution)
+    //         var r = {
+    //           id: x.id,
+    //           // studyYear: (x.exam.courseExecution.curriculum) ? x.exam.courseExecution.curriculum.studyYear.id : '',
+    //           course: x.exam.courseExecution.course.name,
+    //           professor: x.exam.courseExecution.lecturer1.name + " " + x.exam.courseExecution.lecturer1.surname || x.exam.courseExecution.lecturer2.name + " " + x.exam.courseExecution.lecturer2.surname || x.exam.courseExecution.lecturer3.name + " " + x.exam.courseExecution.lecturer3.surname,
+    //           date: this.$options.filters.datum(x.exam.scheduledAt)
+    //         }
+    //         return r;
+    //       });
+    //     this.content = {
+    //       content: tableData,
+    //       fieldNames: null
+    //     };
+    //   }).catch(err => {
+    //     console.log(err)
+    //   })
   }
 }
 </script>
