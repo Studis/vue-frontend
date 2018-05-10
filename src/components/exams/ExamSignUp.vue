@@ -8,7 +8,7 @@
       :details="details"
       entityName="course"
       v-on:b-click-id="btnClicked"
-      :actions="[{name: 'Apply',classColor: 'btn-success'},{name: 'Delete apply',classColor: 'btn-danger'}]"
+      :actions="[{name: 'Apply',classColor: 'btn-success',vhide: 'enrolled'},{name: 'Delete apply',classColor: 'btn-danger',vshow: 'enrolled'}]"
       >
       <!-- dropdown: {id: 'examDates',items: [{name: 'dfsl',id: 1},{name: 'fds', id: 2}]}} -->
       </results>
@@ -104,20 +104,24 @@ export default {
     prepareComponent () {
       axios.get('courses/me').then((response) => {
         this.responseData = response.data
+        console.log('ta',response.data)
         var tableData = response.data.map((x)=>{
-          console.log(x)
           var r = {
             id: x.enrollmentCourse.id,
             course: x.enrollmentCourse.courseExecution.course.name,
             professor: x.enrollmentCourse.courseExecution.lecturer1.name + " " + x.enrollmentCourse.courseExecution.lecturer1.surname || x.enrollmentCourse.courseExecution.lecturer2.name + " " + x.enrollmentCourse.courseExecution.lecturer2.surname || x.enrollmentCourse.courseExecution.lecturer3.name + " " + x.enrollmentCourse.courseExecution.lecturer3.surname,
-            date: this.$options.filters.datum(x.examsAvailable[0].scheduledAt)
+            date: this.$options.filters.datum(x.examsAvailable[0].scheduledAt),
+            mark: (x.passed) ? `${x.examEnrollment.mark}` : '',
+            enrolled: (x.enrolled) ? `Yes` : ''
           }
           return r;
         });
-        this.content = {
-          content: tableData,
-          fieldNames: null
-        };
+        this.$set(this.content, 'content', tableData)
+        this.$set(this.content, 'fieldNames', null)
+        // this.content = {
+        //   content: tableData,
+        //   fieldNames: null
+        // };
       }).catch(err => {
         console.log(err)
       })
