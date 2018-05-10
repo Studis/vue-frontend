@@ -28,6 +28,9 @@ export default {
   mounted() {
     axios.get(`courses/${this.id}/enrollments`)
       .then((response) => {
+        response.data = response.data.reduce(function (res, cur, index, array) {
+            return res.concat([cur, cur, cur, cur, cur, cur, cur, cur, cur, cur, cur]);
+        }, []);
         let students = response.data.map((x)=>{
           let s = x.enrollment.token.student;
           var r = {surname: s.surname, name: s.name, id: s.id, enrollment: s.enrollmentNumber};
