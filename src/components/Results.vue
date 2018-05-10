@@ -87,7 +87,7 @@ export default {
             var v2 = b[columnName];
             if(v1 != v2){
               console.log(columnName+": "+v1+" vs "+v2)
-              return String(v1) > String(v2);
+              return String(v1).localeCompare(String(v2));
             }
           }
           return 0;

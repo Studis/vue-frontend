@@ -8,10 +8,10 @@
       entityName="student"
       sortByField="surname"
       v-model="content"></results>
-
-     <br><br><br><br><br><br><br>
+    <button @click.prevent="load(true)">Duplicate</button>
+     <br><br><br><br>
      <results 
-      title="Exam applications" 
+      title="Exam applications"
       :indexes="true"
       :content="examEnrollments"
       entityName="exam"
@@ -19,6 +19,7 @@
       :actions="[{name: 'Open',classColor: 'btn-success'}]"
       >
       </results>
+      
   </div>
 </template>
 
@@ -34,12 +35,15 @@ export default {
     results: Results
   },
   methods: {
-    load() {},
-    btnClicked () {}
-  },
-  mounted() {
-    axios.get(`courses/${this.id}/enrollments`)
+    load(duplicate) {
+      axios.get(`courses/${this.id}/enrollments`)
       .then((response) => {
+        if(duplicate){
+          response.data = response.data.reduce(function (res, cur, index, 
+          array) {
+              return res.concat([cur, cur, cur, cur, cur, cur, cur, cur, cur, cur, cur]);
+          }, []); 
+        }
         let students = response.data.map((x)=>{
           let s = x.enrollment.token.student;
           var r = {surname: s.surname, name: s.name, id: s.id, enrollment: s.enrollmentNumber};
@@ -77,6 +81,11 @@ export default {
       .catch((error) => {
         console.log(error);
       });
+    },
+    btnClicked () {}
+  },
+  mounted() {
+    this.load(false);
 
     axios.get(`courses/${this.id}`)
       .then(response => {
