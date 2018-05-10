@@ -44,7 +44,7 @@
              :fields="fields">
 
       <template slot="btns" slot-scope="data" v-if="actions">
-        <b-button v-for="action in actions" v-if="('vhide' in action && !data.item[action.vhide]) || ('vshow' in action && data.item[action.vshow]) " class="actionBtn" :key="action.name" @click.prevent="updateButtons(data.item,action.name)" :ref="'btn-add-'+data.item.id" :class="action.classColor">{{action.name}}</b-button>
+        <b-button v-for="action in actions" v-if="action.name == 'Open' || (('vhide' in action && !data.item[action.vhide]) || ('vshow' in action && data.item[action.vshow])) " class="actionBtn" :key="action.name" @click.prevent="updateButtons(data.item,action.name)" :ref="'btn-add-'+data.item.id" :class="action.classColor">{{action.name}}</b-button>
       </template>
     </b-table>
     <b-col md="6" class="my-1">
