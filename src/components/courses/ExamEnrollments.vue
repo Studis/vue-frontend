@@ -8,17 +8,6 @@
       entityName="student"
       sortByField="surname"
       v-model="content"></results>
-
-     <br><br><br><br><br><br><br>
-     <results 
-      title="Exam applications" 
-      :indexes="true"
-      :content="examEnrollments"
-      entityName="exam"
-      v-on:b-click-id="btnClicked"
-      :actions="[{name: 'Open',classColor: 'btn-success'}]"
-      >
-      </results>
   </div>
 </template>
 
@@ -34,48 +23,19 @@ export default {
     results: Results
   },
   methods: {
-    load() {},
-    btnClicked () {}
+    load() {}
   },
   mounted() {
     axios.get(`courses/${this.id}/enrollments`)
       .then((response) => {
-        response.data = response.data.reduce(function (res, cur, index, array) {
-            return res.concat([cur, cur, cur, cur, cur, cur, cur, cur, cur, cur, cur]);
-        }, []);
         let students = response.data.map((x)=>{
           let s = x.enrollment.token.student;
-          var r = {surname: s.surname, name: s.name, id: s.id, enrollment: s.enrollmentNumber};
+          var r = {id: s.id, name: s.name, surname: s.surname, enrollment: s.enrollmentNumber};
           r["study type"] = x.enrollment.studyType.name;
           return r;
         });
         console.log(students);
         this.content = {content: students, fieldNames: false};
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-
-      axios.get(`exams/enrollments/${this.id}`)
-      .then((response) => {
-        let tableData = response.data.map((x)=>{
-          console.log('hej ', x)
-          let r = {
-            id: x.id,
-            name: x.enrollment.enrollment.token.student.name,
-            surname: x.enrollment.enrollment.token.student.surname,
-            enrollment: x.enrollment.enrollment.token.student.enrollmentNumber,
-            scheduledAt: this.$options.filters.datum(x.exam.scheduledAt)
-            // course: x.enrollmentCourse.courseExecution.course.name,
-            // professor: x.enrollmentCourse.courseExecution.lecturer1.name + " " + x.enrollmentCourse.courseExecution.lecturer1.surname || x.enrollmentCourse.courseExecution.lecturer2.name + " " + x.enrollmentCourse.courseExecution.lecturer2.surname || x.enrollmentCourse.courseExecution.lecturer3.name + " " + x.enrollmentCourse.courseExecution.lecturer3.surname,
-            // date: this.$options.filters.datum(x.examsAvailable[0].scheduledAt)
-          }
-          return r
-        })
-        this.examEnrollments = {
-          content: tableData,
-          fieldNames: null
-        };
       })
       .catch((error) => {
         console.log(error);
@@ -111,10 +71,6 @@ export default {
   data() {
     return {
       content: {
-        content: [],
-        fieldNames: null
-      },
-      examEnrollments: {
         content: [],
         fieldNames: null
       },
