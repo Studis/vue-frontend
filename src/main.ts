@@ -57,8 +57,6 @@ axios.interceptors.response.use(function (response) {
   // Do something with response data
   return response
 }, function (error) {
-  console.log(error)
-  JSON.stringify(error)
 
 if (process.env.NODE_ENV === 'development') { // If exposed port via docker image
 
