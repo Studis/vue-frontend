@@ -57,16 +57,17 @@ axios.interceptors.response.use(function (response) {
   // Do something with response data
   return response
 }, function (error) {
-  // console.log(error)
-  // JSON.stringify(error)
+  console.log(error)
+  JSON.stringify(error)
 
-// if (process.env.NODE_ENV === 'development') { // If exposed port via docker image
-//   if (!error.status) {
-//     localStorage.removeItem('token')
-//     router.push({name: 'login'})
-//     return Promise.reject(error)
-//   }
-// }
+if (process.env.NODE_ENV === 'development') { // If exposed port via docker image
+
+  if (!error.response) {
+    localStorage.removeItem('token')
+    router.push({name: 'login'})
+    return Promise.reject(error)
+  }
+}
 })
 
 
