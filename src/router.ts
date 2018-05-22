@@ -12,7 +12,8 @@ import Courses from './components/courses/Courses.vue'
 import UploadEnrollment from './components/user/UploadEnrollment.vue'
 import EnrollmentTokens from './components/user/EnrollmentTokens.vue'
 import EnrollmentToken from './components/user/EnrollmentToken.vue'
-import Results from './components/Results.vue';
+import Results from './components/Results.vue'
+import AddExam from './components/exams/AddExam.vue'
 
 Vue.use(Router);
 
@@ -111,6 +112,11 @@ export default new Router({
       path: '/enrollmentTokens/:id',
       component: EnrollmentToken,
       props: true
+    },
+    {
+      name: 'addExam',
+      path: '/addExam',
+      component: AddExam,
     }
   ],
   mode: 'history'
