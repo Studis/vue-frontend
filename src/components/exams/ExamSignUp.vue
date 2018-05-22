@@ -8,7 +8,7 @@
       :details="details"
       entityName="course"
       v-on:b-click-id="btnClicked"
-      :actions="[{name: 'Apply',classColor: 'btn-success',vhide: 'enrolled'},{name: 'Delete apply',classColor: 'btn-danger',vshow: 'enrolled'}]"
+      :actions="[{name: 'Apply',classColor: 'btn-success',vhide: 'enrolled'},{name: 'Delete application',classColor: 'btn-danger',vshow: 'enrolled'}]"
       >
       <!-- dropdown: {id: 'examDates',items: [{name: 'dfsl',id: 1},{name: 'fds', id: 2}]}} -->
       </results>
@@ -73,7 +73,7 @@ export default {
         }).catch((err) => {
           alert(err.message)
         });  
-      } else if (el.actionName == 'Delete apply') {
+      } else if (el.actionName == 'Delete application') {
         var enrollmentCourseId = el.clickedItem.id
         
         let examEnrollmentId = this.responseData.find(ek => ek.enrollmentCourse.id == enrollmentCourseId)
