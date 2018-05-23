@@ -63,10 +63,15 @@ export default {
           console.log('hej ', x)
           let r = {
             id: x.id,
-            name: x.enrollment.enrollment.token.student.name,
             surname: x.enrollment.enrollment.token.student.surname,
+            name: x.enrollment.enrollment.token.student.name,
             enrollment: x.enrollment.enrollment.token.student.enrollmentNumber,
-            scheduledAt: this.$options.filters.datum(x.exam.scheduledAt)
+            scheduledAt: this.$options.filters.datum(x.exam.scheduledAt),
+            studyYear: x.enrollment.enrollment.curriculum.year.toString,
+            score: x.score,
+            mark: x.mark,
+            location: x.exam.location,
+            asking: x.exam.asking
             // course: x.enrollmentCourse.courseExecution.course.name,
             // professor: x.enrollmentCourse.courseExecution.lecturer1.name + " " + x.enrollmentCourse.courseExecution.lecturer1.surname || x.enrollmentCourse.courseExecution.lecturer2.name + " " + x.enrollmentCourse.courseExecution.lecturer2.surname || x.enrollmentCourse.courseExecution.lecturer3.name + " " + x.enrollmentCourse.courseExecution.lecturer3.surname,
             // date: this.$options.filters.datum(x.examsAvailable[0].scheduledAt)

@@ -112,7 +112,9 @@ export default {
             professor: x.enrollmentCourse.courseExecution.lecturer1.name + " " + x.enrollmentCourse.courseExecution.lecturer1.surname || x.enrollmentCourse.courseExecution.lecturer2.name + " " + x.enrollmentCourse.courseExecution.lecturer2.surname || x.enrollmentCourse.courseExecution.lecturer3.name + " " + x.enrollmentCourse.courseExecution.lecturer3.surname,
             date: this.$options.filters.datum(x.examsAvailable[0].scheduledAt),
             mark: (x.passed) ? `${x.examEnrollment.mark}` : '',
-            enrolled: (x.enrolled) ? `Yes` : ''
+            // enrolled: (x.enrolled) ? `Yes` : '',
+            studyYear: x.enrollmentCourse.enrollment.curriculum.year.toString
+
           }
           return r;
         });
