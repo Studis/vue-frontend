@@ -16,9 +16,58 @@
       :content="examEnrollments"
       entityName="exam"
       v-on:b-click-id="btnClicked"
-      :actions="[{name: 'Open',classColor: 'btn-success'}]"
       >
       </results>
+      <br><br><br><br>
+      <results 
+      title="Scheduled exams"
+      :indexes="true"
+      :content="scheduledExams"
+      entityName="exam"
+      v-on:b-click-id="btnClicked"
+      >
+      </results>
+     <b-btn variant="success" @click.prevent="show_addExam(data)">Dodaj</b-btn>
+
+
+
+
+      <b-modal ref="dodajRok" size="lg" @ok="scheduleExam">
+      <b-container fluid>
+        <h3>Dodaj izpitni rok</h3>
+        <br>
+        <p class="naslov">1. Izpitni rok</p>
+        <b-row>
+            <b-col sm="4">
+                <b-form-group label="Datum">
+                    <b-form-input type="date" class="mb-3" v-model="examDate" required>
+                    </b-form-input>
+                </b-form-group>
+            </b-col>
+            <b-col sm="4">
+                <b-form-group label="Ura">
+                    <b-form-input type="time" class="mb-3" v-model="examTime" required>
+                    </b-form-input>
+                </b-form-group>
+            </b-col>
+        </b-row>
+        <b-row>
+            <b-col sm="4">
+                <b-form-group label="Location">
+                    <b-form-input type="text" class="mb-3" v-model="examLocation" required>
+                    </b-form-input>
+                </b-form-group>
+            </b-col>
+            <b-col sm="4">
+                <b-form-group label="Asking">
+                    <b-form-input type="text" class="mb-3" v-model="asking" required>
+                    </b-form-input>
+                </b-form-group>
+            </b-col>
+        </b-row>
+      </b-container>    
+    </b-modal>
+
       
   </div>
 </template>
@@ -34,7 +83,64 @@ export default {
   components: {
     results: Results
   },
+  computed: {
+    scheduledAt () {
+      return this.examDate + "T" + this.examTime + ":00Z"
+    }
+  },
   methods: {
+    getScheduledExams () {
+      axios.get(`exams/scheduled/courseExecution/${this.id}`)
+      .then((response) => {
+        let tableData = response.data.map((x)=>{
+          console.log('hej ', x)
+          let r = {
+            id: x.id,
+            location: x.location,
+            asking: x.asking,
+            written: x.written,
+            scheduledAt: this.$options.filters.datum(x.scheduledAt),
+            // name: x.enrollment.enrollment.token.student.name,
+            // enrollment: x.enrollment.enrollment.token.student.enrollmentNumber,
+            // scheduledAt: this.$options.filters.datum(x.exam.scheduledAt),
+            // studyYear: x.enrollment.enrollment.curriculum.year.toString,
+            // score: x.score,
+            // mark: x.status === 'deleted' ? 'VP' : x.mark,
+            // location: x.exam.location,
+            // asking: x.exam.asking
+            // course: x.enrollmentCourse.courseExecution.course.name,
+            // professor: x.enrollmentCourse.courseExecution.lecturer1.name + " " + x.enrollmentCourse.courseExecution.lecturer1.surname || x.enrollmentCourse.courseExecution.lecturer2.name + " " + x.enrollmentCourse.courseExecution.lecturer2.surname || x.enrollmentCourse.courseExecution.lecturer3.name + " " + x.enrollmentCourse.courseExecution.lecturer3.surname,
+            // date: this.$options.filters.datum(x.examsAvailable[0].scheduledAt)
+          }
+          return r
+        })
+        this.scheduledExams = {
+          content: tableData,
+          fieldNames: null
+        };
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    },
+    scheduleExam () {
+      let postdata = {
+        courseExecution: this.id,
+        scheduledAt: this.scheduledAt,
+        location: this.examLocation,
+        asking: this.asking
+      }
+      axios.post('/exams/scheduled', postdata)
+      .then(response => {
+        alert(response.data.message || "Successfully scheduled exam!")
+        this.getScheduledExams()
+      }).catch((err) => {
+        alert(err.message)
+      })
+    },
+    show_addExam(data) {
+      this.$refs.dodajRok.show()
+    },
     load(duplicate) {
       axios.get(`courses/${this.id}/enrollments`)
       .then((response) => {
@@ -86,6 +192,8 @@ export default {
       .catch((error) => {
         console.log(error);
       });
+
+      this.getScheduledExams()
     },
     btnClicked () {}
   },
@@ -121,11 +229,19 @@ export default {
   },
   data() {
     return {
+      examDate: '',
+      examTime: '',
+      location: '',
+      asking: '',
       content: {
         content: [],
         fieldNames: null
       },
       examEnrollments: {
+        content: [],
+        fieldNames: null
+      },
+      scheduledExams: {
         content: [],
         fieldNames: null
       },
