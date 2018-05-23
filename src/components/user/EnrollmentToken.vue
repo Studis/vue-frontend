@@ -160,7 +160,7 @@ export default {
     editToken() {
       axios.put(`tokens/${this.$route.params.id}`, {
         program: {
-          title: this.studijski_program.split(" ")[0]
+          id: this.studijski_program.split(" ")[0]
         },
         status: "ACTIVE",
         studyYear: {
