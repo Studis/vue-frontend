@@ -49,6 +49,7 @@
             Pravica do proste izbire predmetov
           </b-form-checkbox>
         </b-form-group>
+        <b-button variant="danger" @click.prevent="deleteToken">Izbriši žeton</b-button>
       </b-container>    
     </b-modal>
     <br><br>
@@ -63,6 +64,7 @@ export default {
   name: 'EnrollmentToken',
   data() {
     return {
+      id: '',
       studijski_program: '',
       letnik: '',
       vrsta_vpisa: '',
@@ -152,6 +154,7 @@ export default {
             this.pravica = response.data[x].freeChoice;
           }
         }
+        this.id = data.item.id;
         this.$refs.urediZeton.show();
       }).catch((err) => {
         console.log(err)
@@ -184,7 +187,17 @@ export default {
       .catch(function (error) {
         console.log(error);
       });
-    }
+    },
+    deleteToken() {
+      axios.delete(`tokens/${this.id}`)
+      .then(function (response) {
+        console.log(response);
+        location.reload();
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    },
   },
   mounted() {
     // Get this student's tokens
