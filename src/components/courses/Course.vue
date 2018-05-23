@@ -69,7 +69,7 @@ export default {
             scheduledAt: this.$options.filters.datum(x.exam.scheduledAt),
             studyYear: x.enrollment.enrollment.curriculum.year.toString,
             score: x.score,
-            mark: x.mark,
+            mark: x.status === 'deleted' ? 'VP' : x.mark,
             location: x.exam.location,
             asking: x.exam.asking
             // course: x.enrollmentCourse.courseExecution.course.name,
