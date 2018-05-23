@@ -1,7 +1,7 @@
 <template>
   <div>
     <h3>Urejanje žetonov za vpis</h3>
-    <b-table stacked="md" hover
+    <b-table class="my" stacked="md" hover
              :items="enrollmentTokens"
              :fields="fields"
              :filter="filter"
@@ -99,12 +99,12 @@ export default {
       sortBy: 'id',
       sortDesc: false,
       fields: [
-        { key: 'studijsko_leto', label: 'Študijsko leto', sortable: true },
-        { key: 'letnik', label: 'Letnik', sortable: true },
-        { key: 'studijski_program', label: 'Študijski program', sortable: true },
-        { key: 'vrsta_vpisa', label: 'Vrsta vpisa', sortable: true },
-        { key: 'nacin_studija', label: 'Način in oblika študija', sortable: true },
-        { key: 'poljubni_predmeti', label: 'Pravica do proste izbire predmetov', sortable: true }
+        { key: 'program.title', label: 'Študijski program', sortable: true },
+        { key: 'studyYear.id', label: 'Letnik', sortable: true },
+        { key: 'enrollmentType.name', label: 'Vrsta vpisa', sortable: true },
+        { key: 'studyType.name', label: 'Način študija', sortable: true },
+        { key: 'studyForm.name', label: 'Oblika študija', sortable: true },
+        { key: 'freeChoice', label: 'Pravica do proste izbire predmetov', sortable: true }
       ],
       tokens: [],
       currentPage: 1,
@@ -114,7 +114,8 @@ export default {
       enrollmentTokens: [],
       totalRows: 0,
       show: false,
-      props: ["id"]
+      props: ["id"],
+      t: []
     }
   },
   components: {
@@ -149,20 +150,40 @@ export default {
     }
   },
   mounted() {
-    // route.params.id - id študenta
-
-    /* Get this student's tokens
-    axios.get(`students/${this.id}/enrollments`)
+    // Get this student's tokens
+    axios.get(`tokens/${this.$route.params.id}`)
       .then((response) => {
-        console.log(response.data)
+        for(var x = 0; x < response.data.length; x++) {
+          if(response.data[x].status != null) {
+            if(response.data[x].freeChoice) response.data[x].freeChoice = "Da";
+            else response.data[x].freeChoice = "Ne";
+            this.enrollmentTokens.push(response.data[x])
+          }
+        }
+        /*.map(x => {
+          if (x.status != null) {
+            return {
+              studijski_program: x.program.id + " - " + x.program.title,
+              letnik: x.studyYear.id,
+              vrsta_vpisa: x.enrollmentType.name,
+              nacin_studija: x.studyType.name + ", " + x.studyForm.name,
+              studijsko_leto: "2018/2019"
+            }
+          }
+        })*/
+        console.log(this.enrollmentTokens)
       })
       .catch((error) => {
         console.log(error);
       });
-    */
   }
 }
 </script>
 
+
+
 <style lang="scss">
+.my {
+  font-size: 0.85em;
+}
 </style>
