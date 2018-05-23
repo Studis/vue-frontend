@@ -45,7 +45,7 @@
       <b-col sm="4">
         <b-form-select v-model="vpisniList.drzava" :options="countries" :state="null" type="text" required/>
       </b-col>
-      <b-col sm="2"><label>Regija: </label></b-col>
+      <b-col sm="2"><label>Občina: </label></b-col>
       <b-col sm="4">
         <b-form-select v-model="vpisniList.regija" :options="posts" :state="null" type="text" :disabled=isDisabled1 />
       </b-col>
@@ -1368,7 +1368,6 @@ export default {
     remove(removed, id) {
       if(removed.constructor === Array) {
         for(var x in removed) {
-          console.log(removed[x])
           for(var y = 0; y < this.predmeti.length; y++) {
             if(this.predmeti[y].name == removed[x].name) {
               this.predmeti.splice(y, 1)
@@ -1474,7 +1473,7 @@ export default {
     this.ects_sum = 0
     for(var x = 0; x < this.predmeti.length; x++) {
       this.ects_sum += this.predmeti[x].ects
-    }
+    } 
   }
 }
 </script>
