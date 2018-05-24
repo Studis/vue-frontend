@@ -1,20 +1,18 @@
 <template>
   <div>
-
-    <results v-if="getRole !== 'ADMIN'"
-      title="Exams" 
-      :indexes="true"
-      :content="content"
-      :details="details"
-      entityName="course"
-      v-on:b-click-id="btnClicked"
-      :actions="[{name: 'Apply',classColor: 'btn-success',vhide: 'enrolled'},{name: 'Delete apply',classColor: 'btn-danger',vshow: 'enrolled'}]"
-      >
-      <!-- dropdown: {id: 'examDates',items: [{name: 'dfsl',id: 1},{name: 'fds', id: 2}]}} -->
-      </results>
-
-
-
+    <div v-if="getRole !== 'ADMIN' && getRole !== 'LECTURER' && getRole !== 'CLERK'">
+      <results 
+        title="Exams" 
+        :indexes="true"
+        :content="content"
+        :details="details"
+        entityName="course"
+        v-on:b-click-id="btnClicked"
+        :actions="[{name: 'Apply',classColor: 'btn-success',vhide: 'enrolled'},{name: 'Delete application',classColor: 'btn-danger',vshow: 'enrolled'}]"
+        >
+        <!-- dropdown: {id: 'examDates',items: [{name: 'dfsl',id: 1},{name: 'fds', id: 2}]}} -->
+        </results>
+    </div>
   
   </div>
 </template>
@@ -73,7 +71,7 @@ export default {
         }).catch((err) => {
           alert(err.message)
         });  
-      } else if (el.actionName == 'Delete apply') {
+      } else if (el.actionName == 'Delete application') {
         var enrollmentCourseId = el.clickedItem.id
         
         let examEnrollmentId = this.responseData.find(ek => ek.enrollmentCourse.id == enrollmentCourseId)
@@ -111,8 +109,9 @@ export default {
             course: x.enrollmentCourse.courseExecution.course.name,
             professor: x.enrollmentCourse.courseExecution.lecturer1.name + " " + x.enrollmentCourse.courseExecution.lecturer1.surname || x.enrollmentCourse.courseExecution.lecturer2.name + " " + x.enrollmentCourse.courseExecution.lecturer2.surname || x.enrollmentCourse.courseExecution.lecturer3.name + " " + x.enrollmentCourse.courseExecution.lecturer3.surname,
             date: this.$options.filters.datum(x.examsAvailable[0].scheduledAt),
-            mark: (x.passed) ? `${x.examEnrollment.mark}` : '',
-            enrolled: (x.enrolled) ? `Yes` : ''
+            mark: ((x.passed) ? `${x.examEnrollment.mark}` : ''),
+            enrolled: (x.enrolled) ? `Yes` : '',
+            studyYear: x.enrollmentCourse.enrollment.curriculum.year.toString
           }
           return r;
         });
