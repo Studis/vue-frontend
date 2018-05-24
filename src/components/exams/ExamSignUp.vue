@@ -1,20 +1,18 @@
 <template>
   <div>
-
-    <results v-if="getRole !== 'ADMIN'"
-      title="Exams" 
-      :indexes="true"
-      :content="content"
-      :details="details"
-      entityName="course"
-      v-on:b-click-id="btnClicked"
-      :actions="[{name: 'Apply',classColor: 'btn-success',vhide: 'enrolled'},{name: 'Delete application',classColor: 'btn-danger',vshow: 'enrolled'}]"
-      >
-      <!-- dropdown: {id: 'examDates',items: [{name: 'dfsl',id: 1},{name: 'fds', id: 2}]}} -->
-      </results>
-
-
-
+    <div v-if="getRole !== 'ADMIN' && getRole !== 'LECTURER' && getRole !== 'CLERK'">
+      <results 
+        title="Exams" 
+        :indexes="true"
+        :content="content"
+        :details="details"
+        entityName="course"
+        v-on:b-click-id="btnClicked"
+        :actions="[{name: 'Apply',classColor: 'btn-success',vhide: 'enrolled'},{name: 'Delete application',classColor: 'btn-danger',vshow: 'enrolled'}]"
+        >
+        <!-- dropdown: {id: 'examDates',items: [{name: 'dfsl',id: 1},{name: 'fds', id: 2}]}} -->
+        </results>
+    </div>
   
   </div>
 </template>

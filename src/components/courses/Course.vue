@@ -8,6 +8,7 @@
       entityName="student"
       sortByField="surname"
       v-model="content"></results>
+
     <button @click.prevent="load(true)">Duplicate</button>
      <br><br><br><br>
      <results 
@@ -16,21 +17,32 @@
       :content="examEnrollments"
       entityName="exam"
       v-on:b-click-id="btnClicked"
+      v-model="examEnrollments"
       >
       </results>
       <br><br><br><br>
       <results 
       title="Scheduled exams"
       :indexes="true"
+      :details="details"
       :content="scheduledExams"
-      entityName="exam"
-      v-on:b-click-id="btnClicked"
+      v-on:b-click-id="toggleDeleteModal"
+      :actions="[{name: 'Delete', classColor: 'btn-danger',vhide: false}]"
+      v-model="scheduledExams"
       >
       </results>
      <b-btn variant="success" @click.prevent="show_addExam(data)">Dodaj</b-btn>
 
 
 
+
+    <b-modal ref="zbrisiRok" size="lg" @ok="deleteScheduledExam">
+      <b-container fluid>
+        <b-row>
+        <h3>{{beforeScheduleDelete}}!</h3>
+        </b-row>
+      </b-container>    
+    </b-modal>
 
       <b-modal ref="dodajRok" size="lg" @ok="scheduleExam">
       <b-container fluid>
@@ -89,6 +101,19 @@ export default {
     }
   },
   methods: {
+    deleteScheduledExam () {
+      // TODO: find examId
+      let postdata = {
+        examId: this.examId
+      }
+      axios.delete(`/exams/scheduled/erase/${this.examId}`)
+      .then(response => {
+        if (response.data.message) alert(response.data.message)
+        this.getScheduledExams()
+      }).catch((err) => {
+        alert(err.message)
+      })
+    },
     getScheduledExams () {
       axios.get(`exams/scheduled/courseExecution/${this.id}`)
       .then((response) => {
@@ -140,6 +165,10 @@ export default {
     },
     show_addExam(data) {
       this.$refs.dodajRok.show()
+    },
+    toggleDeleteModal (exId) {
+      this.examId = exId.clickedItem.id
+      this.$refs.zbrisiRok.show()
     },
     load(duplicate) {
       axios.get(`courses/${this.id}/enrollments`)
@@ -229,10 +258,13 @@ export default {
   },
   data() {
     return {
+      beforeScheduleDelete: 'Ali ste prepričani, da želite izpitni rok.',
+      onFailScheduleDelete: 'Za ta izpit še obstajajo prijave! Zato izpitnega roka ni mogoče zbrisati',
       examDate: '',
       examTime: '',
-      location: '',
+      examLocation: '',
       asking: '',
+      examId: null,
       content: {
         content: [],
         fieldNames: null

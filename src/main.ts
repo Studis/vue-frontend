@@ -58,14 +58,14 @@ axios.interceptors.response.use(function (response) {
   return response
 }, function (error) {
 
-if (process.env.NODE_ENV === 'development') { // If exposed port via docker image
+// if (process.env.NODE_ENV === 'development') { // If exposed port via docker image
 
   if (!error.response) {
     localStorage.removeItem('token')
     router.push({name: 'login'})
     return Promise.reject(error)
   }
-}
+// }
 })
 
 
