@@ -1425,7 +1425,68 @@ export default {
       this.validName();
       if(this.errors.length > 0) this.$refs.errmsg.focus()
     },
-    onSubmit(vpisniList) {
+    onSubmit() {
+      /*
+      axios.post(`enrollment/${this.$route.params.id}`, {
+        student: {
+          name: this.vpisniList.imePriimek.split(" ")[0],
+          surname: this.vpisniList.imePriimek.split(" ")[1],
+          emso: this.vpisniList.emso,
+          dateOfBirth: this.vpisniList.datumRojstva + "T4:50:49+00:00",
+          placeOfBirth: this.vpisniList.krajRojstva,
+          gender: this.vpisniList.spol[0],
+          nationality: "Slovenija",
+          region: this.vpisniList.regija,
+          taxNumber: this.vpisniList.davcnaStevilka,
+          phoneNumber: this.vpisniList.telefonskaStevilka,
+          permanent: {
+              municipality: {
+                  name: this.vpisniList.stalnoPrebivalisceObcina
+              },
+              country: "SI",
+              placeOfResidence: this.vpisniList.stalnoPrebivalisceNaslov,
+              postalNumber: this.vpisniList.stalnoPrebivaliscePosta.split(",")[0]
+          },
+          temporary: {
+              municipality: {
+                  name: this.vpisniList.zacasnoPrebivalisceObcina
+              },
+              country: "SI",
+              placeOfResidence: "Ulica Generala Maistra 44",
+              postalNumber: "2000"
+          },
+          sendToTemporary: false,
+          enrollmentNumber: "63180001",
+          email: "zs7373@student.uni-lj.si"
+        },
+      studyForm: {
+                id: 1,
+                name: "Na lokaciji"
+      },
+      studyType: {
+                id: 1,
+                name: "Redni"
+      },
+      enrollmentType: {
+              id: 1,
+              name: "Prvi vpis v letnik/dodatno leto"
+      },
+      studyYear: {
+              id: 1
+      },
+      program: {
+              id: 100475,
+              ects: 180,
+              title: "Računalništvo in informatika UNI"
+      }
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+      */
       this.$router.push({name: 'home'});
     },
     goBack() {
