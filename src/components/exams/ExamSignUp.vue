@@ -1,5 +1,6 @@
 <template>
   <div>
+
     <div v-if="getRole !== 'ADMIN' && getRole !== 'LECTURER' && getRole !== 'CLERK'">
       <results 
         title="Exams" 
@@ -47,12 +48,15 @@ export default {
     btnClicked(el) {
       this.rowData = el
       if(el.actionName == "Apply") {
-        var enrollmentCourseId = el.clickedItem.id
+        let examId = el.clickedItem.id
         var examDateSelected = el.clickedItem.date
-        console.log(examDateSelected)
+        // filter(a => a.examsAvailable.filter(b => b.id == mojId)).map(c => c.enrollmentCourse.id)
         
-        let examId = this.responseData.find(ek => ek.enrollmentCourse.id == enrollmentCourseId)
-        .examsAvailable[0].id
+        let enrollmentCourseId = this.responseData
+        .find(ek => ek.examsAvailable.find(en => en.id == examId)).enrollmentCourse.id
+        //.map(c => c.enrollmentCourse.id)
+
+        // alert(JSON.stringify(`examId ${examId} enrollmentCourseId ${JSON.stringify(enrollmentCourseId)}`))
         //.map(e => e.examsAvailable)
         // .find(em => {
         //   console.log(examDateSelected + "," + this.$options.filters.datum(em.scheduledAt))
@@ -72,11 +76,14 @@ export default {
           alert(err.message)
         });  
       } else if (el.actionName == 'Delete application') {
-        var enrollmentCourseId = el.clickedItem.id
+        let examId = el.clickedItem.id
+        var examDateSelected = el.clickedItem.date
+        // filter(a => a.examsAvailable.filter(b => b.id == mojId)).map(c => c.enrollmentCourse.id)
         
-        let examEnrollmentId = this.responseData.find(ek => ek.enrollmentCourse.id == enrollmentCourseId)
-        .examEnrollment.id
-
+        let examEnrollmentId = this.responseData
+        .find(ek => ek.examsAvailable.find(en => en.id == examId)).examEnrollment.id
+        alert(examEnrollmentId)
+        //.map(c => c.enrollmentCourse.id)
         
         //.map(e => e.examsAvailable)
         // .find(em => {
@@ -107,6 +114,7 @@ export default {
             return a.concat(c)
           }).map((x)=>{
           console.log(x)
+          let isEnrolled = this.responseData.find(ek => ek.examsAvailable.find(en => en.id == x.id)).enrolled
           var r = {
             id: x.id, // examId
             course: x.courseExecution.course.name,
@@ -116,7 +124,7 @@ export default {
             enrolled: (x.enrolled) ? `Yes` : '',
             asking: x.asking,
             location: x.location,
-            // studyYear: x.courseExecution.year.toString
+            studyYear: (x.courseExecution.year) ? x.courseExecution.year.toString : ''
           }
           return r;
         });
