@@ -6,7 +6,8 @@
     <div>
       <img src="https://petra-education.eu/wp-content/uploads/sites/29/2016/07/111.png" class="img-thumbnail">
     </div>
-
+        here-{{vpisniList.datumRojstva}}
+        {{vpisniList.emso.substring(9,12)}}
     <div v-if="errors.length">
       <div class="alert alert-danger">Med vnašanjem podatkov je prišlo do naslednjih napak:
         <ul>
@@ -32,7 +33,7 @@
     <b-row class="my-1">
       <b-col sm="2"><label>Datum rojstva: </label></b-col>
       <b-col sm="4">
-        <b-form-input v-model="vpisniList.datumRojstva" :state="null" type="date" required/>
+        <b-form-input v-model="izracunajDatumRojstva" :state="null" type="date" disabled/>
       </b-col>
       <b-col sm="2"><label>Kraj rojstva: </label></b-col>
       <b-col sm="4">
@@ -54,7 +55,7 @@
     <b-row class="my-1">
       <b-col sm="2"><label>Spol: </label></b-col>
       <b-col sm="4">
-        <b-form-select v-model="vpisniList.spol" :options="['Moški', 'Ženska']" :state="null" type="text" required/>
+        <b-form-select v-model="izracunajSpol" :options="['Moški', 'Ženska']" :state="null" type="text" disabled/>
       </b-col>
       <b-col sm="2"><label>EMŠO: </label></b-col>
       <b-col sm="4">
@@ -1336,7 +1337,28 @@ export default {
       regija: false
     }
   },
+  watch: {
+    watchEmso (newVal, oldVal) {
+      this.errors = []
+      this.validEmso()
+    }
+  },
   computed: {
+    watchEmso () {
+      return this.vpisniList.emso
+    },
+    izracunajSpol () {
+      let base = this.vpisniList.emso.substring(9,12)
+      let spol = (base >= 0 && base <= 499) ? 'Moški' : 'Ženska'
+      this.vpisniList.spol = spol
+      return spol
+    },
+    izracunajDatumRojstva () {
+      let base = this.vpisniList.emso.substring(0,7)
+      let datumRoj = `1${base.substring(4,7)}-${base.substring(2,4)}-${base.substring(0,2)}`
+      this.vpisniList.datumRojstva = datumRoj
+      return datumRoj
+    },
     isDisabled1() {
       if (this.vpisniList.drzava != "Slovenija" && this.vpisniList.drzava != "") {
         this.vpisniList.regija = ""
@@ -1427,10 +1449,10 @@ export default {
         var bday = birthDay.split("-")[2]
         var bmonth = birthDay.split("-")[1]
         var byear = birthDay.split("-")[0].substring(1,4)
-        if (bday != emso[0]+emso[1] || bmonth != emso[2]+emso[3] || byear != emso[4]+emso[5]+emso[6]) {
-          this.errors.push("Vpisana EMŠO se ne ujema z datumom rojstva.")
-          return;
-        }
+        // if (bday != emso[0]+emso[1] || bmonth != emso[2]+emso[3] || byear != emso[4]+emso[5]+emso[6]) {
+        //   this.errors.push("Vpisana EMŠO se ne ujema z datumom rojstva.")
+        //   return;
+        // }
         return;
       }
       else this.errors.push("Vpisana EMŠO je neveljavna.");
