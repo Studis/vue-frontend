@@ -37,7 +37,6 @@
         <b-dropdown-item href="#" v-if="getRole === 'LECTURER' || getRole === 'CLERK' || getRole === 'ADMIN'" @click.prevent="goToCourses">Predmeti</b-dropdown-item>
         <b-dropdown-item href="#" v-if="getRole === 'ADMIN' || getRole === 'CLERK'" @click.prevent="goToStudentsImport">Uvoz študentov</b-dropdown-item>
         <b-dropdown-item href="#" v-if="getRole === 'ADMIN' || getRole === 'CLERK'" @click.prevent="goToEnrollmentTokens">Žetoni za vpis</b-dropdown-item>
-        <b-dropdown-item href="#" v-if="getRole === 'Lecturer' || getRole === 'CLERK'" @click.prevent="goToAddExam">Vnos izpitnih rokov</b-dropdown-item>
         <b-dropdown-item href="#" @click.prevent="signOut">Odjava</b-dropdown-item>
       </b-nav-item-dropdown>
     </b-navbar-nav>
@@ -84,9 +83,6 @@ export default {
     },
     goToEnrollmentTokens () {
       this.$router.push({name: 'enrollmentTokens'})
-    },
-    goToAddExam () {
-      this.$router.push({name: 'addExam'})
     },
     setGetAuth () {
       axios.get(`students/me`).then((response) => {
