@@ -60,7 +60,7 @@ export default {
         //   return em
         // })// .map(ev => ev.scheduledAt)
         // alert(JSON.stringify(examId))
-        console.log(examId)
+        console.log('eid', examId)
         axios.post('/exams/enrollments', { "enrollmentCourseId": enrollmentCourseId, "examId": examId })
         .then(function(response){
           if (response.data.message) {
@@ -103,15 +103,20 @@ export default {
       axios.get('courses/me').then((response) => {
         this.responseData = response.data
         console.log('ta',response.data)
-        var tableData = response.data.map((x)=>{
+        var tableData = response.data.map(xx => xx.examsAvailable).reduce((a,c) => {
+            return a.concat(c)
+          }).map((x)=>{
+          console.log(x)
           var r = {
-            id: x.enrollmentCourse.id,
-            course: x.enrollmentCourse.courseExecution.course.name,
-            professor: x.enrollmentCourse.courseExecution.lecturer1.name + " " + x.enrollmentCourse.courseExecution.lecturer1.surname || x.enrollmentCourse.courseExecution.lecturer2.name + " " + x.enrollmentCourse.courseExecution.lecturer2.surname || x.enrollmentCourse.courseExecution.lecturer3.name + " " + x.enrollmentCourse.courseExecution.lecturer3.surname,
-            date: this.$options.filters.datum(x.examsAvailable[0].scheduledAt),
-            mark: ((x.passed) ? `${x.examEnrollment.mark}` : ''),
+            id: x.id, // examId
+            course: x.courseExecution.course.name,
+            professor: x.courseExecution.lecturer1.name + " " + x.courseExecution.lecturer1.surname || x.courseExecution.lecturer2.name + " " + x.courseExecution.lecturer2.surname || x.courseExecution.lecturer3.name + " " + x.courseExecution.lecturer3.surname,
+            date: this.$options.filters.datum(x.scheduledAt),
+            mark: ((x.passed) ? `${x.mark}` : ''),
             enrolled: (x.enrolled) ? `Yes` : '',
-            studyYear: x.enrollmentCourse.enrollment.curriculum.year.toString
+            asking: x.asking,
+            location: x.location,
+            // studyYear: x.courseExecution.year.toString
           }
           return r;
         });
