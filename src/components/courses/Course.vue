@@ -157,7 +157,7 @@ export default {
       }
       axios.post('/exams/scheduled', postdata)
       .then(response => {
-        alert(response.data.message || "Successfully scheduled exam!")
+        if (response.data.message) alert(response.data.message)
         this.getScheduledExams()
       }).catch((err) => {
         alert(err.message)
