@@ -44,7 +44,10 @@ export default {
     axios.get(`courses/`)
       .then((response) => {
         var tableData = response.data.map((x)=>{
-            var r = {course: x.course.name, id: x.id};
+            var r = {id: x.id};
+            r["Course number"] = x.course.id;
+            r.course = x.course.name;
+            r["Enrollments"] = x.enrollmentsCount;
             if(x.module){
               r.module = x.module.name;
               r.year = x.module.curriculum.year.toString;
