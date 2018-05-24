@@ -82,7 +82,6 @@ export default {
         
         let examEnrollmentId = this.responseData
         .find(ek => ek.examsAvailable.find(en => en.id == examId)).examEnrollment.id
-        alert(examEnrollmentId)
         //.map(c => c.enrollmentCourse.id)
         
         //.map(e => e.examsAvailable)
@@ -114,20 +113,23 @@ export default {
             return a.concat(c)
           }).map((x)=>{
           console.log(x)
-          let isEnrolled = this.responseData.find(ek => ek.examsAvailable.find(en => en.id == x.id)).enrolled
+          // let passed = this.responseData.find(ek => ek.passed)
+          // let mark = this.responseData.find(ek => ek.examsAvailable.find(en => en.id == x.id)).examEnrollment.mark
           var r = {
             id: x.id, // examId
             course: x.courseExecution.course.name,
             professor: x.courseExecution.lecturer1.name + " " + x.courseExecution.lecturer1.surname || x.courseExecution.lecturer2.name + " " + x.courseExecution.lecturer2.surname || x.courseExecution.lecturer3.name + " " + x.courseExecution.lecturer3.surname,
             date: this.$options.filters.datum(x.scheduledAt),
-            mark: ((x.passed) ? `${x.mark}` : ''),
-            enrolled: (x.enrolled) ? `Yes` : '',
+            mark: ((x.examEnrollment && x.examEnrollment.mark) ? `${x.examEnrollment.mark}` : ''),
+            enrolled: (x.examEnrollment && x.examEnrollment.status == null) ? `Yes` : '', // enrolled has to be checked like this!!
             asking: x.asking,
             location: x.location,
             studyYear: (x.courseExecution.year) ? x.courseExecution.year.toString : ''
           }
+          
           return r;
         });
+        // tableData = tableData.filter(td => !(td.mark && td.mark > 5)) // filter to only those that have no mark
         this.$set(this.content, 'content', tableData)
         this.$set(this.content, 'fieldNames', null)
         // this.content = {
