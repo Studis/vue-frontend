@@ -33,7 +33,6 @@
         </template>
         <b-dropdown-item href="#" v-if="getRole === 'STUDENT'" @click.prevent="goToProfile">Osebni podatki študenta</b-dropdown-item>
         <b-dropdown-item href="#" v-if="getRole === 'CLERK'" @click.prevent="goToStudents">Iskanje študentov</b-dropdown-item>
-        <b-dropdown-item href="#" v-if="getRole === 'STUDENT'" @click.prevent="goToEnrollment">Vpisni list</b-dropdown-item>
         <b-dropdown-item href="#" v-if="getRole === 'LECTURER' || getRole === 'CLERK' || getRole === 'ADMIN'" @click.prevent="goToCourses">Predmeti</b-dropdown-item>
         <b-dropdown-item href="#" v-if="getRole === 'ADMIN' || getRole === 'CLERK'" @click.prevent="goToStudentsImport">Uvoz študentov</b-dropdown-item>
         <b-dropdown-item href="#" v-if="getRole === 'ADMIN' || getRole === 'CLERK'" @click.prevent="goToEnrollmentTokens">Žetoni za vpis</b-dropdown-item>
@@ -71,9 +70,6 @@ export default {
     },
     goToStudents () {
       this.$router.push({name: 'search-students'})
-    },
-    goToEnrollment () {
-      this.$router.push({name: 'enrollment'})
     },
     goToCourses () {
       this.$router.push({name: 'courses'})

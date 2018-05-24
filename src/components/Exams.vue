@@ -52,7 +52,7 @@ export default {
   },
   methods: {
     goToEnrollment(data) {
-      this.$router.push({name: 'enrollment'})
+      this.$router.push({name: 'enrollment', params: { id: data.item.id } })
     }
   },
   mounted() {

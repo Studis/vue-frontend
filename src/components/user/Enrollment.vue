@@ -154,7 +154,7 @@
     <b-row class="my-1">
       <b-col sm="2"><label>Vrsta študija: </label></b-col>
       <b-col sm="10">
-        <b-form-select v-model="vpisniList.vrstaStudija" :options="course_types" type="text" required/>
+        <b-form-select :value="getStudyType" :options="course_types" type="text" required disabled/>
       </b-col>
     </b-row>
 
@@ -1269,16 +1269,16 @@ export default {
         '8360,	Žužemberk',
       ],
       courses: [
-        '1001001 Multimedija UN-I. ST',
-        '1000407 Računalništvo in matematika UN-I. ST',
-        '1000468 Računalništvo in informatika UN-I. ST',
-        '1000469 Upravna informatika UN-I. ST',
-        '1000470 Računalništvo in informatika VS-I. ST',
-        '1000471 Računalništvo in informatika MAG-II. ST',
-        '1000472 Kognitivna znanost MAG-II. ST',
-        '1000934 Računalništvo in matematika MAG-II. ST',
-        '7002801 Pedagoško računalništvo in informatika MAG-II. ST',
-        '1000474 Računalništvo in informatika DR-III. ST',
+        '1001001 Multimedija UNI',
+        '1000407 Računalništvo in matematika UNI',
+        '1000475 Računalništvo in informatika UNI',
+        '1000469 Upravna informatika UNI',
+        '1000470 Računalništvo in informatika VS',
+        '1000471 Računalništvo in informatika MAG',
+        '1000472 Kognitivna znanost MAG',
+        '1000934 Računalništvo in matematika MAG',
+        '7002801 Pedagoško računalništvo in informatika MAG',
+        '1000474 Računalništvo in informatika DR',
       ],
       course_types: [
         '16203 Visokošolska strokovna izobrazba (prva bolonjska stopnja)',
@@ -1287,17 +1287,17 @@ export default {
         '18202 Doktorat znanosti (tretja bolonjska stopnja)',
       ],
       enrollment_types: [
-        '01 Prvi vpis v letnik/dodatno leto',
-        '02 Ponavljanje letnika',
-        '03 Nadaljevanje letnika',
-        '04 Podaljšanje statusa študenta',
-        '05 Vpis po merilih za prehode v višji letnik',
-        '06 Vpis v semester skupnega št. programa',
-        '07 Vpis po merilih za prehode v isti letnik',
+        '1 Prvi vpis v letnik/dodatno leto',
+        '2 Ponavljanje letnika',
+        '3 Nadaljevanje letnika',
+        '4 Podaljšanje statusa študenta',
+        '5 Vpis po merilih za prehode v višji letnik',
+        '6 Vpis v semester skupnega št. programa',
+        '7 Vpis po merilih za prehode v isti letnik',
       ],
-      study_year: ['1.', '2.', '3.', '4.', '5.', '6.', 'dodatno leto',],
-      study_type: ['1 redni', '3 izredni'],
-      study_form: ['1 na lokaciji', '2 na daljavo', '3 e-študij'],
+      study_year: ['1', '2', '3', '4', '5', '6', 'dodatno leto',],
+      study_type: ['1 Redni', '3 Izredni'],
+      study_form: ['1 Na lokaciji', '2 Na daljavo', '3 E-študij'],
       studyYears: studyYears,
       vpisniList: {
         vpisnaStevilka: '',
@@ -1332,6 +1332,7 @@ export default {
         soglasjeKnjiz: '',
         soglasjeObves: '',
       },
+      pravica: '',
       errors: [],
       regija: false
     }
@@ -1357,6 +1358,12 @@ export default {
       let datumRoj = `1${base.substring(4,7)}-${base.substring(2,4)}-${base.substring(0,2)}`
       this.vpisniList.datumRojstva = datumRoj
       return datumRoj
+    },
+    getStudyType() {
+      if(this.courses.indexOf(this.vpisniList.studijskiProgram) < 4) return this.course_types[1]
+      else if(this.courses.indexOf(this.vpisniList.studijskiProgram) == 4) return this.course_types[0]
+      else if(this.courses.indexOf(this.vpisniList.studijskiProgram) == 9) return this.course_types[3]
+      else return this.course_types[2]
     },
     isDisabled1() {
       if (this.vpisniList.drzava != "Slovenija" && this.vpisniList.drzava != "") {
@@ -1485,6 +1492,22 @@ export default {
         this.vpisniList.stalnoPrebivalisceNaslov = response.data.permanent.placeOfResidence;
         this.vpisniList.zacasnoPrebivalisceNaslov = response.data.temporary.placeOfResidence;
         this.vpisniList.telefonskaStevilka = response.data.phoneNumber;
+        axios.get(`tokens/${userid}`)
+        .then((response) => {
+          for(var x = 0; x < response.data.length; x++) {
+            if(response.data[x].id == this.$route.params.id) {
+              this.vpisniList.studijskiProgram = response.data[x].program.id + " " + response.data[x].program.title;
+              this.vpisniList.letnikStudija = response.data[x].studyYear.id;
+              this.vpisniList.vrstaVpisa = response.data[x].enrollmentType.id + " " + response.data[x].enrollmentType.name;
+              this.vpisniList.nacinStudija = response.data[x].studyType.id + " " + response.data[x].studyType.name;
+              this.vpisniList.oblikaStudija = response.data[x].studyForm.id + " " + response.data[x].studyForm.name;
+              this.vpisniList.studijskoLetoPrvegaVpisaVTaProgram = "2018/2019"
+              this.pravica = response.data[x].freeChoice;
+            }
+          }
+        }).catch((err) => {
+          console.log(err)
+        })
       }).catch((err) => {
         console.log(err)
       })

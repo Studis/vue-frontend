@@ -68,12 +68,13 @@ export default new Router({
       }
     },
     {
-      path: '/enrollment',
+      path: '/enrollment/:id',
       name: 'enrollment',
       component: Enrollment,
       meta: {
         forAuth: true
-      }
+      },
+      props: true
     },
     {
       path: '/token/password/set/:token',
