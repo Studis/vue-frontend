@@ -109,7 +109,7 @@ export default {
         { key: 'enrollmentType.name', label: 'Vrsta vpisa', sortable: true },
         { key: 'studyType.name', label: 'Način študija', sortable: true },
         { key: 'studyForm.name', label: 'Oblika študija', sortable: true },
-        { key: 'freeChoice', label: 'Pravica do proste izbire predmetov', sortable: true },
+        { key: 'freeChoice', label: 'Prosta izbira predmetov', sortable: true },
         { key: 'edit_token', label: ''}
       ],
       tokens: [],
@@ -161,11 +161,12 @@ export default {
       })
     },
     editToken() {
-      axios.put(`tokens/${this.$route.params.id}`, {
+      console.log(this.id)
+      axios.put(`tokens/${this.id}`, {
         program: {
           id: this.studijski_program.split(" ")[0]
         },
-        status: "ACTIVE",
+        status: "OPEN",
         studyYear: {
           id: this.letnik
         },
@@ -237,6 +238,6 @@ export default {
 
 <style lang="scss">
 .my {
-  font-size: 0.75em;
+  font-size: 0.8em;
 }
 </style>

@@ -82,7 +82,7 @@ export default {
       vrsta_vpisa: '',
       nacin_studija: '',
       oblika_studija: '',
-      pravica: '',
+      pravica: false,
       courses: [
         '1001001 Multimedija UNI',
         '1000407 Računalništvo in matematika UNI',
@@ -129,7 +129,7 @@ export default {
         { key: 'enrollmentType.name', label: 'Vrsta vpisa', sortable: true },
         { key: 'studyType.name', label: 'Način študija', sortable: true },
         { key: 'studyForm.name', label: 'Oblika študija', sortable: true },
-        { key: 'freeChoice', label: 'Pravica do proste izbire predmetov', sortable: true },
+        { key: 'freeChoice', label: 'Prosta izbira predmetov', sortable: true },
       ],
       tokens: [],
       currentPage: 1,
@@ -171,6 +171,7 @@ export default {
             this.vrsta_vpisa = response.data[x].enrollmentType.id + " " + response.data[x].enrollmentType.name;
             this.nacin_studija = response.data[x].studyType.id + " " + response.data[x].studyType.name;
             this.oblika_studija = response.data[x].studyForm.id + " " + response.data[x].studyForm.name;
+            this.pravica = response.data[x].freeChoice;
           }
         }
       })
@@ -182,9 +183,9 @@ export default {
     newToken() {
       axios.post(`tokens/${this.id}`, {
         program: {
-          id: this.studijski_program.split(" ")[0]
+          id: 1000475
         },
-        status: "ACTIVE",
+        status: "OPEN",
         studyYear: {
           id: this.letnik
         },
@@ -200,6 +201,7 @@ export default {
         freeChoice: this.pravica
       })
       .then(function (response) {
+        console.log(this.pravica)
         console.log(response);
       })
       .catch(function (error) {
