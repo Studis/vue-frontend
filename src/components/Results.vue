@@ -249,7 +249,7 @@ export default {
       items: [],
       course: {},
       currentPage: 1,
-      perPage: 5,
+      perPage: 8,
       pageOptions: [5, 10, 15],
       filter: null,
       totalRows: 0,

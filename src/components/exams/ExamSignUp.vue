@@ -1,5 +1,6 @@
 <template>
   <div>
+
     <div v-if="getRole !== 'ADMIN' && getRole !== 'LECTURER' && getRole !== 'CLERK'">
       <results 
         title="Exams" 
@@ -47,12 +48,15 @@ export default {
     btnClicked(el) {
       this.rowData = el
       if(el.actionName == "Apply") {
-        var enrollmentCourseId = el.clickedItem.id
+        let examId = el.clickedItem.id
         var examDateSelected = el.clickedItem.date
-        console.log(examDateSelected)
+        // filter(a => a.examsAvailable.filter(b => b.id == mojId)).map(c => c.enrollmentCourse.id)
         
-        let examId = this.responseData.find(ek => ek.enrollmentCourse.id == enrollmentCourseId)
-        .examsAvailable[0].id
+        let enrollmentCourseId = this.responseData
+        .find(ek => ek.examsAvailable.find(en => en.id == examId)).enrollmentCourse.id
+        //.map(c => c.enrollmentCourse.id)
+
+        // alert(JSON.stringify(`examId ${examId} enrollmentCourseId ${JSON.stringify(enrollmentCourseId)}`))
         //.map(e => e.examsAvailable)
         // .find(em => {
         //   console.log(examDateSelected + "," + this.$options.filters.datum(em.scheduledAt))
@@ -60,7 +64,7 @@ export default {
         //   return em
         // })// .map(ev => ev.scheduledAt)
         // alert(JSON.stringify(examId))
-        console.log(examId)
+        console.log('eid', examId)
         axios.post('/exams/enrollments', { "enrollmentCourseId": enrollmentCourseId, "examId": examId })
         .then(function(response){
           if (response.data.message) {
@@ -72,11 +76,13 @@ export default {
           alert(err.message)
         });  
       } else if (el.actionName == 'Delete application') {
-        var enrollmentCourseId = el.clickedItem.id
+        let examId = el.clickedItem.id
+        var examDateSelected = el.clickedItem.date
+        // filter(a => a.examsAvailable.filter(b => b.id == mojId)).map(c => c.enrollmentCourse.id)
         
-        let examEnrollmentId = this.responseData.find(ek => ek.enrollmentCourse.id == enrollmentCourseId)
-        .examEnrollment.id
-
+        let examEnrollmentId = this.responseData
+        .find(ek => ek.examsAvailable.find(en => en.id == examId)).examEnrollment.id
+        //.map(c => c.enrollmentCourse.id)
         
         //.map(e => e.examsAvailable)
         // .find(em => {
@@ -103,18 +109,27 @@ export default {
       axios.get('courses/me').then((response) => {
         this.responseData = response.data
         console.log('ta',response.data)
-        var tableData = response.data.map((x)=>{
+        var tableData = response.data.map(xx => xx.examsAvailable).reduce((a,c) => {
+            return a.concat(c)
+          }).map((x)=>{
+          console.log(x)
+          // let passed = this.responseData.find(ek => ek.passed)
+          // let mark = this.responseData.find(ek => ek.examsAvailable.find(en => en.id == x.id)).examEnrollment.mark
           var r = {
-            id: x.enrollmentCourse.id,
-            course: x.enrollmentCourse.courseExecution.course.name,
-            professor: x.enrollmentCourse.courseExecution.lecturer1.name + " " + x.enrollmentCourse.courseExecution.lecturer1.surname || x.enrollmentCourse.courseExecution.lecturer2.name + " " + x.enrollmentCourse.courseExecution.lecturer2.surname || x.enrollmentCourse.courseExecution.lecturer3.name + " " + x.enrollmentCourse.courseExecution.lecturer3.surname,
-            date: this.$options.filters.datum(x.examsAvailable[0].scheduledAt),
-            mark: ((x.passed) ? `${x.examEnrollment.mark}` : ''),
-            enrolled: (x.enrolled) ? `Yes` : '',
-            studyYear: x.enrollmentCourse.enrollment.curriculum.year.toString
+            id: x.id, // examId
+            course: x.courseExecution.course.name,
+            professor: x.courseExecution.lecturer1.name + " " + x.courseExecution.lecturer1.surname || x.courseExecution.lecturer2.name + " " + x.courseExecution.lecturer2.surname || x.courseExecution.lecturer3.name + " " + x.courseExecution.lecturer3.surname,
+            date: this.$options.filters.datum(x.scheduledAt),
+            mark: ((x.examEnrollment && x.examEnrollment.mark) ? `${x.examEnrollment.mark}` : ''),
+            enrolled: (x.examEnrollment && x.examEnrollment.status == null) ? `Yes` : '', // enrolled has to be checked like this!!
+            asking: x.asking,
+            location: x.location,
+            studyYear: (x.courseExecution.year) ? x.courseExecution.year.toString : ''
           }
+          
           return r;
         });
+        // tableData = tableData.filter(td => !(td.mark && td.mark > 5)) // filter to only those that have no mark
         this.$set(this.content, 'content', tableData)
         this.$set(this.content, 'fieldNames', null)
         // this.content = {
