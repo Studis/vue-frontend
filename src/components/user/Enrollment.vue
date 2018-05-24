@@ -6,8 +6,7 @@
     <div>
       <img src="https://petra-education.eu/wp-content/uploads/sites/29/2016/07/111.png" class="img-thumbnail">
     </div>
-        here-{{vpisniList.datumRojstva}}
-        {{vpisniList.emso.substring(9,12)}}
+ 
     <div v-if="errors.length">
       <div class="alert alert-danger">Med vnašanjem podatkov je prišlo do naslednjih napak:
         <ul>
