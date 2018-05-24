@@ -74,7 +74,13 @@ declare module 'vue/types/vue' {
         username: this.username,
         password: this.password
       }))
-      axios.get('students/me').then(() => {
+      axios.get('students/me').then((d) => {
+
+        if (!d) {
+          localStorage.removeItem('token')
+          this.$router.push({ name: 'login' })
+          alert('Login failed!')
+        }
         this.$router.push({name: 'home'})
         this.setGetAuth()
         this.$store.commit('cAuth', localStorage.getItem('token'))

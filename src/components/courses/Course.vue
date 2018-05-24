@@ -185,7 +185,7 @@ export default {
           r["study type"] = x.enrollment.studyType.name;
           return r;
         });
-        console.log(students);
+        // console.log(students);
         this.content = {content: students, fieldNames: false};
       })
       .catch((error) => {
@@ -195,7 +195,7 @@ export default {
       axios.get(`exams/enrollments/${this.id}`)
       .then((response) => {
         let tableData = response.data.map((x)=>{
-          console.log('hej ', x)
+          // console.log('hej ', x)
           let r = {
             id: x.id,
             surname: x.enrollment.enrollment.token.student.surname,

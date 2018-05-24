@@ -70,7 +70,6 @@ export default {
   watch: {
     content: {
       handler: function(newVal, oldVal) {
-        console.log("updated")
         var content = JSON.parse(JSON.stringify(newVal.content));
         var fieldNames = newVal.fieldNames;
         var columns = {};
@@ -86,7 +85,7 @@ export default {
             var v1 = a[columnName];
             var v2 = b[columnName];
             if(v1 != v2){
-              console.log(columnName+": "+v1+" vs "+v2)
+              // console.log(columnName+": "+v1+" vs "+v2)
               return String(v1).localeCompare(String(v2));
             }
           }

@@ -89,6 +89,8 @@ export default {
         this.$store.commit('updateRole', response.data.role)
         this.$store.commit('updateUserId', response.data.id)
         return response.data.role
+      }).catch((e) => {
+        this.isAuthorised = false
       })
     }
   },
@@ -106,6 +108,7 @@ export default {
       set (val) {
         if (!val) {
           localStorage.removeItem('token')
+          this.$router.push({ name: 'login' })
         }
         if (val) this.setGetAuth()
       }
