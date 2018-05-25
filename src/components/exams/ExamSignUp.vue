@@ -148,7 +148,7 @@ export default {
             location: x.location,
             studyYear: (x.courseExecution.year) ? x.courseExecution.year.toString : '',
             attemptNo: (x.examEnrollment) ? x.examEnrollment.totalExamAttempts + '-' + x.examEnrollment.returnedExamAttempts + '=' + (x.examEnrollment.totalExamAttempts - x.examEnrollment.returnedExamAttempts)  : '',
-
+            examTerm: (x.examTerm) ? x.examTerm : ''
           }
           
           return r;
