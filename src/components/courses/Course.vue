@@ -10,6 +10,8 @@
       :details="details"
       entityName="student"
       sortByField="surname"
+      v-on:b-click-id="showStudent"
+      :actions="[{name: 'Open', classColor: 'btn-danger'}]"
       v-model="content"></results>
 
     <button @click.prevent="load(true)">Duplicate</button>
@@ -117,6 +119,9 @@ export default {
     }
   },
   methods: {
+    showStudent (s) {
+      this.$router.push({ name: 'student', params: {id: s.clickedItem.id} })
+    },
     changeTerm (e) {
       this.examTerm = e
     },
