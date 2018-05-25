@@ -18,10 +18,14 @@
       title="Exam applications"
       :indexes="true"
       :content="examEnrollments"
-      entityName="exam"
+      entityName="examEnrollment"
       v-on:b-click-id="btnClicked"
+      :details="details"
       v-model="examEnrollments"
       >
+      <b-dropdown id="ddown1" :text="selectedExamTerm" class="m-md-2" >
+          <b-dropdown-item @click.prevent="updateExamTerms(item)" :key="item" v-for="item in allExamTerms">{{item}}</b-dropdown-item>
+         </b-dropdown>
       </results>
       <br><br><br><br>
       <results 
@@ -35,7 +39,8 @@
       v-model="scheduledExams"
       >
       </results>
-     <b-btn variant="success" @click.prevent="show_addExam(data)">Dodaj</b-btn>
+     <b-btn class="float-right" variant="success" @click.prevent="show_addExam(data)">Add new exam term</b-btn>
+     <div class="clearfix"></div>
 
 
 
@@ -186,6 +191,12 @@ export default {
       this.examId = exId.clickedItem.id
       this.$refs.zbrisiRok.show()
     },
+    updateExamTerms (ele) {
+      this.examEnrollments = {
+        content: this.originalContent.content.filter(el => el.examTerm == ele)
+      }
+      this.selectedExamTerm = this.baseText + ele
+    },
     load(duplicate) {
       axios.get(`courses/${this.id}/enrollments`)
       .then((response) => {
@@ -224,6 +235,7 @@ export default {
             location: x.exam.location,
             asking: x.exam.asking,
             attemptNo: x.totalExamAttempts + '-' + x.returnedExamAttempts + '=' + (x.totalExamAttempts - x.returnedExamAttempts),
+            examTerm: x.exam.examTerm
             // course: x.enrollmentCourse.courseExecution.course.name,
             // professor: x.enrollmentCourse.courseExecution.lecturer1.name + " " + x.enrollmentCourse.courseExecution.lecturer1.surname || x.enrollmentCourse.courseExecution.lecturer2.name + " " + x.enrollmentCourse.courseExecution.lecturer2.surname || x.enrollmentCourse.courseExecution.lecturer3.name + " " + x.enrollmentCourse.courseExecution.lecturer3.surname,
             // date: this.$options.filters.datum(x.examsAvailable[0].scheduledAt)
@@ -234,6 +246,9 @@ export default {
           content: tableData,
           fieldNames: null
         };
+        this.originalContent = this.examEnrollments
+        this.allExamTerms = this.examEnrollments.content.map(e => e.examTerm).filter((value,index,self) => self.indexOf(value)===index).filter(el => el != null)
+        this.selectedExamTerm = this.baseText
       })
       .catch((error) => {
         console.log(error);
@@ -286,6 +301,10 @@ export default {
   },
   data() {
     return {
+      allExamTerms: [],
+      selectedExamTerm: '',
+      originalContent: {},
+      baseText: 'Select exam term: ',
       beforeScheduleDelete: 'Ali ste prepričani, da želite izpitni rok.',
       onFailScheduleDelete: 'Za ta izpit še obstajajo prijave! Zato izpitnega roka ni mogoče zbrisati',
       examDate: '',

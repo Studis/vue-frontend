@@ -11,6 +11,9 @@
         v-on:b-click-id="btnClicked"
         :actions="[{name: 'Apply',classColor: 'btn-success',vhide: 'enrolled'},{name: 'Delete application',classColor: 'btn-danger',vshow: 'enrolled'}]"
         >
+         <b-dropdown id="ddown1" :text="selectedExamTerm" class="m-md-2" >
+          <b-dropdown-item @click.prevent="updateExamTerms(item)" :key="item" v-for="item in allExamTerms">{{item}}</b-dropdown-item>
+         </b-dropdown>
         <!-- dropdown: {id: 'examDates',items: [{name: 'dfsl',id: 1},{name: 'fds', id: 2}]}} -->
         </results>
     </div>
@@ -41,7 +44,11 @@ export default {
       details:[],
       rowData: {},
       responseData: {},
-      deletionCourse: { message: '', data: {}}
+      deletionCourse: { message: '', data: {}},
+      allExamTerms: [],
+      selectedExamTerm: '',
+      originalContent: {},
+      baseText: 'Select exam term: '
     }
   },
    components: {
@@ -53,6 +60,12 @@ export default {
     ])
   },
   methods: {
+    updateExamTerms (ele) {
+      this.content = {
+        content: this.originalContent.content.filter(el => el.examTerm == ele)
+      }
+      this.selectedExamTerm = this.baseText + ele
+    },
     deleteExamApplicaton(examEnrollmentId) {
       axios.post('/exams/enrollments/cancel', { "examEnrollmentId": examEnrollmentId })
         .then((response) => {
@@ -156,6 +169,11 @@ export default {
         // tableData = tableData.filter(td => !(td.mark && td.mark > 5)) // filter to only those that have no mark
         this.$set(this.content, 'content', tableData)
         this.$set(this.content, 'fieldNames', null)
+        this.originalContent = this.content
+        this.allExamTerms = this.content.content.map(e => e.examTerm).filter((value,index,self) => self.indexOf(value)===index).filter(el => el != null)
+        this.selectedExamTerm = this.baseText
+        // this.updateExamTerms(this.allExamTerms[this.allExamTerms.length-1])
+
         // this.content = {
         //   content: tableData,
         //   fieldNames: null
