@@ -108,7 +108,7 @@ export default {
       }
       axios.delete(`/exams/scheduled/erase/${this.examId}`)
       .then(response => {
-        if (response.data.message) alert(response.data.message)
+        if (!response.data.message) alert('Users are enrolled in this exam!')
         this.getScheduledExams()
       }).catch((err) => {
         alert(err.message)

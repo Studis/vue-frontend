@@ -14,6 +14,13 @@
         <!-- dropdown: {id: 'examDates',items: [{name: 'dfsl',id: 1},{name: 'fds', id: 2}]}} -->
         </results>
     </div>
+    <b-modal ref="eraseExam" size="lg" @ok="acceptOffer">
+      <b-container fluid>
+        <b-row>
+        <h3>Deletion of this exam term for {{deletionCourse.message}} was requested, do you want to delete your application in order to allow it!</h3>
+        </b-row>
+      </b-container>    
+    </b-modal>
   
   </div>
 </template>
@@ -33,7 +40,8 @@ export default {
       },
       details:[],
       rowData: {},
-      responseData: {}
+      responseData: {},
+      deletionCourse: { message: '', data: {}}
     }
   },
    components: {
@@ -45,6 +53,22 @@ export default {
     ])
   },
   methods: {
+    deleteExamApplicaton(examEnrollmentId) {
+      axios.post('/exams/enrollments/cancel', { "examEnrollmentId": examEnrollmentId })
+        .then((response) => {
+          if (response.data.message) {
+            alert(response.data.message)
+          } else {
+            alert('Successfully deleted application!')
+          }
+          this.prepareComponent()
+        }).catch((err) => {
+          alert(err.message)
+        });  
+    },
+    acceptOffer () {
+      this.deleteExamApplicaton(this.deletionCourse.data)
+    },
     btnClicked(el) {
       this.rowData = el
       if(el.actionName == "Apply") {
@@ -92,18 +116,8 @@ export default {
         // })// .map(ev => ev.scheduledAt)
         // alert(JSON.stringify(examId))
         console.log(examEnrollmentId)
-        axios.post('/exams/enrollments/cancel', { "examEnrollmentId": examEnrollmentId })
-        .then(function(response){
-          if (response.data.message) {
-            alert(response.data.message)
-          } else {
-            alert('Successfully deleted application!')
-          }
-        }).catch((err) => {
-          alert(err.message)
-        });  
+        this.deleteExamApplicaton(examEnrollmentId)
       }
-      this.prepareComponent()
     },
     prepareComponent () {
       axios.get('courses/me').then((response) => {
@@ -115,6 +129,14 @@ export default {
           console.log(x)
           // let passed = this.responseData.find(ek => ek.passed)
           // let mark = this.responseData.find(ek => ek.examsAvailable.find(en => en.id == x.id)).examEnrollment.mark
+          
+        
+          if (x.examEnrollment && x.examEnrollment.status == null && x.deletionRequestedByUserId != null) {
+            this.deletionCourse.data = x.examEnrollment.id
+            this.deletionCourse.message = x.courseExecution.course.name + " at " + this.$options.filters.datum(x.scheduledAt)
+            this.$refs.eraseExam.show()
+          }
+
           var r = {
             id: x.id, // examId
             course: x.courseExecution.course.name,
