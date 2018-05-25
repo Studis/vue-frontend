@@ -74,7 +74,7 @@ export default {
       courses: [
         '1001001 Multimedija UNI',
         '1000407 Računalništvo in matematika UNI',
-        '1000468 Računalništvo in informatika UNI',
+        '1000475 Računalništvo in informatika UNI',
         '1000469 Upravna informatika UNI',
         '1000470 Računalništvo in informatika VS',
         '1000471 Računalništvo in informatika MAG',
