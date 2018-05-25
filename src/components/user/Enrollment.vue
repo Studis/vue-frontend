@@ -212,7 +212,7 @@
       <b-col sm="8">
         <b-table :items="predmeti" :fields="polja"/>
         <div class="col-md-4">
-            <b-button :variant="ects_button">
+            <b-button :variant="btnClass">
                 Število kreditnih točk: {{ ects_sum }} / 60
             </b-button>
         </div>
@@ -1339,11 +1339,18 @@ export default {
   },
   watch: {
     watchEmso (newVal, oldVal) {
-      this.errors = []
-      this.validEmso()
+      this.validation()
+    },
+    ects_button (newVal, oldVal) {
+      
+      this.validation()
     }
   },
   computed: {
+    btnClass () {
+      if (this.ects_sum < 60 || this.ects_sum > 60) return 'danger'
+      else return 'success'
+    },
     watchEmso () {
       return this.vpisniList.emso
     },
@@ -1385,6 +1392,17 @@ export default {
     }
   },
   methods: {
+    validation () {
+      this.errors = []
+      // let index = this.errors.indexOf(this.errors[this.errors.length-1]);
+      // if (index > -1 && newVal.substring(0,newVal.length-1) == oldVal) {
+      //   this.errors.splice(index, 1);
+      // }
+      if (this.ects_button === 'danger') {
+        this.errors.push('Iz predmetov morate zbrati 60 KT')
+      }
+      this.validEmso()
+    },
     add(selected, id) {
       if(selected.constructor === Array) {
         for(var x in selected) {
@@ -1416,7 +1434,7 @@ export default {
       for(var x = 0; x < this.predmeti.length; x++) {
         this.ects_sum += this.predmeti[x].ects
       }
-      if(this.ects_sum < 60 || this.ects_sum > 60) this.ects_button = 'danger'
+      if (this.ects_sum < 60 || this.ects_sum > 60) this.ects_button = 'danger'
       else this.ects_button = 'success'
     },
     checkForm() {
@@ -1426,6 +1444,7 @@ export default {
       if(this.errors.length > 0) this.$refs.errmsg.focus()
     },
     onSubmit() {
+      // TODO: check of sum of ECTS and EMSO and do not let user submit form if both not corrects
       /*
       axios.post(`enrollment/${this.$route.params.id}`, {
         student: {
