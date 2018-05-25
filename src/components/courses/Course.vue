@@ -222,7 +222,8 @@ export default {
             score: x.score,
             mark: x.status === 'deleted' ? 'VP' : x.mark,
             location: x.exam.location,
-            asking: x.exam.asking
+            asking: x.exam.asking,
+            attemptNo: x.totalExamAttempts + '-' + x.returnedExamAttempts + '=' + (x.totalExamAttempts - x.returnedExamAttempts),
             // course: x.enrollmentCourse.courseExecution.course.name,
             // professor: x.enrollmentCourse.courseExecution.lecturer1.name + " " + x.enrollmentCourse.courseExecution.lecturer1.surname || x.enrollmentCourse.courseExecution.lecturer2.name + " " + x.enrollmentCourse.courseExecution.lecturer2.surname || x.enrollmentCourse.courseExecution.lecturer3.name + " " + x.enrollmentCourse.courseExecution.lecturer3.surname,
             // date: this.$options.filters.datum(x.examsAvailable[0].scheduledAt)

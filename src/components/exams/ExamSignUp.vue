@@ -146,7 +146,9 @@ export default {
             enrolled: (x.examEnrollment && x.examEnrollment.status == null) ? `Yes` : '', // enrolled has to be checked like this!!
             asking: x.asking,
             location: x.location,
-            studyYear: (x.courseExecution.year) ? x.courseExecution.year.toString : ''
+            studyYear: (x.courseExecution.year) ? x.courseExecution.year.toString : '',
+            attemptNo: (x.examEnrollment) ? x.examEnrollment.totalExamAttempts + '-' + x.examEnrollment.returnedExamAttempts + '=' + (x.examEnrollment.totalExamAttempts - x.examEnrollment.returnedExamAttempts)  : '',
+
           }
           
           return r;
