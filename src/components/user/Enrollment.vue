@@ -205,8 +205,9 @@
 
     <b-row class="my-1">
       <b-col sm="8"><h5>Predmetnik</h5></b-col>
-      <b-col sm="4"><h5>Splošni izbirni predmeti: </h5></b-col>
+      <b-col sm="4" v-if="vpisniList.letnikStudija != 1"><h5>Splošni izbirni predmeti: </h5></b-col>
     </b-row>
+  
 
     <b-row class="my-1">
       <b-col sm="8">
@@ -217,12 +218,12 @@
             </b-button>
         </div>
       </b-col>
-      <b-col sm="4">
+      <b-col sm="4" v-if="vpisniList.letnikStudija != 1">
         <multiselect @select="add" @remove="remove" v-model="value_splosni" :options="splosni" :multiple="true" :close-on-select=true :clear-on-select="false" :hide-selected="true" :preserve-search="true" label="name"  track-by="name"/>
-        <h5 class="boi">Strokovni izbirni predmeti: </h5>
-        <multiselect @select="add" @remove="remove" v-model="value_strokovni" :options="strokovni" :multiple="true" :close-on-select=true :clear-on-select="false" :hide-selected="true" :preserve-search="true" label="name"  track-by="name"/>
-        <h5 class="boi">Modulski izbirni predmeti</h5>
-        <multiselect @select="add" @remove="remove" v-model="value_modulski" :options="modulski" :multiple="true" :close-on-select=true group-values="subjects" group-label="module_name" :group-select="true" track-by="name" label="name" />
+        <h5 class="boi" v-if="vpisniList.letnikStudija != 3">Strokovni izbirni predmeti: </h5>
+        <multiselect v-if="vpisniList.letnikStudija != 3" @select="add" @remove="remove" v-model="value_strokovni" :options="strokovni" :multiple="true" :close-on-select=true :clear-on-select="false" :hide-selected="true" :preserve-search="true" label="name"  track-by="name"/>
+        <h5 class="boi"  v-if="vpisniList.letnikStudija == 3">Modulski izbirni predmeti</h5>
+        <multiselect v-if="vpisniList.letnikStudija == 3" @select="add" @remove="remove" v-model="value_modulski" :options="modulski" :multiple="true" :close-on-select=true group-values="subjects" group-label="module_name" :group-select="true" track-by="name" label="name" />
       </b-col>
     </b-row>
     <br>
