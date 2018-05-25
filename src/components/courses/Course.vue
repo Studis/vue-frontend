@@ -4,7 +4,7 @@
     
     
     <results 
-      title="Course" 
+      title="Course enrollments" 
       :indexes="true"
       :content="content"
       :details="details"

@@ -7,7 +7,7 @@
         :indexes="true"
         :content="content"
         :details="details"
-        entityName="course"
+        entityName="exam"
         v-on:b-click-id="btnClicked"
         :actions="[{name: 'Apply',classColor: 'btn-success',vhide: 'enrolled'},{name: 'Delete application',classColor: 'btn-danger',vshow: 'enrolled'}]"
         >
