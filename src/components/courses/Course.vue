@@ -1,5 +1,8 @@
 <template>
   <div>
+    
+    
+    
     <results 
       title="Course" 
       :indexes="true"
@@ -28,6 +31,7 @@
       :content="scheduledExams"
       v-on:b-click-id="toggleDeleteModal"
       :actions="[{name: 'Delete', classColor: 'btn-danger',vhide: false}]"
+      sortByField="scheduledAt"
       v-model="scheduledExams"
       >
       </results>
@@ -48,7 +52,14 @@
       <b-container fluid>
         <h3>Dodaj izpitni rok</h3>
         <br>
-        <p class="naslov">1. Izpitni rok</p>
+        <p class="naslov">
+          <b-dropdown id="ddown1" :text="examTerm" class="m-md-2">
+            <b-dropdown-item @click.prevent="changeTerm(1)">1</b-dropdown-item>
+            <b-dropdown-item @click.prevent="changeTerm(2)">2</b-dropdown-item>
+            <b-dropdown-item @click.prevent="changeTerm(3)">3</b-dropdown-item>
+          </b-dropdown>
+          Izpitni rok
+        </p>
         <b-row>
             <b-col sm="4">
                 <b-form-group label="Datum">
@@ -72,9 +83,9 @@
             </b-col>
             <b-col sm="4">
                 <b-form-group label="Asking">
-                    <b-form-input type="text" class="mb-3" v-model="asking" required>
-                    </b-form-input>
+                    <b-form-select v-model="asking" :options="profesors" class="mb-3" />
                 </b-form-group>
+                
             </b-col>
         </b-row>
       </b-container>    
@@ -101,6 +112,9 @@ export default {
     }
   },
   methods: {
+    changeTerm (e) {
+      this.examTerm = e
+    },
     deleteScheduledExam () {
       // TODO: find examId
       let postdata = {
@@ -125,6 +139,7 @@ export default {
             asking: x.asking,
             written: x.written,
             scheduledAt: this.$options.filters.datum(x.scheduledAt),
+            examTerm: x.examTerm,
             // name: x.enrollment.enrollment.token.student.name,
             // enrollment: x.enrollment.enrollment.token.student.enrollmentNumber,
             // scheduledAt: this.$options.filters.datum(x.exam.scheduledAt),
@@ -153,7 +168,8 @@ export default {
         courseExecution: this.id,
         scheduledAt: this.scheduledAt,
         location: this.examLocation,
-        asking: this.asking
+        asking: this.asking,
+        examTerm: this.examTerm
       }
       axios.post('/exams/scheduled', postdata)
       .then(response => {
@@ -232,16 +248,26 @@ export default {
     axios.get(`courses/${this.id}`)
       .then(response => {
         var x = response.data;
+
+        // Set lecturers
+        this.profesors = []
+        
+          // End set lecturers
         var d = [
             {title: "Name", value: x.course.name + " ("+x.course.id+")"},
             {title: "ECTS", value: x.course.ects},
             {title: "Lecturer 1", value: x.lecturer1.name + " " + x.lecturer1.surname + " ("+x.lecturer1.code+")"}
         ];
+        this.profesors.push(x.lecturer1.name + " " + x.lecturer1.surname)
+
         if(x.lecturer2){
           d.push({title: "Lecturer 2", value: x.lecturer2.name + " " + x.lecturer2.surname + " ("+x.lecturer2.code+")"})
+          this.profesors.push(x.lecturer2.name + " " + x.lecturer2.surname)
+
         }
         if(x.lecturer3){
           d.push({title: "Lecturer 3", value: x.lecturer3.name + " " + x.lecturer3.surname + " ("+x.lecturer3.code+")"})
+          this.profesors.push(x.lecturer3.name + " " + x.lecturer3.surname)
         }
         if(x.curriculum){
           d.push({title: "Year", value: x.curriculum.year.toString});
@@ -250,6 +276,7 @@ export default {
           d.push({title: "Year", value: x.module.curriculum.year.toString});
           d.push({title: "Module", value: x.module.name});
         }
+        if (this.profesors.length === 1) this.asking = this.profesors[0]
         this.details = d;
       })
       .catch(error => {
@@ -261,9 +288,12 @@ export default {
       beforeScheduleDelete: 'Ali ste prepričani, da želite izpitni rok.',
       onFailScheduleDelete: 'Za ta izpit še obstajajo prijave! Zato izpitnega roka ni mogoče zbrisati',
       examDate: '',
+      examTerm: 1,
       examTime: '',
       examLocation: '',
-      asking: '',
+      asking: null,
+      oldScheduledExams: {},
+      profesors: [],
       examId: null,
       content: {
         content: [],
