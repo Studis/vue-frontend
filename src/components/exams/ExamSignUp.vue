@@ -3,7 +3,7 @@
 
     <div v-if="getRole !== 'ADMIN' && getRole !== 'LECTURER' && getRole !== 'CLERK'">
       <results 
-        title="Exams" 
+        title="Exam terms" 
         :indexes="true"
         :content="content"
         :details="details"
