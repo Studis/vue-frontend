@@ -269,12 +269,7 @@ export default {
       studyYears.push(year + '/' + (year+1));
     } 
     return {
-      predmeti: [
-        { name: 'Osnove umetne inteligence', lecturer: "Zoran Bosnić", ects: 6 },
-        { name: 'Ekonomika in podjetništvo', lecturer: 'Mateja Drnovšek', ects: 6 },
-        { name: 'Diplomski seminar', lecturer: "Franc Solina",  ects: 6 },
-        
-      ],
+      predmeti: [],
       splosni: [
         { name: 'Angleški jezik nivo A', lecturer: "Mateja Drnovšek", ects: 6 },
         { name: 'Računalništvo v praksi', lecturer: "Mateja Drnovšek", ects: 6 },
@@ -312,7 +307,7 @@ export default {
         }
       ],
       polja: [
-        
+        { key: 'id', label: 'Šifra predmeta', sortable: true },
         { key: 'name', label: 'Ime predmeta', sortable: true },
         { key: 'lecturer', label: 'Izvajalec', sortable: true },
         { key: 'ects', label: 'ECTS', sortable: true },
@@ -1272,7 +1267,7 @@ export default {
       courses: [
         '1001001 Multimedija UNI',
         '1000407 Računalništvo in matematika UNI',
-        '1000475 Računalništvo in informatika UNI',
+        '1000468 Računalništvo in informatika UNI',
         '1000469 Upravna informatika UNI',
         '1000470 Računalništvo in informatika VS',
         '1000471 Računalništvo in informatika MAG',
@@ -1557,7 +1552,6 @@ export default {
     axios.get(`students/me`).then((response) => {
       var userid = response.data.id;
       axios.get(`students/${userid}`).then((response) => {
-        console.log(response.data)
         this.vpisniList.vpisnaStevilka = response.data.enrollmentNumber;
         this.vpisniList.imePriimek = response.data.name + ' ' + response.data.surname;
         this.vpisniList.krajRojstva = response.data.placeOfBirth;
@@ -1573,19 +1567,39 @@ export default {
         this.vpisniList.stalnoPrebivalisceNaslov = response.data.permanent.placeOfResidence;
         this.vpisniList.zacasnoPrebivalisceNaslov = response.data.temporary.placeOfResidence;
         this.vpisniList.telefonskaStevilka = response.data.phoneNumber;
-        axios.get(`tokens/${userid}`)
-        .then((response) => {
+        axios.get(`tokens/${userid}`).then((response) => {
           for(var x = 0; x < response.data.length; x++) {
             if(response.data[x].id == this.$route.params.id) {
               this.vpisniList.studijskiProgram = response.data[x].program.id + " " + response.data[x].program.title;
               this.vpisniList.letnikStudija = response.data[x].studyYear.id;
               this.vpisniList.vrstaVpisa = response.data[x].enrollmentType.id + " " + response.data[x].enrollmentType.name;
               this.vpisniList.nacinStudija = response.data[x].studyType.id + " " + response.data[x].studyType.name;
-              this.vpisniList.oblikaStudija = response.data[x].studyForm.id + " " + response.data[x].studyForm.name;
-              this.vpisniList.studijskoLetoPrvegaVpisaVTaProgram = "2018/2019"
+              this.vpisniList.oblikaStudija = response.data[x].studyForm.id + " " + response.data[x].studyForm.name; 
               this.pravica = response.data[x].freeChoice;
             }
           }
+          axios.get(`enrollments/${this.$route.params.id}`).then((response) => {
+            this.vpisniList.studijskoLetoPrvegaVpisaVTaProgram = response.data.year.toString;
+            for(var x = 0; x < response.data.obligatoryCourses.length; x++) {
+              var lecturers = ""
+              for(var y = 0; y < response.data.obligatoryCourses[x].lecturers.length; y++) {
+                if(y == 0) lecturers += (response.data.obligatoryCourses[x].lecturers[y].surname + " " + response.data.obligatoryCourses[x].lecturers[y].name)
+                else lecturers += (', ' + response.data.obligatoryCourses[x].lecturers[y].surname + " " + response.data.obligatoryCourses[x].lecturers[y].name)
+              }
+              this.predmeti.push({
+                id: response.data.obligatoryCourses[x].course.id,
+                name: response.data.obligatoryCourses[x].course.name,
+                lecturer: lecturers,
+                ects: parseInt(response.data.obligatoryCourses[x].course.ects)
+              })
+            }
+            this.ects_sum = 0
+            for(var x = 0; x < this.predmeti.length; x++) {
+              this.ects_sum += this.predmeti[x].ects
+            }
+          }).catch((err) => {
+            console.log(err)
+          })
         }).catch((err) => {
           console.log(err)
         })
@@ -1594,11 +1608,7 @@ export default {
       })
     }).catch((err) => {
       console.log(err)
-    })
-    this.ects_sum = 0
-    for(var x = 0; x < this.predmeti.length; x++) {
-      this.ects_sum += this.predmeti[x].ects
-    } 
+    }) 
   }
 }
 </script>
