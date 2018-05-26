@@ -100,8 +100,6 @@ export default {
           columns["#"] = true;
         }
 
-        
-
         if (!fieldNames) {
           this.totalRows = content.length;
           
@@ -156,6 +154,7 @@ export default {
     generatePDF() {
 
         var docDefinition = {
+          pageOrientation: this.landscape?'landscape':'portrait',
         content: [],
         footer: (currentPage, pageCount, pageSize)=> { 
           return [
@@ -170,7 +169,8 @@ export default {
           },
           propertyStyle:{
             fontSize: 14
-          }
+          },
+          tableStyle:{fontSize: 8}
         }
       };
       docDefinition.content.push({ text: this.title, style: 'header' });
@@ -189,11 +189,12 @@ export default {
           body: [
             [  ]
           ]
-        }
+        },
+        style: 'tableStyle'
       };
       for(var column in this.printFields){
         table.table.body[0].push(this.printFields[column].title)
-        table.table.widths.push('*')
+        table.table.widths.push('auto')
       }
       for(var rowIndex in this.items){
         var row = this.items[rowIndex]
@@ -256,7 +257,7 @@ export default {
       printFields: []
     };
   },
-  props: ["title", "indexes", "content", "entityName", "details", "sortByField","actions"]
+  props: ["title", "landscape", "indexes", "content", "entityName", "details", "sortByField","actions"]
 };
 </script>
 

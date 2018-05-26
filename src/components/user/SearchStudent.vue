@@ -102,6 +102,7 @@ import axios from 'axios'
     },
     getVpis (data) {
       axios.get(`students/${data.item.id}/enrollments`).then((response: any) => {
+        console.table(response)
       this.enrollments = response.data.map((x: any) => {
             return {
               studijski_program: x.curriculum.program.id + " - " + x.curriculum.program.title,
@@ -160,6 +161,7 @@ export default class SearchStudent extends Vue {
   pageOptions: Array<number> = [ 5, 10, 15 ]
   filter = null
   totalRows: number = 0
+  items= []
 }
 </script>
 
