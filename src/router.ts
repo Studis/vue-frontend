@@ -12,6 +12,7 @@ import Courses from './components/courses/Courses.vue'
 import UploadEnrollment from './components/user/UploadEnrollment.vue'
 import EnrollmentTokens from './components/user/EnrollmentTokens.vue'
 import EnrollmentToken from './components/user/EnrollmentToken.vue'
+import StudentIndex from './components/user/StudentIndex.vue'
 import Results from './components/Results.vue';
 import EnrollmentConfirmation from './components/EnrollmentConfirmation.vue';
 
@@ -118,6 +119,12 @@ export default new Router({
       name: 'enrollmentConfirmation',
       path: '/enrollmentConfirmation/:id',
       component: EnrollmentConfirmation,
+      props:true
+    },
+    {
+      name: 'index',
+      path: '/index/:id',
+      component: StudentIndex,
       props:true
     },
   ],
