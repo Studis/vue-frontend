@@ -1,7 +1,6 @@
 <template>
   <div>
-      enrollment confirmation
-      <b-button v-on:click="generatePDF" class="btn-warning mx-1">PDF</b-button>
+      Generating enrollment confirmation ...
   </div>
 </template>
 
@@ -22,38 +21,26 @@ export default {
   watch: {
   },
   methods: {
-    generatePDF() {
+    formatDate(date) {
+      var day = date.getDate();
+      var monthIndex = date.getMonth()+1;
+      var year = date.getFullYear();
 
+      return day + '.' + monthIndex + '.' + year;
+    },
+    generatePDF(e) {
+        console.log(e)
         var docDefinition = {
         content: [],
         styles: {
-          header: {
-            fontSize: 18,
-            bold: true,
-            alignment: 'center'
-          },
-          bold:{
-            fontSize: 12,
-            bold: true
-          },
-          normal:{
-            fontSize: 12,
-          },
-          tag:{
-            fontSize: 11,
-            color: 'gray'
-          },
-          signature: {
-            alignment:'left',
-            fontSize:12
-          },
-          address: {
-            fontSize: 7
-          }
+          header: { fontSize: 18, bold: true, alignment: 'center' },
+          bold:{ fontSize: 12, bold: true },
+          normal:{ fontSize: 12, },
+          tag:{ fontSize: 11, color: 'gray' },
+          signature: { alignment:'left', fontSize:12 },
+          address: { fontSize: 7 }
         }
       };
-      
-      
       docDefinition.content = [
         {
           columns:[
@@ -81,16 +68,16 @@ export default {
             {
               width: '77%',
               stack: [
-                {text: "IME PRIIMEK", style: 'bold'},
-                {text: "Večna pot 12", style: 'normal'},
-                {text: "1000 Ljubljana", style: 'normal'}
+                {text: (e.token.student.name+" "+e.token.student.surname).toUpperCase(), style: 'bold'},
+                {text: e.token.student.permanent.placeOfResidence, style: 'normal'},
+                {text: e.token.student.permanent.postalNumber+" "+e.token.student.permanent.municipality.name, style: 'normal'}
               ]
             },
             {
               width: '23%',
               stack:[
-                {text: "Številka: 69491/111", style: 'signature'},
-                {text: "Datum: 23.5.2018", style: 'signature'}
+                {text: "Številka: "+e.id+"/111", style: 'signature'},
+                {text: "Datum: "+this.formatDate(new Date()), style: 'signature'}
               ]
             }
           ]
@@ -104,20 +91,20 @@ export default {
               width: '33%',
               stack: [
                 { text: "Vpisna številka", style: 'tag' },
-                { text: "63180000", style: 'bold' },
+                { text: e.token.student.enrollmentNumber, style: 'bold' },
                 " ",
                 { text: "Datum rojstva", style: 'tag' },
-                { text: "1.1.2018", style: 'bold' },
+                { text: this.formatDate(new Date(Date.parse(e.token.student.dateOfBirth))), style: 'bold' },
               ]
             },
             {
               width: '33%',
               stack:[
                 { text: "Priimek, ime", style: 'tag' },
-                { text: "PRIIMEK, IME", style: 'bold' },
+                { text: (e.token.student.surname+", "+e.token.student.name).toUpperCase(), style: 'bold' },
                 " ",
                 { text: "Kraj rojstva", style: 'tag' },
-                { text: "Ljubljana", style: 'bold' },
+                { text: e.token.student.placeOfBirth?e.token.student.placeOfBirth:"", style: 'bold' },
               ]
             },
             {
@@ -127,7 +114,7 @@ export default {
                 " ",
                 " ",
                 { text: "Država rojstva", style: 'tag' },
-                { text: "SLOVENIJA", style: 'bold' }
+                { text: e.token.student.nationality?e.token.student.nationality:"", style: 'bold' }
               ]
             }
           ]
@@ -139,23 +126,23 @@ export default {
               width: '50%',
               stack: [
                 { text: "Študijsko leto", style: 'tag' },
-                { text: "2017/18", style: 'bold' },
+                { text: e.curriculum.year.toString, style: 'bold' },
                 " ",
                 { text: "Način in oblika študija", style: 'tag' },
-                { text: "Redni študij", style: 'bold' },
+                { text: e.studyType.name, style: 'bold' },
                 " ",
                 { text: "Študijski program", style: 'tag' },
-                { text: "RAČUNALN. IN INFORM. UN-I.ST", style: 'bold' }
+                { text: e.curriculum.program.title, style: 'bold' }
               ]
             },
             {
               width: '50%',
               stack:[
                 { text: "Vrsta vpisa", style: 'tag' },
-                { text: "Prvi vpis v letnik", style: 'bold' },
+                { text: e.type.name, style: 'bold' },
                 " ",
                 { text: "Letnik/dodatno leto", style: 'tag' },
-                { text: "1. letnik", style: 'bold' },
+                { text: e.curriculum.studyYear.id+". letnik", style: 'bold' },
                 " ",
                 { text: "Smer/usmeritev/modul/znanstveno področje", style: 'tag' },
                 { text: "-", style: 'bold' }
@@ -203,14 +190,20 @@ export default {
     }
   },
   mounted() {
-    
+    axios.get(`enrollments/get/${this.id}`)
+    .then((response) => {
+      this.generatePDF(response.data)
+    })
+    .catch((error) => {
+      console.log(error)
+    })
   },
   data() {
     return {
 
     };
   },
-  props: []
+  props: ["id"]
 };
 </script>
 

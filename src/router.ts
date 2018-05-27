@@ -116,8 +116,9 @@ export default new Router({
     },
     {
       name: 'enrollmentConfirmation',
-      path: '/enrollmentConfirmation',
-      component: EnrollmentConfirmation
+      path: '/enrollmentConfirmation/:id',
+      component: EnrollmentConfirmation,
+      props:true
     },
   ],
   mode: 'history'
