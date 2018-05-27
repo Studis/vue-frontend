@@ -1,6 +1,6 @@
 <template>
 <div>
-  <b-form v-on:submit.prevent="checkForm" @reset="onReset" v-if="true">
+  <b-form v-on:submit.prevent="checkForm" @reset="onReset" v-if="true" @submit="onSubmit">
     <h3>VPISNI LIST {{(new Date()).getFullYear()}}/{{(new Date()).getFullYear()+1}} za študente</h3>
     <h4>Fakulteta za računalništvo in informatiko</h4>
     <div>
@@ -23,57 +23,61 @@
       <b-col sm="4">
         <b-form-input v-model="vpisniList.vpisnaStevilka" :state="null" type="text" disabled required/>
       </b-col>
-      <b-col sm="2"><label>Ime in Priimek: </label></b-col>
+      <b-col sm="2"><label>Ime: </label></b-col>
       <b-col sm="4">
-        <b-form-input v-model="vpisniList.imePriimek" :state="null" type="text" ref="errmsg" required/>
+        <b-form-input v-model="vpisniList.ime" :state="null" type="text" ref="errmsg" required/>
       </b-col>
     </b-row>
 
     <b-row class="my-1">
+      <b-col sm="2"><label>Priimek: </label></b-col>
+      <b-col sm="4">
+        <b-form-input v-model="vpisniList.priimek" :state="null" type="text" required/>
+      </b-col>
       <b-col sm="2"><label>Datum rojstva: </label></b-col>
       <b-col sm="4">
         <b-form-input v-model="izracunajDatumRojstva" :state="null" type="date" disabled/>
       </b-col>
+    </b-row>
+
+    <b-row class="my-1">
       <b-col sm="2"><label>Kraj rojstva: </label></b-col>
       <b-col sm="4">
         <b-form-input v-model="vpisniList.krajRojstva" :state="null" type="text" required/>
       </b-col>
-    </b-row>
-
-    <b-row class="my-1">
       <b-col sm="2"><label>Država: </label></b-col>
       <b-col sm="4">
         <b-form-select v-model="vpisniList.drzava" :options="countries" :state="null" type="text" required/>
       </b-col>
+    </b-row>
+
+    <b-row class="my-1">
       <b-col sm="2"><label>Občina: </label></b-col>
       <b-col sm="4">
         <b-form-select v-model="vpisniList.regija" :options="posts" :state="null" type="text" :disabled=isDisabled1 />
       </b-col>
-    </b-row>
-
-    <b-row class="my-1">
       <b-col sm="2"><label>Spol: </label></b-col>
       <b-col sm="4">
         <b-form-select v-model="izracunajSpol" :options="['Moški', 'Ženska']" :state="null" type="text" disabled/>
       </b-col>
+    </b-row>
+
+    <b-row class="my-1">
       <b-col sm="2"><label>EMŠO: </label></b-col>
       <b-col sm="4">
         <b-form-input v-model="vpisniList.emso" :options="countries" :state="null" type="text" pattern="\d*" required maxlength="13"/>
       </b-col>
-    </b-row>
-
-    <b-row class="my-1">
       <b-col sm="2"><label>Davčna številka: </label></b-col>
       <b-col sm="4">
         <b-form-input v-model="vpisniList.davcnaStevilka" type="text" pattern="\d*" maxlength="8" required :state="null"/>
       </b-col>
+    </b-row>
+
+    <b-row class="my-1">
       <b-col sm="2"><label>Elektronski naslov: </label></b-col>
       <b-col sm="4">
         <b-form-input v-model="vpisniList.elektronskiNaslov" :options="countries" :state="null" type="email" required/>
       </b-col>
-    </b-row>
-
-    <b-row class="my-1">
       <b-col sm="2"><label>Telefonska številka: </label></b-col>
       <b-col sm="4">
         <b-form-input v-model="vpisniList.telefonskaStevilka" pattern="\d*" required :state="null"/>
@@ -1297,7 +1301,8 @@ export default {
       studyYears: studyYears,
       vpisniList: {
         vpisnaStevilka: '',
-        imePriimek: '',
+        ime: '',
+        priimek: '',
         datumRojstva: '',
         krajRojstva: '',
         regija: '',
@@ -1441,68 +1446,72 @@ export default {
     },
     onSubmit() {
       // TODO: check of sum of ECTS and EMSO and do not let user submit form if both not corrects
-      /*
-      axios.post(`enrollment/${this.$route.params.id}`, {
-        student: {
-          name: this.vpisniList.imePriimek.split(" ")[0],
-          surname: this.vpisniList.imePriimek.split(" ")[1],
-          emso: this.vpisniList.emso,
-          dateOfBirth: this.vpisniList.datumRojstva + "T4:50:49+00:00",
-          placeOfBirth: this.vpisniList.krajRojstva,
-          gender: this.vpisniList.spol[0],
-          nationality: "Slovenija",
-          region: this.vpisniList.regija,
-          taxNumber: this.vpisniList.davcnaStevilka,
-          phoneNumber: this.vpisniList.telefonskaStevilka,
-          permanent: {
-              municipality: {
-                  name: this.vpisniList.stalnoPrebivalisceObcina
-              },
-              country: "SI",
-              placeOfResidence: this.vpisniList.stalnoPrebivalisceNaslov,
-              postalNumber: this.vpisniList.stalnoPrebivaliscePosta.split(",")[0]
-          },
-          temporary: {
-              municipality: {
-                  name: this.vpisniList.zacasnoPrebivalisceObcina
-              },
-              country: "SI",
-              placeOfResidence: "Ulica Generala Maistra 44",
-              postalNumber: "2000"
-          },
-          sendToTemporary: false,
-          enrollmentNumber: "63180001",
-          email: "zs7373@student.uni-lj.si"
-        },
-      studyForm: {
-                id: 1,
-                name: "Na lokaciji"
-      },
-      studyType: {
-                id: 1,
-                name: "Redni"
-      },
-      enrollmentType: {
-              id: 1,
-              name: "Prvi vpis v letnik/dodatno leto"
-      },
-      studyYear: {
-              id: 1
-      },
-      program: {
-              id: 100475,
-              ects: 180,
-              title: "Računalništvo in informatika UNI"
+      var naslov = this.vpisniList.naslovZaVrocanje == "Stalno prebivališče" ? false : true
+      var predmeti = []
+      for(var x = 0; x < this.predmeti.length; x++) {
+        predmeti.push(this.predmeti[x].id_izvajanja)
       }
+      axios.post(`enrollments/${this.$route.params.id}`, {
+          student: {
+            name: this.vpisniList.ime,
+            surname: this.vpisniList.priimek,
+            emso: this.vpisniList.emso,
+            dateOfBirth: this.vpisniList.datumRojstva + "T4:50:49+00:00",
+            placeOfBirth: this.vpisniList.krajRojstva,
+            gender: this.vpisniList.spol[0],
+            nationality: this.vpisniList.drzava,
+            region: this.vpisniList.regija,
+            taxNumber: this.vpisniList.davcnaStevilka,
+            phoneNumber: this.vpisniList.telefonskaStevilka,
+            permanent: {
+                municipality: {
+                    id: 61,
+                    name: this.vpisniList.stalnoPrebivalisceObcina
+                },
+                country: "SI",
+                placeOfResidence: this.vpisniList.stalnoPrebivalisceNaslov,
+                postalNumber: this.vpisniList.stalnoPrebivaliscePosta.split(",")[0]
+            },
+            temporary: {
+                municipality: {
+                    id: 70,
+                    name: this.vpisniList.zacasnoPrebivalisceObcina
+                },
+                country: "SI",
+                placeOfResidence: this.vpisniList.stalnoPrebivalisceNaslov,
+                postalNumber: this.vpisniList.zacasnoPrebivaliscePosta.split(",")[0]
+            },
+            sendToTemporary: naslov,
+            enrollmentNumber: this.vpisniList.vpisnaStevilka,
+            email: this.vpisniList.elektronskiNaslov
+            },
+            studyForm: {
+                id: this.vpisniList.oblikaStudija.split(" ")[0],
+                name: this.vpisniList.oblikaStudija.slice(2, this.vpisniList.oblikaStudija.length)
+              },
+            studyType: {
+                id: this.vpisniList.nacinStudija.split(" ")[0],
+                name: this.vpisniList.nacinStudija.slice(2, this.vpisniList.nacinStudija.length)
+              },
+            enrollmentType: {
+                id: this.vpisniList.vrstaVpisa.split(" ")[0],
+                name: this.vpisniList.vrstaVpisa.slice(2, this.vpisniList.vrstaVpisa.length)
+              },
+            studyYear: {
+                id: this.vpisniList.letnikStudija,
+              },
+            program: {
+                id: this.vpisniList.studijskiProgram.split(" ")[0],
+                ects: 180,
+                title: this.vpisniList.studijskiProgram.slice(7, this.vpisniList.studijskiProgram.length)
+              },
+            courses: predmeti    
+      }
+      ).then(function (response) {
+        //this.$router.push({name: 'home'});
+      }).catch(err => {
+        console.log(err)
       })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-      */
-      this.$router.push({name: 'home'});
     },
     goBack() {
       this.$router.push({name: 'login'});
@@ -1531,20 +1540,19 @@ export default {
         var bday = birthDay.split("-")[2]
         var bmonth = birthDay.split("-")[1]
         var byear = birthDay.split("-")[0].substring(1,4)
-        // if (bday != emso[0]+emso[1] || bmonth != emso[2]+emso[3] || byear != emso[4]+emso[5]+emso[6]) {
-        //   this.errors.push("Vpisana EMŠO se ne ujema z datumom rojstva.")
-        //   return;
-        // }
         return;
       }
       else this.errors.push("Vpisana EMŠO je neveljavna.");
       return;
     },
     validName() {
-      if (!/^[a-zA-Z\s]*$/.test(this.vpisniList.imePriimek)) {
-        this.errors.push("Ime in priimek lahko vsebujeta samo črke.");
-        return;
+      if (!/^[a-zA-Z\s]*$/.test(this.vpisniList.ime)) {
+        this.errors.push("Ime lahko vsebuje samo črke.");
+        if (!/^[a-zA-Z\s]*$/.test(this.vpisniList.priimek)) {
+          this.errors.push("Priimek lahko vsebuje samo črke.");
+        }
       }
+      return
     },
     
   },
@@ -1588,6 +1596,7 @@ export default {
               }
               this.predmeti.push({
                 id: response.data.obligatoryCourses[x].course.id,
+                id_izvajanja: response.data.obligatoryCourses[x].id,
                 name: response.data.obligatoryCourses[x].course.name,
                 lecturer: lecturers,
                 ects: parseInt(response.data.obligatoryCourses[x].course.ects)
