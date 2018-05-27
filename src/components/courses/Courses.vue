@@ -7,6 +7,7 @@
       :content="content"
       :details="details"
       entityName="course"
+      sortByField="course"
       v-on:b-click-id="btnClicked"
       :actions="[{name: 'Open',classColor: 'btn-success'}]"
       >

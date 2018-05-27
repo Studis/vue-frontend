@@ -25,7 +25,7 @@
           <b-input-group>
             <b-form-input v-model="filter" placeholder="Search" />
             <b-input-group-append>
-              <b-button :disabled="!filter" @click="filter = ''" class="btn-danger">Clear</b-button>
+              <b-button :disabled="!filter" @click="filter = ''" class="btn-dark">Clear</b-button>
             </b-input-group-append>
           </b-input-group>
         </div>
@@ -44,7 +44,7 @@
              :fields="fields">
 
       <template slot="btns" slot-scope="data" v-if="actions">
-        <b-button v-for="action in actions" v-if="action.name == 'Open' || (('vhide' in action && !data.item[action.vhide]) || ('vshow' in action && data.item[action.vshow])) " class="actionBtn" :key="action.name" @click.prevent="updateButtons(data.item,action.name)" :ref="'btn-add-'+data.item.id" :class="action.classColor">{{action.name}}</b-button>
+        <b-button v-for="action in actions" v-if="action.name == 'Open' || action.name == 'Details' || (('vhide' in action && !data.item[action.vhide]) || ('vshow' in action && data.item[action.vshow])) " class="actionBtn" :key="action.name" @click.prevent="updateButtons(data.item,action.name)" :ref="'btn-add-'+data.item.id" :class="action.classColor">{{action.name}}</b-button>
       </template>
     </b-table>
     <b-col md="6" class="my-1">
@@ -55,6 +55,7 @@
 </template>
 
 <script>
+
 import { Component, Vue } from "vue-property-decorator";
 import Router from "vue-router";
 import axios from "axios";
@@ -66,7 +67,8 @@ import pdfFonts from "pdfmake/build/vfs_fonts";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 export default {
-  components: {},
+  components: {
+  },
   watch: {
     content: {
       handler: function(newVal, oldVal) {
@@ -245,7 +247,7 @@ export default {
     return {
       isBusy: true,
       sortBy: "name",
-      sortDesc: false,
+      sortDesc: this.sortDescending || false,
       fields: [],
       items: [],
       course: {},
@@ -257,7 +259,7 @@ export default {
       printFields: []
     };
   },
-  props: ["title", "landscape", "indexes", "content", "entityName", "details", "sortByField","actions"]
+  props: ["title", "landscape", "indexes", "content", "entityName", "details", "sortByField","actions","sortDescending"]
 };
 </script>
 

@@ -11,7 +11,7 @@
       entityName="student"
       sortByField="surname"
       v-on:b-click-id="showStudent"
-      :actions="[{name: 'Open', classColor: 'btn-danger'}]"
+      :actions="[{name: 'Open', classColor: 'btn-success'}]"
       v-model="content"></results>
 
      <br><br><br><br>
