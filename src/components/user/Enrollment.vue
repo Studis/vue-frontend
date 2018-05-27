@@ -151,7 +151,7 @@
     <b-row class="my-1">
       <b-col sm="2"><label>Študijski program: </label></b-col>
       <b-col sm="10">
-        <b-form-select v-model="vpisniList.studijskiProgram" :options="courses" :state="null" type="text" required/>
+        <b-form-select v-model="vpisniList.studijskiProgram" :options="courses" :state="null" type="text" required disabled/>
       </b-col>
     </b-row>
 
@@ -165,7 +165,7 @@
     <b-row class="my-1">
       <b-col sm="2"><label>Vrsta vpisa: </label></b-col>
       <b-col sm="10">
-        <b-form-select v-model="vpisniList.vrstaVpisa" :options="enrollment_types" required/>
+        <b-form-select v-model="vpisniList.vrstaVpisa" :options="enrollment_types" required disabled/>
       </b-col>
     </b-row>
   
@@ -184,22 +184,22 @@
     <b-row class="my-1">
       <b-col sm="2"><label>Letnik študija: </label></b-col>
       <b-col sm="4">
-        <b-form-select v-model="vpisniList.letnikStudija" :options="study_year" required/>
+        <b-form-select v-model="vpisniList.letnikStudija" :options="study_year" required disabled/>
       </b-col>
       <b-col sm="2"><label>Način študija: </label></b-col>
       <b-col sm="4">
-        <b-form-select v-model="vpisniList.nacinStudija" :options="study_type" required/>
+        <b-form-select v-model="vpisniList.nacinStudija" :options="study_type" required disabled/>
       </b-col>
     </b-row>
 
     <b-row class="my-1">
       <b-col sm="2"><label>Oblika študija: </label></b-col>
       <b-col sm="4">
-        <b-form-select v-model="vpisniList.oblikaStudija" :options="study_form" required/>
+        <b-form-select v-model="vpisniList.oblikaStudija" :options="study_form" required disabled/>
       </b-col>
       <b-col sm="2"><label>Študijsko leto prvega vpisa v ta program: </label></b-col>
       <b-col sm="4">
-        <b-form-select v-model="vpisniList.studijskoLetoPrvegaVpisaVTaProgram" :options="studyYears" required/>
+        <b-form-select v-model="vpisniList.studijskoLetoPrvegaVpisaVTaProgram" :options="studyYears" required disabled/>
       </b-col>
     </b-row>
     <br>
@@ -224,8 +224,8 @@
       </b-col>
       <b-col sm="4" v-if="vpisniList.letnikStudija != 1">
         <multiselect @select="add" @remove="remove" v-model="value_splosni" :options="splosni" :multiple="true" :close-on-select=true :clear-on-select="false" :hide-selected="true" :preserve-search="true" label="name"  track-by="name"/>
-        <h5 class="boi" v-if="vpisniList.letnikStudija != 3">Strokovni izbirni predmeti: </h5>
-        <multiselect v-if="vpisniList.letnikStudija != 3" @select="add" @remove="remove" v-model="value_strokovni" :options="strokovni" :multiple="true" :close-on-select=true :clear-on-select="false" :hide-selected="true" :preserve-search="true" label="name"  track-by="name"/>
+        <h5 class="boi" v-if="vpisniList.letnikStudija != 1">Strokovni izbirni predmeti: </h5>
+        <multiselect v-if="vpisniList.letnikStudija != 1" @select="add" @remove="remove" v-model="value_strokovni" :options="strokovni" :multiple="true" :close-on-select=true :clear-on-select="false" :hide-selected="true" :preserve-search="true" label="name"  track-by="name"/>
         <h5 class="boi"  v-if="vpisniList.letnikStudija == 3">Modulski izbirni predmeti</h5>
         <multiselect v-if="vpisniList.letnikStudija == 3" @select="add" @remove="remove" v-model="value_modulski" :options="modulski" :multiple="true" :close-on-select=true group-values="subjects" group-label="module_name" :group-select="true" track-by="name" label="name" />
       </b-col>
