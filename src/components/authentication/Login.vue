@@ -75,11 +75,13 @@ declare module 'vue/types/vue' {
         password: this.password
       }))
       axios.get('students/me').then((d) => {
-
         if (!d) {
           localStorage.removeItem('token')
-          this.$router.push({ name: 'login' })
-          alert('Login failed!')
+//           this.$router.push({ name: 'login' })
+          this.wrong = true
+          setTimeout(() => {
+            this.wrong = false
+          }, 2000);
         }
         this.$router.push({name: 'home'})
         this.setGetAuth()
@@ -102,9 +104,13 @@ declare module 'vue/types/vue' {
     },
     setGetAuth () {
       axios.get(`students/me`).then((response) => {
-        this.$store.commit('updateRole', response.data.role)
-        this.$store.commit('updateUserId', response.data.id)
-        return response.data.role
+        if (response) {
+          this.$store.commit('updateRole', response.data.role)
+          this.$store.commit('updateUserId', response.data.id)
+          return response.data.role
+        }
+      }).catch(e => {
+        if (e.status) alert(e.status)
       })
     },
     onReset () {
