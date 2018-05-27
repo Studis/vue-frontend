@@ -1,6 +1,6 @@
 <template>
 <div>
-  <b-form v-on:submit.prevent="checkForm" @reset="onReset" v-if="true">
+  <b-form v-on:submit.prevent="checkForm" @reset="onReset" v-if="true" @submit="onSubmit">
     <h3>VPISNI LIST {{(new Date()).getFullYear()}}/{{(new Date()).getFullYear()+1}} za študente</h3>
     <h4>Fakulteta za računalništvo in informatiko</h4>
     <div>
@@ -23,57 +23,61 @@
       <b-col sm="4">
         <b-form-input v-model="vpisniList.vpisnaStevilka" :state="null" type="text" disabled required/>
       </b-col>
-      <b-col sm="2"><label>Ime in Priimek: </label></b-col>
+      <b-col sm="2"><label>Ime: </label></b-col>
       <b-col sm="4">
-        <b-form-input v-model="vpisniList.imePriimek" :state="null" type="text" ref="errmsg" required/>
+        <b-form-input v-model="vpisniList.ime" :state="null" type="text" ref="errmsg" required/>
       </b-col>
     </b-row>
 
     <b-row class="my-1">
+      <b-col sm="2"><label>Priimek: </label></b-col>
+      <b-col sm="4">
+        <b-form-input v-model="vpisniList.priimek" :state="null" type="text" required/>
+      </b-col>
       <b-col sm="2"><label>Datum rojstva: </label></b-col>
       <b-col sm="4">
         <b-form-input v-model="izracunajDatumRojstva" :state="null" type="date" disabled/>
       </b-col>
+    </b-row>
+
+    <b-row class="my-1">
       <b-col sm="2"><label>Kraj rojstva: </label></b-col>
       <b-col sm="4">
         <b-form-input v-model="vpisniList.krajRojstva" :state="null" type="text" required/>
       </b-col>
-    </b-row>
-
-    <b-row class="my-1">
       <b-col sm="2"><label>Država: </label></b-col>
       <b-col sm="4">
         <b-form-select v-model="vpisniList.drzava" :options="countries" :state="null" type="text" required/>
       </b-col>
+    </b-row>
+
+    <b-row class="my-1">
       <b-col sm="2"><label>Občina: </label></b-col>
       <b-col sm="4">
         <b-form-select v-model="vpisniList.regija" :options="posts" :state="null" type="text" :disabled=isDisabled1 />
       </b-col>
-    </b-row>
-
-    <b-row class="my-1">
       <b-col sm="2"><label>Spol: </label></b-col>
       <b-col sm="4">
         <b-form-select v-model="izracunajSpol" :options="['Moški', 'Ženska']" :state="null" type="text" disabled/>
       </b-col>
+    </b-row>
+
+    <b-row class="my-1">
       <b-col sm="2"><label>EMŠO: </label></b-col>
       <b-col sm="4">
         <b-form-input v-model="vpisniList.emso" :options="countries" :state="null" type="text" pattern="\d*" required maxlength="13"/>
       </b-col>
-    </b-row>
-
-    <b-row class="my-1">
       <b-col sm="2"><label>Davčna številka: </label></b-col>
       <b-col sm="4">
         <b-form-input v-model="vpisniList.davcnaStevilka" type="text" pattern="\d*" maxlength="8" required :state="null"/>
       </b-col>
+    </b-row>
+
+    <b-row class="my-1">
       <b-col sm="2"><label>Elektronski naslov: </label></b-col>
       <b-col sm="4">
         <b-form-input v-model="vpisniList.elektronskiNaslov" :options="countries" :state="null" type="email" required/>
       </b-col>
-    </b-row>
-
-    <b-row class="my-1">
       <b-col sm="2"><label>Telefonska številka: </label></b-col>
       <b-col sm="4">
         <b-form-input v-model="vpisniList.telefonskaStevilka" pattern="\d*" required :state="null"/>
@@ -269,12 +273,7 @@ export default {
       studyYears.push(year + '/' + (year+1));
     } 
     return {
-      predmeti: [
-        { name: 'Osnove umetne inteligence', lecturer: "Zoran Bosnić", ects: 6 },
-        { name: 'Ekonomika in podjetništvo', lecturer: 'Mateja Drnovšek', ects: 6 },
-        { name: 'Diplomski seminar', lecturer: "Franc Solina",  ects: 6 },
-        
-      ],
+      predmeti: [],
       splosni: [
         { name: 'Angleški jezik nivo A', lecturer: "Mateja Drnovšek", ects: 6 },
         { name: 'Računalništvo v praksi', lecturer: "Mateja Drnovšek", ects: 6 },
@@ -312,7 +311,7 @@ export default {
         }
       ],
       polja: [
-        
+        { key: 'id', label: 'Šifra predmeta', sortable: true },
         { key: 'name', label: 'Ime predmeta', sortable: true },
         { key: 'lecturer', label: 'Izvajalec', sortable: true },
         { key: 'ects', label: 'ECTS', sortable: true },
@@ -1272,7 +1271,7 @@ export default {
       courses: [
         '1001001 Multimedija UNI',
         '1000407 Računalništvo in matematika UNI',
-        '1000475 Računalništvo in informatika UNI',
+        '1000468 Računalništvo in informatika UNI',
         '1000469 Upravna informatika UNI',
         '1000470 Računalništvo in informatika VS',
         '1000471 Računalništvo in informatika MAG',
@@ -1302,7 +1301,8 @@ export default {
       studyYears: studyYears,
       vpisniList: {
         vpisnaStevilka: '',
-        imePriimek: '',
+        ime: '',
+        priimek: '',
         datumRojstva: '',
         krajRojstva: '',
         regija: '',
@@ -1446,68 +1446,72 @@ export default {
     },
     onSubmit() {
       // TODO: check of sum of ECTS and EMSO and do not let user submit form if both not corrects
-      /*
-      axios.post(`enrollment/${this.$route.params.id}`, {
-        student: {
-          name: this.vpisniList.imePriimek.split(" ")[0],
-          surname: this.vpisniList.imePriimek.split(" ")[1],
-          emso: this.vpisniList.emso,
-          dateOfBirth: this.vpisniList.datumRojstva + "T4:50:49+00:00",
-          placeOfBirth: this.vpisniList.krajRojstva,
-          gender: this.vpisniList.spol[0],
-          nationality: "Slovenija",
-          region: this.vpisniList.regija,
-          taxNumber: this.vpisniList.davcnaStevilka,
-          phoneNumber: this.vpisniList.telefonskaStevilka,
-          permanent: {
-              municipality: {
-                  name: this.vpisniList.stalnoPrebivalisceObcina
-              },
-              country: "SI",
-              placeOfResidence: this.vpisniList.stalnoPrebivalisceNaslov,
-              postalNumber: this.vpisniList.stalnoPrebivaliscePosta.split(",")[0]
-          },
-          temporary: {
-              municipality: {
-                  name: this.vpisniList.zacasnoPrebivalisceObcina
-              },
-              country: "SI",
-              placeOfResidence: "Ulica Generala Maistra 44",
-              postalNumber: "2000"
-          },
-          sendToTemporary: false,
-          enrollmentNumber: "63180001",
-          email: "zs7373@student.uni-lj.si"
-        },
-      studyForm: {
-                id: 1,
-                name: "Na lokaciji"
-      },
-      studyType: {
-                id: 1,
-                name: "Redni"
-      },
-      enrollmentType: {
-              id: 1,
-              name: "Prvi vpis v letnik/dodatno leto"
-      },
-      studyYear: {
-              id: 1
-      },
-      program: {
-              id: 100475,
-              ects: 180,
-              title: "Računalništvo in informatika UNI"
+      var naslov = this.vpisniList.naslovZaVrocanje == "Stalno prebivališče" ? false : true
+      var predmeti = []
+      for(var x = 0; x < this.predmeti.length; x++) {
+        predmeti.push(this.predmeti[x].id_izvajanja)
       }
+      axios.post(`enrollments/${this.$route.params.id}`, {
+          student: {
+            name: this.vpisniList.ime,
+            surname: this.vpisniList.priimek,
+            emso: this.vpisniList.emso,
+            dateOfBirth: this.vpisniList.datumRojstva + "T4:50:49+00:00",
+            placeOfBirth: this.vpisniList.krajRojstva,
+            gender: this.vpisniList.spol[0],
+            nationality: this.vpisniList.drzava,
+            region: this.vpisniList.regija,
+            taxNumber: this.vpisniList.davcnaStevilka,
+            phoneNumber: this.vpisniList.telefonskaStevilka,
+            permanent: {
+                municipality: {
+                    id: 61,
+                    name: this.vpisniList.stalnoPrebivalisceObcina
+                },
+                country: "SI",
+                placeOfResidence: this.vpisniList.stalnoPrebivalisceNaslov,
+                postalNumber: this.vpisniList.stalnoPrebivaliscePosta.split(",")[0]
+            },
+            temporary: {
+                municipality: {
+                    id: 70,
+                    name: this.vpisniList.zacasnoPrebivalisceObcina
+                },
+                country: "SI",
+                placeOfResidence: this.vpisniList.stalnoPrebivalisceNaslov,
+                postalNumber: this.vpisniList.zacasnoPrebivaliscePosta.split(",")[0]
+            },
+            sendToTemporary: naslov,
+            enrollmentNumber: this.vpisniList.vpisnaStevilka,
+            email: this.vpisniList.elektronskiNaslov
+            },
+            studyForm: {
+                id: this.vpisniList.oblikaStudija.split(" ")[0],
+                name: this.vpisniList.oblikaStudija.slice(2, this.vpisniList.oblikaStudija.length)
+              },
+            studyType: {
+                id: this.vpisniList.nacinStudija.split(" ")[0],
+                name: this.vpisniList.nacinStudija.slice(2, this.vpisniList.nacinStudija.length)
+              },
+            enrollmentType: {
+                id: this.vpisniList.vrstaVpisa.split(" ")[0],
+                name: this.vpisniList.vrstaVpisa.slice(2, this.vpisniList.vrstaVpisa.length)
+              },
+            studyYear: {
+                id: this.vpisniList.letnikStudija,
+              },
+            program: {
+                id: this.vpisniList.studijskiProgram.split(" ")[0],
+                ects: 180,
+                title: this.vpisniList.studijskiProgram.slice(7, this.vpisniList.studijskiProgram.length)
+              },
+            courses: predmeti    
+      }
+      ).then(function (response) {
+        //this.$router.push({name: 'home'});
+      }).catch(err => {
+        console.log(err)
       })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-      */
-      this.$router.push({name: 'home'});
     },
     goBack() {
       this.$router.push({name: 'login'});
@@ -1536,20 +1540,19 @@ export default {
         var bday = birthDay.split("-")[2]
         var bmonth = birthDay.split("-")[1]
         var byear = birthDay.split("-")[0].substring(1,4)
-        // if (bday != emso[0]+emso[1] || bmonth != emso[2]+emso[3] || byear != emso[4]+emso[5]+emso[6]) {
-        //   this.errors.push("Vpisana EMŠO se ne ujema z datumom rojstva.")
-        //   return;
-        // }
         return;
       }
       else this.errors.push("Vpisana EMŠO je neveljavna.");
       return;
     },
     validName() {
-      if (!/^[a-zA-Z\s]*$/.test(this.vpisniList.imePriimek)) {
-        this.errors.push("Ime in priimek lahko vsebujeta samo črke.");
-        return;
+      if (!/^[a-zA-Z\s]*$/.test(this.vpisniList.ime)) {
+        this.errors.push("Ime lahko vsebuje samo črke.");
+        if (!/^[a-zA-Z\s]*$/.test(this.vpisniList.priimek)) {
+          this.errors.push("Priimek lahko vsebuje samo črke.");
+        }
       }
+      return
     },
     
   },
@@ -1557,7 +1560,6 @@ export default {
     axios.get(`students/me`).then((response) => {
       var userid = response.data.id;
       axios.get(`students/${userid}`).then((response) => {
-        console.log(response.data)
         this.vpisniList.vpisnaStevilka = response.data.enrollmentNumber;
         this.vpisniList.imePriimek = response.data.name + ' ' + response.data.surname;
         this.vpisniList.krajRojstva = response.data.placeOfBirth;
@@ -1573,19 +1575,40 @@ export default {
         this.vpisniList.stalnoPrebivalisceNaslov = response.data.permanent.placeOfResidence;
         this.vpisniList.zacasnoPrebivalisceNaslov = response.data.temporary.placeOfResidence;
         this.vpisniList.telefonskaStevilka = response.data.phoneNumber;
-        axios.get(`tokens/${userid}`)
-        .then((response) => {
+        axios.get(`tokens/${userid}`).then((response) => {
           for(var x = 0; x < response.data.length; x++) {
             if(response.data[x].id == this.$route.params.id) {
               this.vpisniList.studijskiProgram = response.data[x].program.id + " " + response.data[x].program.title;
               this.vpisniList.letnikStudija = response.data[x].studyYear.id;
               this.vpisniList.vrstaVpisa = response.data[x].enrollmentType.id + " " + response.data[x].enrollmentType.name;
               this.vpisniList.nacinStudija = response.data[x].studyType.id + " " + response.data[x].studyType.name;
-              this.vpisniList.oblikaStudija = response.data[x].studyForm.id + " " + response.data[x].studyForm.name;
-              this.vpisniList.studijskoLetoPrvegaVpisaVTaProgram = "2018/2019"
+              this.vpisniList.oblikaStudija = response.data[x].studyForm.id + " " + response.data[x].studyForm.name; 
               this.pravica = response.data[x].freeChoice;
             }
           }
+          axios.get(`enrollments/${this.$route.params.id}`).then((response) => {
+            this.vpisniList.studijskoLetoPrvegaVpisaVTaProgram = response.data.year.toString;
+            for(var x = 0; x < response.data.obligatoryCourses.length; x++) {
+              var lecturers = ""
+              for(var y = 0; y < response.data.obligatoryCourses[x].lecturers.length; y++) {
+                if(y == 0) lecturers += (response.data.obligatoryCourses[x].lecturers[y].surname + " " + response.data.obligatoryCourses[x].lecturers[y].name)
+                else lecturers += (', ' + response.data.obligatoryCourses[x].lecturers[y].surname + " " + response.data.obligatoryCourses[x].lecturers[y].name)
+              }
+              this.predmeti.push({
+                id: response.data.obligatoryCourses[x].course.id,
+                id_izvajanja: response.data.obligatoryCourses[x].id,
+                name: response.data.obligatoryCourses[x].course.name,
+                lecturer: lecturers,
+                ects: parseInt(response.data.obligatoryCourses[x].course.ects)
+              })
+            }
+            this.ects_sum = 0
+            for(var x = 0; x < this.predmeti.length; x++) {
+              this.ects_sum += this.predmeti[x].ects
+            }
+          }).catch((err) => {
+            console.log(err)
+          })
         }).catch((err) => {
           console.log(err)
         })
@@ -1594,11 +1617,7 @@ export default {
       })
     }).catch((err) => {
       console.log(err)
-    })
-    this.ects_sum = 0
-    for(var x = 0; x < this.predmeti.length; x++) {
-      this.ects_sum += this.predmeti[x].ects
-    } 
+    }) 
   }
 }
 </script>
