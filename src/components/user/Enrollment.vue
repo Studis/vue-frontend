@@ -1425,6 +1425,15 @@ export default {
         if(this.vpisniList.stalnoPrebivalisceDrzava == this.countries[x].value.trim()) stalnaDrzava = this.countries[x].tag
         if(this.vpisniList.zacasnoPrebivalisceDrzava == this.countries[x].value.trim()) zacasnaDrzava = this.countries[x].tag
       }
+      let pravilnaIzbiraNePravice = (this.value_modulski.map(e=>e.name).length==this.value_modulski.map(po => po.modul).filter((value,index,self) => self.indexOf(value)===index).length*3 
+  || this.value_modulski.map(e=>e.name).length==(this.value_modulski.map(po => po.modul).filter((value,index,self) => self.indexOf(value)===index).length)*3-2)
+  && (this.value_modulski.map(po => po.modul).filter((value,index,self) => self.indexOf(value)===index).length == 3 
+  || this.value_modulski.map(po => po.modul).filter((value,index,self) => self.indexOf(value)===index).length == 2)
+
+      if (!this.pravica && !pravilnaIzbiraNePravice) {
+        alert('Nimate proste izbire predmetov! ')
+        return
+      }
       axios.post(`enrollments/${this.$route.params.id}`, {
           student: {
             name: this.vpisniList.ime,
