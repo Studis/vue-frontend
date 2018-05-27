@@ -74,7 +74,7 @@ export default {
       courses: [
         '1001001 Multimedija UNI',
         '1000407 Računalništvo in matematika UNI',
-        '1000475 Računalništvo in informatika UNI',
+        '1000468 Računalništvo in informatika UNI',
         '1000469 Upravna informatika UNI',
         '1000470 Računalništvo in informatika VS',
         '1000471 Računalništvo in informatika MAG',
@@ -205,7 +205,7 @@ export default {
     axios.get(`tokens/${this.$route.params.id}`)
       .then((response) => {
         for(var x = 0; x < response.data.length; x++) {
-          if(response.data[x].status != null) {
+          if(response.data[x].status == 'NEW' || response.data[x].status == 'OPEN') {
             if(response.data[x].freeChoice) response.data[x].freeChoice = "Da";
             else response.data[x].freeChoice = "Ne";
             response.data[x].program.title = response.data[x].program.id + " " + response.data[x].program.title;

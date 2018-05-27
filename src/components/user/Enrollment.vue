@@ -261,7 +261,7 @@
 <script>
 import axios from 'axios';
 import Multiselect from 'vue-multiselect'
-
+import { Component, Vue } from 'vue-property-decorator';
 export default {
   name: 'forgotPassword',
   components: {
@@ -1413,6 +1413,14 @@ export default {
     },
     onSubmit() {
       // TODO: check of sum of ECTS and EMSO and do not let user submit form if both not corrects
+      if(this.ects_sum != 60) {
+        alert('Iz predmetov morate zbrati morate 60 kreditnih točk! ')
+        return
+      }
+      if(this.errors.length > 0) {
+        alert('Napaka pri vnosu! ')
+        return
+      }
       var naslov = this.vpisniList.naslovZaVrocanje == "Stalno prebivališče" ? false : true
       var predmeti = []
       for(var x = 0; x < this.predmeti.length; x++) {
@@ -1434,10 +1442,10 @@ export default {
         alert('Izberete lahko en splosno izbirni predmet in en strokovno izbirni predmet! ')
         return
       }
-      if (this.vpisniList.letnikStudija == 3 && !this.pravica && !pravilnaIzbiraNePravice) {
+      /*if (this.vpisniList.letnikStudija == 3 && !this.pravica && !pravilnaIzbiraNePravice) {
         alert('Nimate proste izbire predmetov! ')
         return
-      }
+      }*/
       axios.post(`enrollments/${this.$route.params.id}`, {
           student: {
             name: this.vpisniList.ime,
@@ -1447,12 +1455,12 @@ export default {
             placeOfBirth: this.vpisniList.krajRojstva,
             gender: this.vpisniList.spol[0],
             nationality: this.vpisniList.drzava,
-            region: this.vpisniList.regija,
+            region: this.vpisniList.regija.trim(),
             taxNumber: this.vpisniList.davcnaStevilka,
             phoneNumber: this.vpisniList.telefonskaStevilka,
             permanent: {
                 municipality: {
-                    name: this.vpisniList.stalnoPrebivalisceObcina
+                    name: this.vpisniList.stalnoPrebivalisceObcina.trim()
                 },
                 country: stalnaDrzava,
                 placeOfResidence: this.vpisniList.stalnoPrebivalisceNaslov,
@@ -1460,7 +1468,7 @@ export default {
             },
             temporary: {
                 municipality: {
-                    name: this.vpisniList.zacasnoPrebivalisceObcina
+                    name: this.vpisniList.zacasnoPrebivalisceObcina.trim()
                 },
                 country: zacasnaDrzava,
                 placeOfResidence: this.vpisniList.stalnoPrebivalisceNaslov,
@@ -1471,29 +1479,29 @@ export default {
             email: this.vpisniList.elektronskiNaslov
             },
             studyForm: {
-                id: this.vpisniList.oblikaStudija.split(" ")[0],
+                id: parseInt(this.vpisniList.oblikaStudija.split(" ")[0]),
                 name: this.vpisniList.oblikaStudija.slice(2, this.vpisniList.oblikaStudija.length)
               },
             studyType: {
-                id: this.vpisniList.nacinStudija.split(" ")[0],
+                id: parseInt(this.vpisniList.nacinStudija.split(" ")[0]),
                 name: this.vpisniList.nacinStudija.slice(2, this.vpisniList.nacinStudija.length)
               },
             enrollmentType: {
-                id: this.vpisniList.vrstaVpisa.split(" ")[0],
+                id: parseInt(this.vpisniList.vrstaVpisa.split(" ")[0]),
                 name: this.vpisniList.vrstaVpisa.slice(2, this.vpisniList.vrstaVpisa.length)
               },
             studyYear: {
-                id: this.vpisniList.letnikStudija,
+                id: parseInt(this.vpisniList.letnikStudija),
               },
             program: {
-                id: this.vpisniList.studijskiProgram.split(" ")[0],
+                id: parseInt(this.vpisniList.studijskiProgram.split(" ")[0]),
                 ects: 180,
                 title: this.vpisniList.studijskiProgram.slice(7, this.vpisniList.studijskiProgram.length)
               },
             courses: predmeti    
       }
       ).then(function (response) {
-        //this.$router.push({name: 'home'});
+        this.$router.push({name: 'home'});
       }).catch(err => {
         console.log(err)
       })
