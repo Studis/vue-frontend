@@ -211,7 +211,7 @@
       <b-col sm="8"><h5>Predmetnik</h5></b-col>
       <b-col sm="4" v-if="vpisniList.letnikStudija != 1"><h5>Splošni izbirni predmeti: </h5></b-col>
     </b-row>
-  
+
 
     <b-row class="my-1">
       <b-col sm="8">
@@ -1442,10 +1442,10 @@ export default {
         alert('Izberete lahko en splosno izbirni predmet in en strokovno izbirni predmet! ')
         return
       }
-      /*if (this.vpisniList.letnikStudija == 3 && !this.pravica && !pravilnaIzbiraNePravice) {
+      if (this.vpisniList.letnikStudija == 3 && !this.pravica && !pravilnaIzbiraNePravice) {
         alert('Nimate proste izbire predmetov! ')
         return
-      }*/
+      }
       axios.post(`enrollments/${this.$route.params.id}`, {
           student: {
             name: this.vpisniList.ime,
@@ -1644,7 +1644,8 @@ export default {
                     id_izvajanja: response.data.moduleCourses[x].id,
                     name: response.data.moduleCourses[x].course.name,
                     lecturer: lecturers,
-                    ects: parseInt(response.data.moduleCourses[x].course.ects)
+                    ects: parseInt(response.data.moduleCourses[x].course.ects),
+                    modul: modul
                   })
                 }
               }
@@ -1657,7 +1658,8 @@ export default {
                         id_izvajanja: response.data.moduleCourses[x].id,
                         name: response.data.moduleCourses[x].course.name,
                         lecturer: lecturers,
-                        ects: parseInt(response.data.moduleCourses[x].course.ects)
+                        ects: parseInt(response.data.moduleCourses[x].course.ects),
+                        modul: modul
                       }
                     ]
                 })
