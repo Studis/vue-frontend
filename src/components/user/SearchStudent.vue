@@ -38,7 +38,8 @@
             :items="enrollments"
             :fields="modalFields">
         <template slot="potrdila" slot-scope="data">
-          <router-link :to="{ name: 'enrollmentConfirmation', params: { id: data.item.id }}">Potrdila</router-link>
+          <router-link v-if="data.item.potrjen" :to="{ name: 'enrollmentConfirmation', params: { id: data.item.id }}">Prenesi</router-link>
+          <b-button v-else-if="data.item.status == 'ACTIVE'" @click="potrdiVpis(data.item.id, data.item.studentId)">Potrdi</b-button>
         </template>
       </b-table>
       </b-container>    
@@ -79,6 +80,9 @@ declare module 'vue/types/vue' {
     $axios: any
     enrollments: Array<enrollment>
     show: any
+    hide: any
+    loadData: any
+    getVpis: any
   }
 }
 import { Component, Vue } from 'vue-property-decorator';
@@ -103,34 +107,51 @@ import axios from 'axios'
       this.totalRows = filteredItems.length
       this.currentPage = 1
     },
+    potrdiVpis(id, studentId){
+      axios.post(`/enrollments/${id}/confirm`)
+      .then(response => {
+        //@ts-ignore
+        this.$refs.vpisiPodatki.hide()
+        this.loadData()
+        this.getVpis({item: {id: studentId}})
+      }).catch((err) => {
+        alert(err.message)
+      })
+    },
     getVpis (data) {
       axios.get(`students/${data.item.id}/enrollments`).then((response: any) => {
         console.table(response.data)
-      this.enrollments = response.data.map((x: any) => {
-            return {
-              studijski_program: x.curriculum.program.id + " - " + x.curriculum.program.title,
-              letnik: x.curriculum.studyYear.id,
-              vrsta_vpisa: x.type.id + " - " + x.type.name,
-              nacin_studija: x.studyType.id + " - " + x.studyType.name,
-              studijsko_leto: x.curriculum.year.toString,
-              id: x.id
-            }
-          })
-      //@ts-ignore
-      this.$refs.vpisiPodatki.show();
+        this.enrollments = response.data.map((x: any) => {
+              return {
+                studijski_program: x.curriculum.program.id + " - " + x.curriculum.program.title,
+                letnik: x.curriculum.studyYear.id,
+                vrsta_vpisa: x.type.id + " - " + x.type.name,
+                nacin_studija: x.studyType.id + " - " + x.studyType.name,
+                studijsko_leto: x.curriculum.year.toString,
+                id: x.id,
+                status: x.token.status,
+                potrjen: x.confirmed,
+                studentId: x.token.student.id
+              }
+            })
+        //@ts-ignore
+        this.$refs.vpisiPodatki.show();
 
-    }).catch((err: any) => {
-      console.log(err)
-    })
+      }).catch((err: any) => {
+        console.log(err)
+      })
+    },
+    loadData(){
+      axios.get(`students`).then((response: any) => {
+        this.items = response.data;
+        this.totalRows = response.data.length
+      }).catch((err: any) => {
+        console.log(err)
+      })
     }
   },
   mounted() {
-    axios.get(`students`).then((response: any) => {
-      this.items = response.data;
-      this.totalRows = response.data.length
-    }).catch((err: any) => {
-      console.log(err)
-    })
+    this.loadData()
   }
 })
 
