@@ -1,6 +1,6 @@
 <template>
   <div>
-      Generating enrollment confirmation ...
+      <p>Generiranje potrdil o vpisu ...</p>
   </div>
 </template>
 
@@ -28,21 +28,10 @@ export default {
 
       return day + '.' + monthIndex + '.' + year;
     },
-    generatePDF(e) {
-        console.log(e)
-        var docDefinition = {
-        content: [],
-        styles: {
-          header: { fontSize: 18, bold: true, alignment: 'center' },
-          bold:{ fontSize: 12, bold: true },
-          normal:{ fontSize: 12, },
-          tag:{ fontSize: 11, color: 'gray' },
-          signature: { alignment:'left', fontSize:12 },
-          address: { fontSize: 7 }
-        }
-      };
-      docDefinition.content = [
+    getPage(e, index){
+      return [
         {
+          pageBreak: (index == 1)?'':'before',
           columns:[
             {
               width: '33%',
@@ -76,7 +65,7 @@ export default {
             {
               width: '23%',
               stack:[
-                {text: "Številka: "+e.id+"/111", style: 'signature'},
+                {text: "Številka: "+e.id+"/"+index, style: 'signature'},
                 {text: "Datum: "+this.formatDate(new Date()), style: 'signature'}
               ]
             }
@@ -167,9 +156,26 @@ export default {
               ]
             }
           ]
-        },
-        
+        }
       ];
+    },
+    generatePDF(e) {
+        console.log(e)
+        var docDefinition = {
+        content: [],
+        styles: {
+          header: { fontSize: 18, bold: true, alignment: 'center' },
+          bold:{ fontSize: 12, bold: true },
+          normal:{ fontSize: 12, },
+          tag:{ fontSize: 11, color: 'gray' },
+          signature: { alignment:'left', fontSize:12 },
+          address: { fontSize: 7 }
+        }
+      };
+      docDefinition.content = [];
+      for(var i = 1; i <= 6; i++){
+        docDefinition.content.push(this.getPage(e, i));
+      }
 
       pdfMake.createPdf(docDefinition).download();
     },
@@ -200,7 +206,6 @@ export default {
   },
   data() {
     return {
-
     };
   },
   props: ["id"]

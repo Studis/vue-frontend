@@ -37,6 +37,9 @@
       <b-table stacked="md"
             :items="enrollments"
             :fields="modalFields">
+        <template slot="potrdila" slot-scope="data">
+          <router-link :to="{ name: 'enrollmentConfirmation', params: { id: data.item.id }}">Potrdila</router-link>
+        </template>
       </b-table>
       </b-container>    
     </b-modal>
@@ -102,14 +105,15 @@ import axios from 'axios'
     },
     getVpis (data) {
       axios.get(`students/${data.item.id}/enrollments`).then((response: any) => {
-        console.table(response)
+        console.table(response.data)
       this.enrollments = response.data.map((x: any) => {
             return {
               studijski_program: x.curriculum.program.id + " - " + x.curriculum.program.title,
               letnik: x.curriculum.studyYear.id,
               vrsta_vpisa: x.type.id + " - " + x.type.name,
               nacin_studija: x.studyType.id + " - " + x.studyType.name,
-              studijsko_leto: x.curriculum.year.toString
+              studijsko_leto: x.curriculum.year.toString,
+              id: x.id
             }
           })
       //@ts-ignore
@@ -129,8 +133,6 @@ import axios from 'axios'
     })
   }
 })
-
-
 
 export default class SearchStudent extends Vue {
   
@@ -153,7 +155,8 @@ export default class SearchStudent extends Vue {
     { key: 'letnik', label: 'Letnik', sortable: true }, 
     { key: 'studijski_program', label: 'Študijski program', sortable: true },
     { key: 'vrsta_vpisa', label: 'Vrsta vpisa', sortable: true },
-    { key: 'nacin_studija', label: 'Način študija', sortable: true }
+    { key: 'nacin_studija', label: 'Način študija', sortable: true },
+    { key: 'potrdila', label: 'Potrdila o vpisih', sortable: false }
   ]
   enrollments: Array<enrollment> = []
   currentPage: number = 1
