@@ -1500,8 +1500,8 @@ export default {
               },
             courses: predmeti    
       }
-      ).then(function (response) {
-        this.$router.push({name: 'home'});
+      ).then((response) => {
+        this.goHome()
       }).catch(err => {
         console.log(err)
       })
