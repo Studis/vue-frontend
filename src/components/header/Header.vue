@@ -6,11 +6,10 @@
   <b-navbar-brand href="#" @click.prevent="goHome">Studis - Študijski informacijski sistem</b-navbar-brand>
 
   <b-collapse is-nav id="nav_collapse">
-
-    <!--b-navbar-nav>
-      <b-nav-item href="#">Link</b-nav-item>
-      <b-nav-item href="#" disabled>Disabled</b-nav-item>
-    </b-navbar-nav-->
+    
+    <b-navbar-nav v-if="$store.state.role !== 'null'">
+      <b-nav-item>Vpisani ste kot: {{ fullName }}, {{ getRole }}</b-nav-item>
+    </b-navbar-nav>
 
     <!-- Right aligned nav items -->
     <b-navbar-nav class="ml-auto">
@@ -29,7 +28,7 @@
       <b-nav-item-dropdown right v-if="$store.state.role !== 'null'">
         <!-- Using button-content slot -->
         <template slot="button-content">
-          <em>Uporabnik</em>
+          <em>Meni</em>
         </template>
         <b-dropdown-item href="#" v-if="getRole === 'STUDENT'" @click.prevent="goToProfile">Osebni podatki študenta</b-dropdown-item>
         <b-dropdown-item href="#" v-if="getRole === 'CLERK'" @click.prevent="goToStudents">Iskanje študentov</b-dropdown-item>
@@ -53,6 +52,11 @@ import axios from 'axios';
 
 export default {
   name: 'studis-header',
+  data() {
+    return {
+      fullName: ''
+    }
+  }, 
   components: {
   },
   methods: {
@@ -88,6 +92,13 @@ export default {
       }).catch((e) => {
         this.isAuthorised = false
       })
+    },
+    getName () {
+      axios.get(`students/me`).then((response) => {
+        this.fullName = response.data.fullName
+      }).catch((e) => {
+        console.log(e)
+      })
     }
   },
   computed: {
@@ -113,6 +124,7 @@ export default {
   mounted () {
     this.$store.commit('cAuth', localStorage.getItem('token'))
     this.isAuthorised = true
+    this.getName()
   },
 }
 
