@@ -59,6 +59,7 @@
             :fields="student.polja">
       </b-table>
       <b-button type="reset" variant="danger" @click.prevent="goHome">Nazaj</b-button>
+      <b-button class="float-right" type="reset" variant="warning" @click.prevent="goIndex">Kartotečni list</b-button>
     </b-form>
   </div>
 </template>
