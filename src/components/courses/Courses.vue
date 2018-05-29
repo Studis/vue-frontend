@@ -113,6 +113,9 @@ export default {
           if(el.curriculum){
             return el.curriculum.year.toString
           }
+          if(el.curriculums){
+            return el.curriculums[0].year.toString
+          }
         }).filter((value,index,self) => self.indexOf(value)===index).filter(el => el != null)
         this.selectedYear = this.allYears[this.allYears.length-1]
         this.updateYears(this.allYears[this.allYears.length-1])

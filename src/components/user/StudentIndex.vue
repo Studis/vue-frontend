@@ -128,7 +128,7 @@ export default {
       };
       doc.content.push({ text: "Kartotečni list", style: 'header' });
       var student = this.response[0].enrollment.token.student;
-      doc.content.push(student.name+" "+student.surname)
+      doc.content.push(student.name+" "+student.surname + " ("+student.enrollmentNumber+")")
       doc.content.push(" ")
       this.response.forEach(e => {
         doc.content.push(" ")
@@ -164,6 +164,7 @@ export default {
           },
           style: 'tableStyle'
         };
+        doc.content.push(" ")
         var i = 0;
         for(var rowIndex in e.index){
           var row = e.index[rowIndex]
@@ -179,12 +180,16 @@ export default {
             tableRow.push(row.examEnrollment.mark)
             tableRow.push(row.examEnrollment.totalExamAttempts)
           }
+          else{
+            tableRow.push(" ", " ", " ", " ")
+          }
           table.table.body.push(tableRow)
         }
         doc.content.push(table);
+        doc.content.push(" ");
+        doc.content.push("KT: "+e.ects+", povprečje: "+((e.average && !isNaN(e.average))?(Math.round(e.average*10)/10):"/"));
       });
       
-
       pdfMake.createPdf(doc).download();
     },
     download(filename, text) {
