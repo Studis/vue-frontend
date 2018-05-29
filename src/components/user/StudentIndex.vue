@@ -1,6 +1,13 @@
 <template>
   <div>
-    <h2>Index</h2>
+    <h2>Kartotečni list</h2>
+    <button class="actionBtn btn btn-warning pull-left" @click.prevent="generatePDF">PDF</button>
+    <button class="actionBtn space btn btn-warning pull-left" @click.prevent="generateCSV">CSV</button>
+    <div>
+    {{student.name}} {{student.surname}} ({{student.enrollmentNumber}})
+    <br><br>
+    <vpis v-for="(vpis, index) in response" :vpis="vpis" :key="index"></vpis>
+    </div>
   </div>
 </template>
 
@@ -11,10 +18,18 @@ import axios from "axios";
 import rest from "../../rest.js";
 import pdfmake from "pdfmake/build/pdfmake.js";
 import pdfFonts from "pdfmake/build/vfs_fonts";
+import vpis from './StudentIndexChild.vue';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 export default {
-  components: {},
+  components: {
+    'vpis': vpis
+  },
+  computed: {
+    student() {
+      if (this.response) return this.response[0].enrollment.token.student || false
+    }
+  },
   watch: {
     content: {
       handler: function(newVal, oldVal) {
@@ -128,6 +143,7 @@ export default {
       };
       doc.content.push({ text: "Kartotečni list", style: 'header' });
       var student = this.response[0].enrollment.token.student;
+      this.student = student
       doc.content.push(student.name+" "+student.surname + " ("+student.enrollmentNumber+")")
       doc.content.push(" ")
       this.response.forEach(e => {
@@ -238,7 +254,8 @@ export default {
       .then((response)=>{
         this.response = response.data
         console.log(this.response)
-        this.generateCSV()
+        // this.generateCSV()
+
       })
       .catch((error)=>{
         console.log(error)
@@ -252,7 +269,7 @@ export default {
     return {
       response: null,
       fields: [],
-      items: [],
+      items: []    
     };
   },
   props: ["id"]
