@@ -108,6 +108,9 @@ export default {
     goHome() {
       this.$router.push({name: 'home'});
     },
+    goIndex() {
+      this.$router.push({name: 'index', params: {id: this.userid}});
+    },
     saveProfile() {
       // this.$snotify.async('Saved', 'saved', () => new Promise((resolve, reject) =>
       //   resolve({

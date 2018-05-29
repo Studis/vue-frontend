@@ -42,6 +42,7 @@
           <b-button v-else-if="data.item.status == 'ACTIVE'" @click="potrdiVpis(data.item.id, data.item.studentId)">Potrdi</b-button>
         </template>
       </b-table>
+      <b-btn variant="primary" @click="goIndex()">Kartotečni list</b-btn>
       </b-container>    
     </b-modal>
     <br><br>
@@ -83,6 +84,7 @@ declare module 'vue/types/vue' {
     hide: any
     loadData: any
     getVpis: any
+    studentId: any
   }
 }
 import { Component, Vue } from 'vue-property-decorator';
@@ -103,6 +105,9 @@ import axios from 'axios'
     goHome () {
       this.$router.push({name: 'home'})
     },
+    goIndex() {
+      this.$router.push({name: 'index', params: {id: this.studentId}});
+    },
     onFiltered (filteredItems) {
       this.totalRows = filteredItems.length
       this.currentPage = 1
@@ -122,6 +127,7 @@ import axios from 'axios'
       axios.get(`students/${data.item.id}/enrollments`).then((response: any) => {
         console.table(response.data)
         this.enrollments = response.data.map((x: any) => {
+              this.studentId = x.id
               return {
                 studijski_program: x.curriculum.program.id + " - " + x.curriculum.program.title,
                 letnik: x.curriculum.studyYear.id,
@@ -186,6 +192,7 @@ export default class SearchStudent extends Vue {
   filter = null
   totalRows: number = 0
   items= []
+  studentId = 0
 }
 </script>
 
