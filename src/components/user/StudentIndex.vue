@@ -157,9 +157,9 @@ export default {
           layout: 'lightHorizontalLines', // optional
           table: {
             headerRows: 1,
-            widths: [ 'auto', 'auto', '*', 'auto', 'auto', 'auto', 'auto', 'auto' ],
+            widths: [ 'auto', 'auto', '*', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto' ],
             body: [
-              [ "#", "Šifra", "Predmet", "ECTS", "Predavatelj", "Datum", "Ocena", "Št. polaganj" ]
+              [ "#", "Šifra", "Predmet", "ECTS", "Predavatelj", "Datum", "Ocena", "Polaganj", "Vrnjenih pol." ]
             ]
           },
           style: 'tableStyle'
@@ -179,9 +179,10 @@ export default {
             tableRow.push(this.formatDate(new Date(Date.parse(row.examEnrollment.exam.scheduledAt))))
             tableRow.push(row.examEnrollment.mark)
             tableRow.push(row.examEnrollment.totalExamAttempts)
+            tableRow.push(row.examEnrollment.returnedExamAttempts)
           }
           else{
-            tableRow.push(" ", " ", " ", " ")
+            tableRow.push(" ", " ", " ", " ", " ")
           }
           table.table.body.push(tableRow)
         }
@@ -209,14 +210,26 @@ export default {
     },
     generateCSV() {
       var csvContent = "";
-      for (var lineKey in this.items) {
-        var line = this.items[lineKey];
-        for (var columnKeyIndex in this.printFields) {
-          var columnKey = this.printFields[columnKeyIndex]
-          csvContent += (line[columnKey.key]?line[columnKey.key]:"") + ",";
+      csvContent +=  "#,Šifra,Predmet,ECTS,Predavatelj,Datum,Ocena,Polaganj,Vrnjenih pol.\r\n";
+      var i = 0;
+      this.response.forEach(e => {
+        for(var rowIndex in e.index){
+          var row = e.index[rowIndex]
+          csvContent += (i++)+",";
+          csvContent += row.courseExecution.course.id + ",";
+          csvContent += row.courseExecution.course.name + ",";
+          csvContent += row.courseExecution.course.ects + ",";
+          if(row.examEnrollment){
+            csvContent += row.examEnrollment.exam.asking + ",";
+            csvContent += this.formatDate(new Date(Date.parse(row.examEnrollment.exam.scheduledAt))) + ",";
+            csvContent += row.examEnrollment.mark + ",";
+            csvContent += row.examEnrollment.totalExamAttempts + ",";
+            csvContent += row.examEnrollment.returnedExamAttempts + ",";
+          }
+          else csvContent += ",,,,";
+          csvContent += "\r\n";
         }
-        csvContent += "\r\n";
-      }
+      });
       this.download("export.csv", csvContent);
     },
     load(all){
@@ -225,7 +238,7 @@ export default {
       .then((response)=>{
         this.response = response.data
         console.log(this.response)
-        this.generatePDF()
+        this.generateCSV()
       })
       .catch((error)=>{
         console.log(error)
@@ -233,7 +246,7 @@ export default {
     }
   },
   mounted() {
-    this.load(true)
+    this.load(false)
   },
   data() {
     return {
