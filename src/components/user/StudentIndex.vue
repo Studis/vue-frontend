@@ -3,6 +3,7 @@
     <h2>Kartotečni list</h2>
     <button class="actionBtn btn btn-warning pull-left" @click.prevent="generatePDF">PDF</button>
     <button class="actionBtn space btn btn-warning pull-left" @click.prevent="generateCSV">CSV</button>
+    <button class="actionBtn space btn btn-warning pull-left" @click.prevent="toggleMode">{{modeIzpisi}} polaganja </button>
     <div>
     {{student.name}} {{student.surname}} ({{student.enrollmentNumber}})
     <br><br>
@@ -99,6 +100,12 @@ export default {
     }
   },
   methods: {
+    toggleMode () {
+      this.toggleStatus = !this.toggleStatus
+      if (this.toggleStatus) this.modeIzpisi = 'Zadnji'
+      if (!this.toggleStatus) this.modeIzpisi = 'Vsi'
+      this.load(this.toggleStatus)
+    },
     updateButtons (item,actionName) {
       // this.$set(item, 'actionName', actionName)
       let tmpObj = {}
@@ -269,7 +276,9 @@ export default {
     return {
       response: null,
       fields: [],
-      items: []    
+      items: [],
+      toggleStatus: false,
+      modeIzpisi: 'Vsi'
     };
   },
   props: ["id"]
