@@ -27,7 +27,8 @@
     <div>
       <b-table stacked="md"
             :items="items"
-            :fields="fields">
+            :fields="fields"
+            ref="indexTable">
       </b-table>
     </div>
     KT: {{vpis.ects}}, povprečje: {{((vpis.average && !isNaN(vpis.average))?(Math.round(vpis.average*10)/10):"/")}}
@@ -46,7 +47,7 @@ export default {
     // this.items.push(row.examEnrollment.totalExamAttempts)
     // this.items.push(row.examEnrollment.returnedExamAttempts)  
     for (let a of this.vpis.index) {
-      a.examEnrollment.exam.scheduledAt = this.$options.filters.datum(a.examEnrollment.exam.scheduledAt)
+      if(a.examEnrollment) a.examEnrollment.exam.scheduledAt = this.$options.filters.datum(a.examEnrollment.exam.scheduledAt)
     }
     
   },

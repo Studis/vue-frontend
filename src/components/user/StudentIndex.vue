@@ -7,7 +7,7 @@
     <div>
     {{student.name}} {{student.surname}} ({{student.enrollmentNumber}})
     <br><br>
-    <vpis v-for="(vpis, index) in response" :vpis="vpis" :key="index"></vpis>
+    <vpis v-if="abc" v-for="(vpis, index) in response" :vpis="vpis" :key="index"></vpis>
     </div>
   </div>
 </template>
@@ -102,8 +102,8 @@ export default {
   methods: {
     toggleMode () {
       this.toggleStatus = !this.toggleStatus
-      if (this.toggleStatus) this.modeIzpisi = 'Zadnji'
-      if (!this.toggleStatus) this.modeIzpisi = 'Vsi'
+      if (this.toggleStatus) this.modeIzpisi = 'Zadnja'
+      if (!this.toggleStatus) this.modeIzpisi = 'Vsa'
       this.load(this.toggleStatus)
     },
     updateButtons (item,actionName) {
@@ -257,10 +257,13 @@ export default {
     },
     load(all){
       console.log("load")
+      this.abc = false;
       axios.get(`/index/${this.id}/`+(all?`all`:`last`))
       .then((response)=>{
         this.response = response.data
+        this.$forceUpdate()
         console.log(this.response)
+        this.abc = true;
         // this.generateCSV()
 
       })
@@ -278,7 +281,8 @@ export default {
       fields: [],
       items: [],
       toggleStatus: false,
-      modeIzpisi: 'Vsi'
+      modeIzpisi: 'Vsi',
+      abc: true
     };
   },
   props: ["id"]
