@@ -1,12 +1,12 @@
 <template>
   <div>
     <results 
-      title="Course" 
+      title="Prijave na izpit" 
       :indexes="true"
       :content="content"
       :details="details"
       entityName="student"
-      sortByField="surname"
+      sortByField="priimek"
       v-model="content"></results>
   </div>
 </template>
@@ -30,8 +30,8 @@ export default {
       .then((response) => {
         let students = response.data.map((x)=>{
           let s = x.enrollment.token.student;
-          var r = {id: s.id, name: s.name, surname: s.surname, enrollment: s.enrollmentNumber};
-          r["study type"] = x.enrollment.studyType.name;
+          var r = {id: s.id, ime: s.name, priimek: s.surname, vpisna_stevilka: s.enrollmentNumber};
+          r["Način študija"] = x.enrollment.studyType.name;
           return r;
         });
         console.log(students);
@@ -45,22 +45,22 @@ export default {
       .then(response => {
         var x = response.data;
         var d = [
-            {title: "Name", value: x.course.name + " ("+x.course.id+")"},
+            {title: "Ime predmeta", value: x.course.name + " ("+x.course.id+")"},
             {title: "ECTS", value: x.course.ects},
-            {title: "Lecturer 1", value: x.lecturer1.name + " " + x.lecturer1.surname + " ("+x.lecturer1.code+")"}
+            {title: "Izvajalec 1", value: x.lecturer1.name + " " + x.lecturer1.surname + " ("+x.lecturer1.code+")"}
         ];
         if(x.lecturer2){
-          d.push({title: "Lecturer 2", value: x.lecturer2.name + " " + x.lecturer2.surname + " ("+x.lecturer2.code+")"})
+          d.push({title: "Izvajalec 2", value: x.lecturer2.name + " " + x.lecturer2.surname + " ("+x.lecturer2.code+")"})
         }
         if(x.lecturer3){
-          d.push({title: "Lecturer 3", value: x.lecturer3.name + " " + x.lecturer3.surname + " ("+x.lecturer3.code+")"})
+          d.push({title: "Izvajalec 3", value: x.lecturer3.name + " " + x.lecturer3.surname + " ("+x.lecturer3.code+")"})
         }
         if(x.curriculum){
-          d.push({title: "Year", value: x.curriculum.year.toString});
+          d.push({title: "Šolsko leto", value: x.curriculum.year.toString});
         }
         if(x.module){
-          d.push({title: "Year", value: x.module.curriculum.year.toString});
-          d.push({title: "Module", value: x.module.name});
+          d.push({title: "Šolsko leto", value: x.module.curriculum.year.toString});
+          d.push({title: "Modul", value: x.module.name});
         }
         this.details = d;
       })

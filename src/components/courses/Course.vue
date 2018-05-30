@@ -4,19 +4,19 @@
     
     
     <results 
-      title="Course enrollments" 
+      title="Vpisani v predmet" 
       :indexes="true"
       :content="content"
       :details="details"
       entityName="student"
-      sortByField="surname"
+      sortByField="priimek"
       v-on:b-click-id="showStudent"
       :actions="[{name: 'Open', classColor: 'btn-success'}]"
       v-model="content"></results>
 
      <br><br><br><br>
      <results
-      title="Exam applications"
+      title="Prijave na izpit"
       :indexes="true"
       :content="examEnrollments"
       entityName="examEnrollment"
@@ -32,17 +32,17 @@
 
 <br>
 <div v-if="showTable">
-  <h3>Add exam results</h3>
+  <h3>Vpiši rezultate izpitnega roka</h3>
    <table class="table" >
   <thead>
     <tr>
       <th scope="col">#</th>
-      <th scope="col">Surname</th>
-      <th scope="col">Name</th>
-      <th scope="col">Enrollment</th>
-      <th scope="col">Score</th>
-      <th scope="col">Mark</th>
-      <th scope="col">Actions</th>
+      <th scope="col">Priimek</th>
+      <th scope="col">Ime</th>
+      <th scope="col">Prijava</th>
+      <th scope="col">Točke</th>
+      <th scope="col">Ocena</th>
+      <th scope="col">Možnosti</th>
     </tr>
   </thead>
   <tbody>
@@ -61,10 +61,10 @@
 </table>
 <b-row>
   <b-col>
-    <b-button type="reset" variant="dark" @click.prevent="goBackToTable">Back</b-button>
+    <b-button type="reset" variant="dark" @click.prevent="goBackToTable">Nazaj</b-button>
   </b-col>
   <b-col>
-  <b-button class="float-right" type="reset" variant="warning" @click.prevent="saveResults(false)">Save</b-button>
+  <b-button class="float-right" type="reset" variant="warning" @click.prevent="saveResults(false)">Shrani</b-button>
   </b-col>
   </b-row>
 </div>
@@ -73,13 +73,13 @@
       </b-form>
       <br>
       <div v-if="!showTable">
-      <b-btn class="float-left" variant="success" @click.prevent="addScores(data)">Add exam scores</b-btn>
-      <b-btn class="float-right" variant="success" @click.prevent="addMarks(data)">Add exam marks</b-btn>
+      <b-btn class="float-left" variant="success" @click.prevent="addScores(data)">Vpiši točke</b-btn>
+      <b-btn class="float-right" variant="success" @click.prevent="addMarks(data)">Vpiši ocene</b-btn>
       </div>
 
       <br><br><br><br>
       <results 
-      title="Scheduled exams"
+      title="Razpisani izpitni roki"
       :indexes="true"
       :details="details"
       :content="scheduledExams"
@@ -89,7 +89,7 @@
       v-model="scheduledExams"
       >
       </results>
-     <b-btn class="float-right" variant="success" @click.prevent="show_addExam(data)">Add new exam term</b-btn>
+     <b-btn class="float-right" variant="success" @click.prevent="show_addExam(data)">Dodaj nov izpitni rok</b-btn>
      <div class="clearfix"></div>
 
 
@@ -131,13 +131,13 @@
         </b-row>
         <b-row>
             <b-col sm="4">
-                <b-form-group label="Location">
+                <b-form-group label="Prostor">
                     <b-form-input type="text" class="mb-3" v-model="examLocation" required>
                     </b-form-input>
                 </b-form-group>
             </b-col>
             <b-col sm="4">
-                <b-form-group label="Asking">
+                <b-form-group label="Izpraševalec">
                     <b-form-select v-model="asking" :options="profesors" class="mb-3" />
                 </b-form-group>
                 
@@ -220,7 +220,7 @@ export default {
             alert(`Data for student ${el.name} ${el.surname} with ${el.enrollment} error: ${response.data.message}`)
             booleanAllSuccess = false
           }
-          if (booleanAllSuccess && this.getContentForEditing.indexOf(el) == this.getContentForEditing.length - 1) alert("Successfully changed!"); 
+          if (booleanAllSuccess && this.getContentForEditing.indexOf(el) == this.getContentForEditing.length - 1) alert("Sprememba uspešna!"); 
           console.log(response.data)
         }).catch((err) => {
           alert(err.message)
@@ -245,7 +245,7 @@ export default {
       }
       axios.delete(`/exams/scheduled/erase/${this.examId}`)
       .then(response => {
-        if (!response.data.message) alert('Users are enrolled in this exam!')
+        if (!response.data.message) alert('Študenti so vpisani na ta izpit!')
         this.getScheduledExams()
       }).catch((err) => {
         alert(err.message)
@@ -258,11 +258,11 @@ export default {
           console.log('hej ', x)
           let r = {
             id: x.id,
-            location: x.location,
-            asking: x.asking,
-            written: x.written,
-            scheduledAt: this.$options.filters.datum(x.scheduledAt),
-            examTerm: x.examTerm,
+            Prostor: x.location,
+            Izpraševalec: x.asking,
+            Pisni: x.written,
+            datum: this.$options.filters.datum(x.scheduledAt),
+            Izpitni_rok: x.examTerm,
             // name: x.enrollment.enrollment.token.student.name,
             // enrollment: x.enrollment.enrollment.token.student.enrollmentNumber,
             // scheduledAt: this.$options.filters.datum(x.exam.scheduledAt),
@@ -321,8 +321,8 @@ export default {
         console.log("Got enrollments", response.data)
         let students = response.data.map((x)=>{
           let s = x.token.student;
-          var r = {surname: s.surname, name: s.name, id: s.id, enrollment: s.enrollmentNumber};
-          r["study type"] = x.studyType.name;
+          var r = {priimek: s.surname, ime: s.name, id: s.id, Vpisna_stevilka: s.enrollmentNumber};
+          r["Način študija"] = x.studyType.name;
           return r;
         });
         console.log(students);
@@ -338,17 +338,17 @@ export default {
           // console.log('hej ', x)
           let r = {
             id: x.id,
-            surname: x.enrollment.enrollment.token.student.surname,
-            name: x.enrollment.enrollment.token.student.name,
-            enrollment: x.enrollment.enrollment.token.student.enrollmentNumber,
-            scheduledAt: this.$options.filters.datum(x.exam.scheduledAt),
-            studyYear: x.enrollment.enrollment.curriculum.year.toString,
-            score: x.score,
-            mark: x.status === 'deleted' ? 'VP' : x.mark,
-            location: x.exam.location,
-            asking: x.exam.asking,
-            attemptNo: x.totalExamAttempts + '-' + x.returnedExamAttempts + '=' + (x.totalExamAttempts - x.returnedExamAttempts),
-            examTerm: x.exam.examTerm
+            priimek: x.enrollment.enrollment.token.student.surname,
+            ime: x.enrollment.enrollment.token.student.name,
+            Vpisna_stevilka: x.enrollment.enrollment.token.student.enrollmentNumber,
+            Datum: this.$options.filters.datum(x.exam.scheduledAt),
+            Šolsko_leto: x.enrollment.enrollment.curriculum.year.toString,
+            Točke: x.score,
+            Ocena: x.status === 'deleted' ? 'VP' : x.mark,
+            Prostor: x.exam.location,
+            Izpraševalec: x.exam.asking,
+            Število_polaganj: x.totalExamAttempts + '-' + x.returnedExamAttempts + '=' + (x.totalExamAttempts - x.returnedExamAttempts),
+            Izpitni_rok: x.exam.examTerm
             // course: x.enrollmentCourse.courseExecution.course.name,
             // professor: x.enrollmentCourse.courseExecution.lecturer1.name + " " + x.enrollmentCourse.courseExecution.lecturer1.surname || x.enrollmentCourse.courseExecution.lecturer2.name + " " + x.enrollmentCourse.courseExecution.lecturer2.surname || x.enrollmentCourse.courseExecution.lecturer3.name + " " + x.enrollmentCourse.courseExecution.lecturer3.surname,
             // date: this.$options.filters.datum(x.examsAvailable[0].scheduledAt)
@@ -383,27 +383,27 @@ export default {
         
           // End set lecturers
         var d = [
-            {title: "Name", value: x.course.name + " ("+x.course.id+")"},
+            {title: "Ime predmeta", value: x.course.name + " ("+x.course.id+")"},
             {title: "ECTS", value: x.course.ects},
-            {title: "Lecturer 1", value: x.lecturer1.name + " " + x.lecturer1.surname + " ("+x.lecturer1.code+")"}
+            {title: "Izvajalec 1", value: x.lecturer1.name + " " + x.lecturer1.surname + " ("+x.lecturer1.code+")"}
         ];
         this.profesors.push(x.lecturer1.name + " " + x.lecturer1.surname)
 
         if(x.lecturer2){
-          d.push({title: "Lecturer 2", value: x.lecturer2.name + " " + x.lecturer2.surname + " ("+x.lecturer2.code+")"})
+          d.push({title: "Izvajalec 2", value: x.lecturer2.name + " " + x.lecturer2.surname + " ("+x.lecturer2.code+")"})
           this.profesors.push(x.lecturer2.name + " " + x.lecturer2.surname)
 
         }
         if(x.lecturer3){
-          d.push({title: "Lecturer 3", value: x.lecturer3.name + " " + x.lecturer3.surname + " ("+x.lecturer3.code+")"})
+          d.push({title: "Izvajalec 3", value: x.lecturer3.name + " " + x.lecturer3.surname + " ("+x.lecturer3.code+")"})
           this.profesors.push(x.lecturer3.name + " " + x.lecturer3.surname)
         }
         if(x.curriculum){
-          d.push({title: "Year", value: x.curriculum.year.toString});
+          d.push({title: "Šolsko leto", value: x.curriculum.year.toString});
         }
         if(x.module){
-          d.push({title: "Year", value: x.module.curriculum.year.toString});
-          d.push({title: "Module", value: x.module.name});
+          d.push({title: "Šolsko leto", value: x.module.curriculum.year.toString});
+          d.push({title: "Modul", value: x.module.name});
         }
         if (this.profesors.length === 1) this.asking = this.profesors[0]
         this.details = d;
@@ -419,8 +419,8 @@ export default {
       allExamTerms: [],
       selectedExamTerm: '',
       originalContent: {},
-      baseText: 'Select exam term: ',
-      beforeScheduleDelete: 'Ali ste prepričani, da želite izpitni rok.',
+      baseText: 'Izberite izpitni rok: ',
+      beforeScheduleDelete: 'Ali ste prepričani, da želite izbrisati izpitni rok.',
       onFailScheduleDelete: 'Za ta izpit še obstajajo prijave! Zato izpitnega roka ni mogoče zbrisati',
       examDate: '',
       examTerm: 1,

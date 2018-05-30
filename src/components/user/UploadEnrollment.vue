@@ -1,19 +1,18 @@
 <template>
   <div>
-    <h3>Students import</h3>
+    <h3>Uvoz študentov</h3>
     <br>
     <b-form-group id="exampleInputGroup1"
-      label="Import"
       label-for="exampleInput1">
-      <b-form-file id="uvozVpis" accept="*.txt" v-model="datoteka" :state="Boolean(datoteka)" placeholder="Choose file..."></b-form-file>
+      <b-form-file id="uvozVpis" accept="*.txt" v-model="datoteka" :state="Boolean(datoteka)" placeholder="Izberite datoteko..."></b-form-file>
     </b-form-group>
     <br>
-    <b-button type="submit" variant="primary" @click.prevent="submitUpload">Upload</b-button>
+    <b-button type="submit" variant="primary" @click.prevent="submitUpload">Naloži</b-button>
     <br><br>
     <div>
     <div v-show="zeNalozeno">
       <results
-        title="Imported students"
+        title="Uvoženi študenti"
         :indexes="true"
         :content="content"
         :details="details"

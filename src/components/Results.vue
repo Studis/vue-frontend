@@ -107,7 +107,7 @@ export default {
           
           // this.fields = [{key: "open", label: "Open"}];
           this.printFields = [];
-          if (this.actions) this.fields.push({key: "btns", label: "Actions"})
+          if (this.actions) this.fields.push({key: "btns", label: "Možnosti"})
           for (var columnName in columns) {
             var element = {
               key: columnName,

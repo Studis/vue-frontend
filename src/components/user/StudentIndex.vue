@@ -281,7 +281,7 @@ export default {
       fields: [],
       items: [],
       toggleStatus: false,
-      modeIzpisi: 'Vsi',
+      modeIzpisi: 'Vsa',
       abc: true
     };
   },

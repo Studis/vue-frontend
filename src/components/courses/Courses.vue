@@ -2,7 +2,7 @@
   <div>
 
     <results 
-      title="Courses" 
+      title="Seznam predmetov" 
       :indexes="true"
       :content="content"
       :details="details"
@@ -15,7 +15,7 @@
         <b-dropdown-item @click.prevent="updateYears(item)" :key="item" v-for="item in allYears">{{item}}</b-dropdown-item>
       </b-dropdown>
       <b-dropdown id="ddown2" :text="selectedStudyYear" class="m-md-2" >
-        <b-dropdown-item @click.prevent="updateStudyYear(item)" :key="item" v-for="item in ['All', '1', '2', '3']">{{item}}</b-dropdown-item>
+        <b-dropdown-item @click.prevent="updateStudyYear(item)" :key="item" v-for="item in ['Vsi', '1', '2', '3']">{{item}}</b-dropdown-item>
       </b-dropdown>
       </results>
   </div>
@@ -64,7 +64,7 @@ export default {
             return false
           })
           .filter(el => {
-            if(this.selectedStudyYear == "All") return true;
+            if(this.selectedStudyYear == "Vsi") return true;
             if(el.curriculum){
               return el.curriculum.studyYear.id == parseInt(this.selectedStudyYear)
             }
@@ -81,18 +81,18 @@ export default {
           })
           .map((x)=>{
             var r = {id: x.id};
-            r["Course number"] = x.course.id;
-            r.course = x.course.name;
-            r["Enrollments"] = x.enrollmentsCount;
+            r["Šifra predmeta"] = x.course.id;
+            r.predmet = x.course.name;
+            r["Število vpisanih"] = x.enrollmentsCount;
             if(x.module){
-              r.module = x.module.name;
-              r.year = x.module.curriculum.year.toString;
+              r.modul = x.module.name;
+              r.Šolsko_leto = x.module.curriculum.year.toString;
             }
             else if(x.curriculum){
-              r.year = x.curriculum.year.toString
+              r.Šolsko_leto = x.curriculum.year.toString
             }
             else if(x.curriculums){
-              r.year = x.curriculums[0].year.toString
+              r.Šolsko_leto = x.curriculums[0].year.toString
             }
             return r;
           }),
@@ -128,7 +128,7 @@ export default {
     // TODO: sorting on Module Name and Year is not working properly
     return {
       selectedYear: '',
-      selectedStudyYear: 'All',
+      selectedStudyYear: 'Vsi',
       allYears: [],
       originalContent: {},
       content: {

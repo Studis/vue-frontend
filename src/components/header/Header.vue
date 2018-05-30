@@ -8,7 +8,7 @@
   <b-collapse is-nav id="nav_collapse">
     
     <b-navbar-nav v-if="$store.state.role !== 'null'">
-      <b-nav-item>Vpisani ste kot: {{ fullName }}, {{ getRole }}</b-nav-item>
+      <b-nav-item>Vpisani ste kot: {{ fullName }}, {{ role }}</b-nav-item>
     </b-navbar-nav>
 
     <!-- Right aligned nav items -->
@@ -54,7 +54,8 @@ export default {
   name: 'studis-header',
   data() {
     return {
-      fullName: ''
+      fullName: '',
+      role: ''
     }
   }, 
   components: {
@@ -96,6 +97,10 @@ export default {
     getName () {
       axios.get(`students/me`).then((response) => {
         this.fullName = response.data.fullName
+        if(response.data.role == 'STUDENT') this.role = 'Študent'
+        if(response.data.role == 'LECTURER') this.role = 'Učitelj'
+        if(response.data.role == 'CLERK') this.role = 'Referentka'
+        if(response.data.role == 'ADMIN') this.role = 'Skrbnik'
       }).catch((e) => {
         console.log(e)
       })

@@ -19,7 +19,7 @@ Vue.use(Snotify)
 Vue.config.productionTip = process.env.NODE_ENV === 'production'
 
 Vue.filter('datum', function (value: any) {
-  return moment(value).format('YYYY-MM-DD HH:mm')
+  return moment(value).format('DD-MM-YYYY HH:mm')
 })
 
 if (process.env.VUE_APP_API_URL) {

@@ -10,7 +10,7 @@
         entityName="exam"
         :landscape="true"
         v-on:b-click-id="btnClicked"
-        :actions="[{name: 'Apply',classColor: 'btn-success',vhide: 'enrolled'},{name: 'Delete application',classColor: 'btn-danger',vshow: 'enrolled'}]"
+        :actions="[{name: 'Prijava',classColor: 'btn-success',vhide: 'Prijavljen'},{name: 'Odjava',classColor: 'btn-danger',vshow: 'Prijavljen'}]"
         >
          <b-dropdown id="ddown1" :text="selectedExamTerm" class="m-md-2" >
           <b-dropdown-item @click.prevent="updateExamTerms(item)" :key="item" v-for="item in allExamTerms">{{item}}</b-dropdown-item>
@@ -21,7 +21,7 @@
     <b-modal ref="eraseExam" size="lg" @ok="acceptOffer">
       <b-container fluid>
         <b-row>
-        <h3>Deletion of this exam term for {{deletionCourse.message}} was requested, do you want to delete your application in order to allow it!</h3>
+        <h3>Zahtevan je bil izbris za izpitni rok {{deletionCourse.message}}!</h3>
         </b-row>
       </b-container>    
     </b-modal>
@@ -49,7 +49,7 @@ export default {
       allExamTerms: [],
       selectedExamTerm: '',
       originalContent: {},
-      baseText: 'Select exam term: '
+      baseText: 'Izberite izpitni rok: '
     }
   },
    components: {
@@ -73,7 +73,7 @@ export default {
           if (response.data.message) {
             alert(response.data.message)
           } else {
-            alert('Successfully deleted application!')
+            alert('Uspešno odstranjena prijava!')
           }
           this.prepareComponent()
         }).catch((err) => {
@@ -85,7 +85,7 @@ export default {
     },
     btnClicked(el) {
       this.rowData = el
-      if(el.actionName == "Apply") {
+      if(el.actionName == "Prijava") {
         let examId = el.clickedItem.id
         var examDateSelected = el.clickedItem.date
         // filter(a => a.examsAvailable.filter(b => b.id == mojId)).map(c => c.enrollmentCourse.id)
@@ -108,12 +108,12 @@ export default {
           if (response.data.message) {
             alert(response.data.message)
           } else {
-            alert('Successfully applied!')
+            alert('Prijava uspešna!')
           }
         }).catch((err) => {
           alert(err.message)
         });  
-      } else if (el.actionName == 'Delete application') {
+      } else if (el.actionName == 'Odjava') {
         let examId = el.clickedItem.id
         var examDateSelected = el.clickedItem.date
         // filter(a => a.examsAvailable.filter(b => b.id == mojId)).map(c => c.enrollmentCourse.id)
@@ -153,16 +153,16 @@ export default {
 
           var r = {
             id: x.id, // examId
-            course: x.courseExecution.course.name,
-            professor: x.courseExecution.lecturer1.name + " " + x.courseExecution.lecturer1.surname || x.courseExecution.lecturer2.name + " " + x.courseExecution.lecturer2.surname || x.courseExecution.lecturer3.name + " " + x.courseExecution.lecturer3.surname,
-            date: this.$options.filters.datum(x.scheduledAt),
-            mark: ((x.examEnrollment && x.examEnrollment.mark) ? `${x.examEnrollment.mark}` : ''),
-            enrolled: (x.examEnrollment && x.examEnrollment.status == null) ? `Yes` : '', // enrolled has to be checked like this!!
-            asking: x.asking,
-            location: x.location,
-            studyYear: (x.courseExecution.year) ? x.courseExecution.year.toString : '',
-            attemptNo: (x.examEnrollment) ? x.examEnrollment.totalExamAttempts + '-' + x.examEnrollment.returnedExamAttempts + '=' + (x.examEnrollment.totalExamAttempts - x.examEnrollment.returnedExamAttempts)  : '',
-            examTerm: (x.examTerm) ? x.examTerm : ''
+            Ime_predmeta: x.courseExecution.course.name,
+            Izvajalci: x.courseExecution.lecturer1.name + " " + x.courseExecution.lecturer1.surname || x.courseExecution.lecturer2.name + " " + x.courseExecution.lecturer2.surname || x.courseExecution.lecturer3.name + " " + x.courseExecution.lecturer3.surname,
+            Datum: this.$options.filters.datum(x.scheduledAt),
+            Ocena: ((x.examEnrollment && x.examEnrollment.mark) ? `${x.examEnrollment.mark}` : ''),
+            Prijavljen: (x.examEnrollment && x.examEnrollment.status == null) ? `Da` : '', // enrolled has to be checked like this!!
+            Izpraševalec: x.asking,
+            Prostor: x.location,
+            Šolsko_leto: (x.courseExecution.year) ? x.courseExecution.year.toString : '',
+            Število_polaganj: (x.examEnrollment) ? x.examEnrollment.totalExamAttempts + '-' + x.examEnrollment.returnedExamAttempts + '=' + (x.examEnrollment.totalExamAttempts - x.examEnrollment.returnedExamAttempts)  : '',
+            Izpitni_rok: (x.examTerm) ? x.examTerm : ''
           }
           
           return r;
