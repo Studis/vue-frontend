@@ -35,10 +35,10 @@
           <b-link @click.prevent="forgotPassword">Pozabil sem geslo</b-link>
         </b-form-group>
         <b-alert show dismissible v-if="wrong">
-          Napačni prijavni podatki </b>
+          Napačni prijavni podatki
         </b-alert>
         <b-alert show dismissible v-if="locked">
-          You ip address is locked! </b>
+          You ip address is locked!
         </b-alert>
         <b-button type="submit" variant="primary">Prijava</b-button>
       </b-form>

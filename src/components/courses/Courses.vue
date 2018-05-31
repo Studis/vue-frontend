@@ -18,13 +18,35 @@
         <b-dropdown-item @click.prevent="updateStudyYear(item)" :key="item" v-for="item in ['Vsi', '1', '2', '3']">{{item}}</b-dropdown-item>
       </b-dropdown>
       </results>
+      <br>
+      <h3>Generiranje izpitnih rokov</h3>
        <b-dropdown id="ddown2" :text="safrLetnik+''" class="m-md-2" >
-        <b-dropdown-item @click.prevent="updateRok(item)" :key="item" v-for="item in ['1', '2', '3']">{{item}}</b-dropdown-item>
+        <b-dropdown-item @click.prevent="updateRok(item)" :key="item" v-for="item in ['2016', '2017', '2018']">{{item}}</b-dropdown-item>
       </b-dropdown>
        <b-dropdown id="ddown2" :text="safrProgram+''" class="m-md-2" >
         <b-dropdown-item @click.prevent="updateProgram(item)" :key="item" v-for="item in ['1000468', '1000470']">{{item}}</b-dropdown-item>
       </b-dropdown>
-      <b-btn @click.prevent="generateRoki()">Generiraj roke</b-btn>
+      <b-col sm="12">
+        <b-col sm="4">
+          Zacetek zimskega izpitnega obdobja
+          <b-form-input v-model="zacetekZimskegaObdobja" type="date"/>
+          Konec zimskega izpitnega obdobja
+          <b-form-input v-model="konecZimskegaObdobja" type="date"/>
+        </b-col>
+        <b-col sm="4">
+          Zacetek poletnega izpitnega obdobja
+          <b-form-input v-model="zacetekPoletnegaObdobja" type="date"/>
+          Konec poletnega izpitnega obdobja
+          <b-form-input v-model="konecPoletnegaObdobja" type="date"/>
+        </b-col>
+        <b-col sm="4">
+          Zacetek jesenskega izpitnega obdobja
+          <b-form-input v-model="zacetekJesenskegaObdobja" type="date"/>
+          Konec jesenskega izpitnega obdobja
+          <b-form-input v-model="konecJesenskegaObdobja" type="date"/>
+        </b-col>
+      </b-col>
+      <b-btn style="margin-top:10px" @click.prevent="generateRoki()">Generiraj roke</b-btn>
   </div>
 </template>
 
@@ -47,11 +69,15 @@ export default {
       this.safrProgram = item
     },
     generateRoki () {
-    
-      axios.post(`exams/scheduled/generate/${this.safrLetnik}`,this.safrProgram,{
-        headers: {
-          'Content-Type': 'application/json'
-        }
+      axios.post(`exams/scheduled/generate/${this.safrProgram}`,
+      {
+        year: this.safrLetnik,
+        winterStart: this.zacetekZimskegaObdobja,
+        winterEnd: this.konecZimskegaObdobja,
+        springStart: this.zacetekPoletnegaObdobja,
+        springEnd: this.konecPoletnegaObdobja,
+        autumnStart: this.zacetekJesenskegaObdobja,
+        autumnEnd: this.konecJesenskegaObdobja
       })
       .then((response) => {
         alert('Uspešno :)')
@@ -153,11 +179,17 @@ export default {
   data() {
     // TODO: sorting on Module Name and Year is not working properly
     return {
+      zacetekZimskegaObdobja: '2018-01-22',
+      konecZimskegaObdobja: '2018-02-16',
+      zacetekPoletnegaObdobja: '2018-06-11',
+      konecPoletnegaObdobja: '2018-07-06',
+      zacetekJesenskegaObdobja: '2018-08-20',
+      konecJesenskegaObdobja: '2018-09-14',
       selectedYear: '',
       selectedStudyYear: 'Vsi',
       allYears: [],
       originalContent: {},
-      safrLetnik: 1,
+      safrLetnik: 2018,
       safrProgram: '1000468',
       content: {
         content: [],

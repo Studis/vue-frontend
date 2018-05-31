@@ -3,7 +3,7 @@
 
     <div v-if="getRole !== 'ADMIN' && getRole !== 'LECTURER' && getRole !== 'CLERK'">
       <results v-show="doRefresh" 
-        title="Exam terms" 
+        title="Izpitni roki" 
         :indexes="true"
         :content="content"
         :details="details"
