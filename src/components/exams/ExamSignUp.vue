@@ -46,10 +46,9 @@ export default {
       rowData: {},
       responseData: {},
       deletionCourse: { message: '', data: {}},
-      allExamTerms: [],
+      allExamTerms: ['1', '2', '3'],
       selectedExamTerm: '',
       originalContent: {},
-      baseText: 'Select exam term: ',
       doRefresh: true,
       baseText: 'Izberite izpitni rok: '
     }
@@ -66,7 +65,7 @@ export default {
   methods: {
     updateExamTerms (ele) {
       this.content = {
-        content: this.originalContent.content.filter(el => el.examTerm == ele)
+        content: this.originalContent.content.filter(el => el.Izpitni_rok == ele)
       }
       this.selectedExamTerm = this.baseText + ele
     },
