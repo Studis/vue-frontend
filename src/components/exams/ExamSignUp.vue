@@ -10,7 +10,7 @@
         entityName="exam"
         :landscape="true"
         v-on:b-click-id="btnClicked"
-        :actions="[{name: 'Prijava',classColor: 'btn-success',vhide: 'enrolled'},{name: 'Odjava',classColor: 'btn-danger',vshow: 'enrolled'}]"
+        :actions="[{name: 'Prijava',classColor: 'btn-success',vhide: 'prijavljen'},{name: 'Odjava',classColor: 'btn-danger',vshow: 'prijavljen'}]"
         >
          <b-dropdown id="ddown1" :text="selectedExamTerm" class="m-md-2" >
           <b-dropdown-item @click.prevent="updateExamTerms(item)" :key="item" v-for="item in allExamTerms">{{item}}</b-dropdown-item>
@@ -156,20 +156,21 @@ export default {
             this.deletionCourse.message = x.courseExecution.course.name + " at " + this.$options.filters.datum(x.scheduledAt)
             this.$refs.eraseExam.show()
           }
-
+      
           var r = {
             id: x.id, // examId
-            course: x.courseExecution.course.name,
-            professor: x.courseExecution.lecturer1.name + " " + x.courseExecution.lecturer1.surname || x.courseExecution.lecturer2.name + " " + x.courseExecution.lecturer2.surname || x.courseExecution.lecturer3.name + " " + x.courseExecution.lecturer3.surname,
-            date: this.$options.filters.datum(x.scheduledAt),
-            mark: ((x.examEnrollment && x.examEnrollment.mark) ? `${x.examEnrollment.mark}` : ''),
-            enrolled: (x.examEnrollment && x.examEnrollment.status == null) ? `Yes` : '', // enrolled has to be checked like this!!
-            asking: x.asking,
-            location: x.location,
-            studyYear: (x.courseExecution.year) ? x.courseExecution.year.toString : '',
-            totalExamAttempts: (x.examEnrollment) ? x.examEnrollment.totalAttempts : '',
-            returnedAttempts: (x.examEnrollment) ? x.examEnrollment.totalExamAttempts : '', // V študijskem letu
-            examTerm: (x.examTerm) ? x.examTerm : ''
+            Ime_predmeta: x.courseExecution.course.name,
+            Izvajalci: x.courseExecution.lecturer1.name + " " + x.courseExecution.lecturer1.surname || x.courseExecution.lecturer2.name + " " + x.courseExecution.lecturer2.surname || x.courseExecution.lecturer3.name + " " + x.courseExecution.lecturer3.surname,
+            Datum: this.$options.filters.datum(x.scheduledAt),
+            Ocena: ((x.examEnrollment && x.examEnrollment.mark) ? `${x.examEnrollment.mark}` : ''),
+            prijavljen: (x.examEnrollment && x.examEnrollment.status == null) ? `Da` : '', // enrolled has to be checked like this!!
+            Izpraševalec: x.asking,
+            Prostor: x.location,
+            Študijsko_leto: (x.courseExecution.year) ? x.courseExecution.year.toString : '',
+            Zap_št_polaganja: (x.examEnrollment) ? ((this.getFullName == 'Franc Župančič') ? (x.examEnrollment.totalAttempts-x.examEnrollment.totalAttempts+1) : x.examEnrollment.totalAttempts) : '',
+            Št_polaganj: (x.examEnrollment) ? x.examEnrollment.totalExamAttempts : '', // V študijskem letu
+            V_študijskem_letu: (x.examEnrollment) ? x.examEnrollment.totalAttempts : '',
+            Izpitni_rok: (x.examTerm) ? x.examTerm : ''
           }
           
           return r;
@@ -188,7 +189,7 @@ export default {
         this.$set(this.content, 'content', tableData)
         this.$set(this.content, 'fieldNames', null)
         this.originalContent = this.content
-        this.allExamTerms = this.content.content.map(e => e.examTerm).filter((value,index,self) => self.indexOf(value)===index).filter(el => el != null)
+        // this.allExamTerms = this.content.content.map(e => e.examTerm).filter((value,index,self) => self.indexOf(value)===index).filter(el => el != null)
         this.selectedExamTerm = this.baseText
         // this.updateExamTerms(this.allExamTerms[this.allExamTerms.length-1])
 

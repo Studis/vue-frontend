@@ -61,8 +61,8 @@ export default {
           { key: 'examEnrollment.exam.asking', label: 'Izpraševalec'},
           { key: 'examEnrollment.exam.scheduledAt', label: 'Datum' },
           { key: 'examEnrollment.mark', label: 'Ocena'},
-          { key: 'examEnrollment.totalAttempts', label: 'Št. polaganj'},
-          { key: 'examEnrollment.totalExamAttempts', label: 'V študijskem letu'}
+          { key: 'examEnrollment.totalExamAttempts', label: 'Št. polaganj'},
+          { key: 'examEnrollment.totalAttempts', label: 'V študijskem letu'}
 
       ],
       items: this.vpis.index
