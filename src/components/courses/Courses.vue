@@ -18,6 +18,13 @@
         <b-dropdown-item @click.prevent="updateStudyYear(item)" :key="item" v-for="item in ['Vsi', '1', '2', '3']">{{item}}</b-dropdown-item>
       </b-dropdown>
       </results>
+       <b-dropdown id="ddown2" :text="safrLetnik+''" class="m-md-2" >
+        <b-dropdown-item @click.prevent="updateRok(item)" :key="item" v-for="item in ['1', '2', '3']">{{item}}</b-dropdown-item>
+      </b-dropdown>
+       <b-dropdown id="ddown2" :text="safrProgram+''" class="m-md-2" >
+        <b-dropdown-item @click.prevent="updateProgram(item)" :key="item" v-for="item in ['1000468', '1000470']">{{item}}</b-dropdown-item>
+      </b-dropdown>
+      <b-btn @click.prevent="generateRoki()">Generiraj roke</b-btn>
   </div>
 </template>
 
@@ -33,6 +40,25 @@ export default {
     'results': Results
   },
   methods: {
+    updateRok (item) {
+      this.safrLetnik = item
+    },
+    updateProgram (item) {
+      this.safrProgram = item
+    },
+    generateRoki () {
+    
+      axios.post(`exams/scheduled/generate/${this.safrLetnik}`,this.safrProgram,{
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then((response) => {
+        alert('Uspešno :)')
+      }).catch(err => {
+        alert(JSON.stringify(err))
+      })
+    },
     btnClicked (el) {
       if (el.actionName=="Open") this.$router.push({name: 'course', params: { id: el.clickedItem.id }})
     },
@@ -131,6 +157,8 @@ export default {
       selectedStudyYear: 'Vsi',
       allYears: [],
       originalContent: {},
+      safrLetnik: 1,
+      safrProgram: '1000468',
       content: {
         content: [],
         fieldNames: null
