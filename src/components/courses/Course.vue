@@ -335,7 +335,7 @@ export default {
       axios.get(`exams/enrollments/${this.id}`)
       .then((response) => {
         let tableData = response.data.map((x)=>{
-          // console.log('hej ', x)
+          console.log('hoj ', x)
           let r = {
             id: x.id,
             priimek: x.enrollment.enrollment.token.student.surname,

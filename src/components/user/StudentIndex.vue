@@ -182,7 +182,7 @@ export default {
             headerRows: 1,
             widths: [ 'auto', 'auto', '*', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto' ],
             body: [
-              [ "#", "Šifra", "Predmet", "ECTS", "Predavatelj", "Datum", "Ocena", "Polaganj", "Vrnjenih pol." ]
+              [ "#", "Šifra", "Predmet", "ECTS", "Predavatelj", "Datum", "Ocena", "Polaganj", "V študijskem letu" ]
             ]
           },
           style: 'tableStyle'
@@ -201,8 +201,8 @@ export default {
             tableRow.push(row.examEnrollment.exam.asking)
             tableRow.push(this.formatDate(new Date(Date.parse(row.examEnrollment.exam.scheduledAt))))
             tableRow.push(row.examEnrollment.mark)
+            tableRow.push(row.examEnrollment.totalAttempts)
             tableRow.push(row.examEnrollment.totalExamAttempts)
-            tableRow.push(row.examEnrollment.returnedExamAttempts)
           }
           else{
             tableRow.push(" ", " ", " ", " ", " ")
@@ -233,7 +233,7 @@ export default {
     },
     generateCSV() {
       var csvContent = "";
-      csvContent +=  "#,Šifra,Predmet,ECTS,Predavatelj,Datum,Ocena,Polaganj,Vrnjenih pol.\r\n";
+      csvContent +=  "#,Šifra,Predmet,ECTS,Predavatelj,Datum,Ocena,Polaganj,V študijske letu\r\n";
       var i = 0;
       this.response.forEach(e => {
         for(var rowIndex in e.index){
@@ -246,8 +246,8 @@ export default {
             csvContent += row.examEnrollment.exam.asking + ",";
             csvContent += this.formatDate(new Date(Date.parse(row.examEnrollment.exam.scheduledAt))) + ",";
             csvContent += row.examEnrollment.mark + ",";
+            csvContent += row.examEnrollment.totalAttempts + ",";
             csvContent += row.examEnrollment.totalExamAttempts + ",";
-            csvContent += row.examEnrollment.returnedExamAttempts + ",";
           }
           else csvContent += ",,,,";
           csvContent += "\r\n";

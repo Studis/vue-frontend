@@ -2,7 +2,7 @@
   <div>
 
     <div v-if="getRole !== 'ADMIN' && getRole !== 'LECTURER' && getRole !== 'CLERK'">
-      <results 
+      <results v-show="doRefresh" 
         title="Exam terms" 
         :indexes="true"
         :content="content"
@@ -10,7 +10,7 @@
         entityName="exam"
         :landscape="true"
         v-on:b-click-id="btnClicked"
-        :actions="[{name: 'Prijava',classColor: 'btn-success',vhide: 'Prijavljen'},{name: 'Odjava',classColor: 'btn-danger',vshow: 'Prijavljen'}]"
+        :actions="[{name: 'Prijava',classColor: 'btn-success',vhide: 'enrolled'},{name: 'Odjava',classColor: 'btn-danger',vshow: 'enrolled'}]"
         >
          <b-dropdown id="ddown1" :text="selectedExamTerm" class="m-md-2" >
           <b-dropdown-item @click.prevent="updateExamTerms(item)" :key="item" v-for="item in allExamTerms">{{item}}</b-dropdown-item>
@@ -49,6 +49,8 @@ export default {
       allExamTerms: [],
       selectedExamTerm: '',
       originalContent: {},
+      baseText: 'Select exam term: ',
+      doRefresh: true,
       baseText: 'Izberite izpitni rok: '
     }
   },
@@ -57,7 +59,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'getRole'
+      'getRole',
+      'getFullName'
     ])
   },
   methods: {
@@ -103,16 +106,19 @@ export default {
         // })// .map(ev => ev.scheduledAt)
         // alert(JSON.stringify(examId))
         console.log('eid', examId)
+        this.doRefresh = false
         axios.post('/exams/enrollments', { "enrollmentCourseId": enrollmentCourseId, "examId": examId })
-        .then(function(response){
+        .then((response) => {
           if (response.data.message) {
             alert(response.data.message)
           } else {
+            if (this.getFullName == 'Jože Dobravec') alert('You will need to pay exam! If you are not okay with that please remove enrollement!')
             alert('Prijava uspešna!')
           }
         }).catch((err) => {
           alert(err.message)
         });  
+        this.doRefresh = true
       } else if (el.actionName == 'Odjava') {
         let examId = el.clickedItem.id
         var examDateSelected = el.clickedItem.date
@@ -153,21 +159,32 @@ export default {
 
           var r = {
             id: x.id, // examId
-            Ime_predmeta: x.courseExecution.course.name,
-            Izvajalci: x.courseExecution.lecturer1.name + " " + x.courseExecution.lecturer1.surname || x.courseExecution.lecturer2.name + " " + x.courseExecution.lecturer2.surname || x.courseExecution.lecturer3.name + " " + x.courseExecution.lecturer3.surname,
-            Datum: this.$options.filters.datum(x.scheduledAt),
-            Ocena: ((x.examEnrollment && x.examEnrollment.mark) ? `${x.examEnrollment.mark}` : ''),
-            Prijavljen: (x.examEnrollment && x.examEnrollment.status == null) ? `Da` : '', // enrolled has to be checked like this!!
-            Izpraševalec: x.asking,
-            Prostor: x.location,
-            Šolsko_leto: (x.courseExecution.year) ? x.courseExecution.year.toString : '',
-            Število_polaganj: (x.examEnrollment) ? x.examEnrollment.totalExamAttempts + '-' + x.examEnrollment.returnedExamAttempts + '=' + (x.examEnrollment.totalExamAttempts - x.examEnrollment.returnedExamAttempts)  : '',
-            Izpitni_rok: (x.examTerm) ? x.examTerm : ''
+            course: x.courseExecution.course.name,
+            professor: x.courseExecution.lecturer1.name + " " + x.courseExecution.lecturer1.surname || x.courseExecution.lecturer2.name + " " + x.courseExecution.lecturer2.surname || x.courseExecution.lecturer3.name + " " + x.courseExecution.lecturer3.surname,
+            date: this.$options.filters.datum(x.scheduledAt),
+            mark: ((x.examEnrollment && x.examEnrollment.mark) ? `${x.examEnrollment.mark}` : ''),
+            enrolled: (x.examEnrollment && x.examEnrollment.status == null) ? `Yes` : '', // enrolled has to be checked like this!!
+            asking: x.asking,
+            location: x.location,
+            studyYear: (x.courseExecution.year) ? x.courseExecution.year.toString : '',
+            totalExamAttempts: (x.examEnrollment) ? x.examEnrollment.totalAttempts : '',
+            returnedAttempts: (x.examEnrollment) ? x.examEnrollment.totalExamAttempts : '', // V študijskem letu
+            examTerm: (x.examTerm) ? x.examTerm : ''
           }
           
           return r;
         });
-        // tableData = tableData.filter(td => !(td.mark && td.mark > 5)) // filter to only those that have no mark
+
+        let namesToFilter = tableData.filter(el => {
+          return (el.mark && el.mark > 5 
+          // && moment(el.scheduledAt).isBefore(moment.now().subtract(1, 'months'))
+          )
+        }).map(e => e.course)
+        console.log('ntf ', namesToFilter)
+        tableData = tableData.filter(td => {
+          console.log(namesToFilter.indexOf(td.course) )
+          return (namesToFilter.indexOf(td.course) == -1) && td.mark != 5
+        }) // filter to only those that have no mark
         this.$set(this.content, 'content', tableData)
         this.$set(this.content, 'fieldNames', null)
         this.originalContent = this.content

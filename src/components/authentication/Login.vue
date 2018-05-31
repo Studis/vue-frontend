@@ -107,6 +107,7 @@ declare module 'vue/types/vue' {
         if (response) {
           this.$store.commit('updateRole', response.data.role)
           this.$store.commit('updateUserId', response.data.id)
+          this.$store.commit('updateFullName', response.data.fullName)
           return response.data.role
         }
       }).catch(e => {

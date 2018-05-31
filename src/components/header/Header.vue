@@ -8,7 +8,7 @@
   <b-collapse is-nav id="nav_collapse">
     
     <b-navbar-nav v-if="$store.state.role !== 'null'">
-      <b-nav-item>Vpisani ste kot: {{ fullName }}, {{ role }}</b-nav-item>
+      <b-nav-item>Vpisani ste kot: {{ getFullName }}, {{ role }}</b-nav-item>
     </b-navbar-nav>
 
     <!-- Right aligned nav items -->
@@ -89,6 +89,7 @@ export default {
       axios.get(`students/me`).then((response) => {
         this.$store.commit('updateRole', response.data.role)
         this.$store.commit('updateUserId', response.data.id)
+        this.$store.commit('updateFullName', response.data.fullName)
         return response.data.role
       }).catch((e) => {
         this.isAuthorised = false
@@ -108,7 +109,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'getRole'
+      'getRole',
+      'getFullName'
     ]),
     ...mapState({
       authChanged: (state) => state.isAuth

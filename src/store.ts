@@ -7,7 +7,8 @@ export default new Vuex.Store({
   state: {
     role: 'null', // ['ADMIN', 'CLERK', 'LECTURER', 'STUDENT']
     token: '',
-    userId: ''
+    userId: '',
+    fullName: ''
   },
   mutations: {
     cAuth (state, newValue) {
@@ -18,6 +19,9 @@ export default new Vuex.Store({
     },
     updateRole (state, newRole) {
       state.role = newRole
+    },
+    updateFullName(state,ns) {
+      state.fullName = ns
     }
   },
   actions: {
@@ -32,6 +36,9 @@ export default new Vuex.Store({
     },
     getToken (state): string {
       return state.token
+    },
+    getFullName (state): string {
+      return state.fullName
     }
   }
 })
