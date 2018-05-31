@@ -8,7 +8,7 @@
   <b-collapse is-nav id="nav_collapse">
     
     <b-navbar-nav v-if="$store.state.role !== 'null'">
-      <b-nav-item>Vpisani ste kot: {{ getFullName }}, {{ role }}</b-nav-item>
+      <b-nav-item>Vpisani ste kot: {{ (getFullName != 'null null') ? getFullName : ''  }} {{ role }}</b-nav-item>
     </b-navbar-nav>
 
     <!-- Right aligned nav items -->
