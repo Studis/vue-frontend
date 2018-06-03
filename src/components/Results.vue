@@ -236,6 +236,11 @@ export default {
     },
     generateCSV() {
       var csvContent = "";
+      for (var columnKeyIndex in this.printFields) {
+        var columnKey = this.printFields[columnKeyIndex]
+        csvContent += columnKey.title + ",";
+      }
+      csvContent += "\r\n";
       for (var lineKey in this.items) {
         var line = this.items[lineKey];
         for (var columnKeyIndex in this.printFields) {
