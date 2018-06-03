@@ -160,7 +160,7 @@ export default {
         content: [],
         footer: (currentPage, pageCount, pageSize)=> { 
           return [
-            { text: this.title+"     | Page "+currentPage.toString() + ' of ' + pageCount+'         .', alignment: 'right'},
+            { text: this.title+" | Generirano: "+this.formatDate(new Date())+" | Stran "+currentPage.toString() + ' / ' + pageCount+'         .', alignment: 'right'},
             { canvas: [ { type: 'rect', x: 270, y: pageSize.height-132, w: pageSize.width - 170, h: 40 } ] }
           ]
         },
@@ -211,6 +211,13 @@ export default {
       docDefinition.content.push(table);
 
       pdfMake.createPdf(docDefinition).download();
+    },
+    formatDate(date) {
+      var day = date.getDate();
+      var monthIndex = date.getMonth()+1;
+      var year = date.getFullYear();
+
+      return day + '.' + monthIndex + '.' + year;
     },
     download(filename, text) {
       var element = document.createElement("a");
