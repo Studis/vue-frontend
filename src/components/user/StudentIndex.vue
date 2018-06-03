@@ -191,15 +191,23 @@ export default {
         var i = 0;
         for(var rowIndex in e.index){
           var row = e.index[rowIndex]
-          var tableRow = [
-            (i++)+"",
-            row.courseExecution.course.id,
-            row.courseExecution.course.name,
-            row.courseExecution.course.ects,
-          ]
+          var tableRow;
+          if(rowIndex > 0 && e.index[rowIndex-1].courseExecution.course.id == row.courseExecution.course.id){
+            tableRow = [
+              (i++)+"", " ", " ", " "
+            ];
+          }
+          else{
+            tableRow = [
+              (i++)+"",
+              row.courseExecution.course.id,
+              row.courseExecution.course.name,
+              row.courseExecution.course.ects,
+            ]
+          }
           if(row.examEnrollment){
             tableRow.push(row.examEnrollment.exam.asking)
-            tableRow.push(this.formatDate(new Date(Date.parse(row.examEnrollment.exam.scheduledAt))))
+            tableRow.push(row.examEnrollment.exam.scheduledAt.split(' ')[0].replace(/\-/gi, '.'))
             tableRow.push(row.examEnrollment.mark)
             tableRow.push(row.examEnrollment.totalAttempts)
             tableRow.push(row.examEnrollment.totalExamAttempts)
