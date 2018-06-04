@@ -19,7 +19,7 @@
         </results>
     </div>
     <b-modal ref="eraseExam" size="lg" @ok="acceptOffer">
-      <b-container fluid>
+      <b-container>
         <b-row>
         <h3>Zahtevan je bil izbris za izpitni rok {{deletionCourse.message}}!</h3>
         </b-row>
@@ -163,12 +163,12 @@ export default {
             Datum: this.$options.filters.datum(x.scheduledAt),
             Ocena: ((x.examEnrollment && x.examEnrollment.mark) ? `${x.examEnrollment.mark}` : ''),
             prijavljen: (x.examEnrollment && x.examEnrollment.status == null) ? `Da` : '', // enrolled has to be checked like this!!
-            Izpraševalec: x.asking,
+            // Izpraševalec: x.asking,
             Prostor: x.location,
             Študijsko_leto: (x.courseExecution.year) ? x.courseExecution.year.toString : '',
-            Zap_št_polaganja: (x.examEnrollment) ? ((this.getFullName == 'Franc Župančič') ? (x.examEnrollment.totalAttempts-x.examEnrollment.totalAttempts+1) : x.examEnrollment.totalAttempts) : '',
+            Zap_št_polaganja: (x.examEnrollment) ? (x.examEnrollment.totalExamAttempts) : '',
             Št_polaganj: (x.examEnrollment) ? x.examEnrollment.totalExamAttempts : '', // V študijskem letu
-            V_študijskem_letu: (x.examEnrollment) ? x.examEnrollment.totalAttempts : '',
+            // V_študijskem_letu: (x.examEnrollment) ? x.examEnrollment.totalAttempts : '',
             Izpitni_rok: (x.examTerm) ? x.examTerm : ''
           }
           
@@ -238,6 +238,6 @@ export default {
     max-width: calc(100vw - 125px);
   }
   #logintext {
-    padding: 0.3em;
+    padding: 0.10em;
   }
 </style>

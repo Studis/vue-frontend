@@ -32,6 +32,6 @@ export default class App extends Vue {
   -moz-osx-font-smoothing: grayscale;
 }
 .main-content {
-  padding: 30px;
+  margin-top: 2em;
 }
 </style>

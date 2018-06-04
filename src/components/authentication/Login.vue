@@ -1,13 +1,19 @@
 <template>
-  <div class="text-center">
-    <b-row>
+
+  <div class="text-center login-form botMarg">
+    <!-- <div>
+      <img src="https://petra-education.eu/wp-content/uploads/sites/29/2016/07/111.png" class="img-thumbnail smaller-login">
+    </div> -->
+    <div class="card text-center login-form">
+
+    <b-row class="padding-context">
       <b-col>
         <b-form-text tag="h1" id="logintext">
           Prijava v sistem
         </b-form-text>
       </b-col>
     </b-row>
-    <b-row>
+    <b-row class="padding-context">
       <b-col sm="2"></b-col>
       <b-col sm="8">
       <b-form @submit.prevent="onSubmit" @reset.prevent="onReset" v-if="true">
@@ -45,6 +51,7 @@
       </b-col>
       <b-col sm="2"></b-col>
     </b-row>
+    </div>
   </div>
 </template>
 
@@ -142,5 +149,17 @@ export default class Login extends Vue {
   }
   #logintext {
     padding: 0.3em;
+  }
+  .login-form {
+    margin-top: 10em;
+  }
+  .smaller-login {
+    width: 50%;
+  }
+  .padding-context {
+    padding: 1em;
+  }
+  .botMarg {
+    margin-bottom: 3em;
   }
 </style>
