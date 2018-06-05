@@ -127,7 +127,7 @@ import axios from 'axios'
       axios.get(`students/${data.item.id}/enrollments`).then((response: any) => {
         console.table(response.data)
         this.enrollments = response.data.map((x: any) => {
-              this.studentId = x.id
+              // this.studentId = x.id
               return {
                 studijski_program: x.curriculum.program.id + " - " + x.curriculum.program.title,
                 letnik: x.curriculum.studyYear.id,
@@ -142,6 +142,7 @@ import axios from 'axios'
             })
         //@ts-ignore
         this.$refs.vpisiPodatki.show();
+        this.studentId = data.item.id
 
       }).catch((err: any) => {
         console.log(err)
