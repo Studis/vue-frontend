@@ -23,17 +23,19 @@ Vue.filter('datum', function (value: any) {
 })
 
 if (process.env.VUE_APP_API_URL) {
-  axiosDefaults.baseURL = `http://${process.env.VUE_APP_API_URL}/v1`
+  axiosDefaults.baseURL = `${process.env.VUE_APP_API_URL}`
 } else if (process.env.NODE_ENV === 'production') { // If exposed port via docker image
   axiosDefaults.baseURL = 'http://api.studis.tk/v1'
 } else {
   axiosDefaults.baseURL = 'http://localhost:8080/v1'//'http://api.studis.tk/v1'
 }
+axios.defaults.headers.common['Authorization'] = `Basic ${localStorage.getItem('token')}`
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = `*`
 
 router.beforeEach(
   (to: any, from: any, next: any) => {
 
-    axios.defaults.headers.common['Authorization'] = `Basic ${localStorage.getItem('token')}`
+    // axios.defaults.headers.common['Authorization'] = `Basic ${localStorage.getItem('token')}`
 
     if (to.matched.some((record: any) => record.meta.forVisitors)) {
       if (isAuthenticated()) {
