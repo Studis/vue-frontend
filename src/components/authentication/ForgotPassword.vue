@@ -1,6 +1,8 @@
 <template>
-  <div class="text-center">
-    <b-row>
+  <div class="text-center login-form botMarg">
+        <div class="card text-center login-form">
+
+    <b-row class="padding-context">
       <b-col>
         <b-form-text tag="h1" id="logintext">
           Pozabljeno geslo
@@ -38,6 +40,7 @@
       <b-col sm="2"></b-col>
        
     </b-row>
+    </div>
    
    
   </div>

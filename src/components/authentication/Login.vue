@@ -90,7 +90,11 @@ declare module 'vue/types/vue' {
             this.wrong = false
           }, 2000);
         }
-        this.$router.push({name: 'home'})
+        if ((d.data.role !== "STUDENT")) {
+          this.$router.push({name: 'courses'})
+        } else {
+          this.$router.push({name: 'home'})
+        }
         this.setGetAuth()
         this.$store.commit('cAuth', localStorage.getItem('token'))
       }).catch(err => {
@@ -148,7 +152,7 @@ export default class Login extends Vue {
     max-width: calc(100vw - 125px);
   }
   #logintext {
-    padding: 0.3em;
+    //padding: 0.3em;
   }
   .login-form {
     margin-top: 10em;
@@ -157,7 +161,7 @@ export default class Login extends Vue {
     width: 50%;
   }
   .padding-context {
-    padding: 1em;
+    padding: 3em;
   }
   .botMarg {
     margin-bottom: 3em;

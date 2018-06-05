@@ -2,8 +2,7 @@
 <b-navbar toggleable="md" type="dark" variant="success">
 
   <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
-
-  <b-navbar-brand href="#" @click.prevent="goHome">Studis - Študijski informacijski sistem</b-navbar-brand>
+  <b-navbar-brand href="#" @click.prevent="goHome"><img src="https://thegogogo.com/img/security.png" class="img img-header"/>Studis - Študijski informacijski sistem</b-navbar-brand>
 
   <b-collapse is-nav id="nav_collapse">
     
@@ -136,3 +135,11 @@ export default {
 }
 
 </script>
+
+<style>
+.img-header {
+  height: 5%;
+  width: 5%;
+  margin-right: 1em;
+}
+</style>
