@@ -25,7 +25,7 @@ Vue.filter('datum', function (value: any) {
 if (process.env.VUE_APP_API_URL) {
   axiosDefaults.baseURL = `${process.env.VUE_APP_API_URL}`
 } else if (process.env.NODE_ENV === 'production') { // If exposed port via docker image
-  axiosDefaults.baseURL = 'http://api.studis.tk/v1'
+  axiosDefaults.baseURL = 'https://api.studis.tk/v1'
 } else {
   axiosDefaults.baseURL = 'http://localhost:8080/v1'//'http://api.studis.tk/v1'
 }
