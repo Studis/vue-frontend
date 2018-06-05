@@ -47,13 +47,12 @@
   </thead>
   <tbody>
     <tr v-for="(stud,index) in getContentForEditing" :key="stud.id">
-      
       <th scope="row">{{index+1}}</th>
-      <td>{{stud.surname}}</td>
-      <td>{{stud.name}}</td>
-      <td>{{stud.enrollment}}</td>
-      <td><b-form-input v-model="getContentForEditing[index].score" type="text" :disabled="isMark"></b-form-input></td>
-      <td><b-form-input v-model="getContentForEditing[index].mark" type="text" :disabled="isScore"></b-form-input></td>
+      <td>{{stud.priimek}}</td>
+      <td>{{stud.ime}}</td>
+      <td>{{stud.Datum}}</td>
+      <td><b-form-input v-model="getContentForEditing[index].Točke" type="text" :disabled="isMark"></b-form-input></td>
+      <td><b-form-input v-model="getContentForEditing[index].Ocena" type="text" :disabled="isScore"></b-form-input></td>
       <td><b-button class="float-right" type="reset" variant="danger" @click.prevent="returnApply(stud)">Vrni prijavo</b-button></td>
     </tr>
   </tbody>
@@ -156,6 +155,7 @@ import Router from "vue-router";
 import axios from "axios";
 import rest from "./../../rest.js";
 import Results from "../Results.vue";
+import _ from 'lodash'
 
 export default {
   components: {
@@ -212,8 +212,8 @@ export default {
       for (let el of this.getContentForEditing) {
         let postdata = {
         }
-        if (this.isMark) postdata['mark'] = el.mark
-        if (this.isScore) postdata['score'] = el.score
+        if (this.isMark) postdata['mark'] = el.Ocena
+        if (this.isScore) postdata['score'] = el.Točke
         axios.put(`/exams/enrollments/${el.id}`,postdata)
         .then(response => {
           if (response.data && response.data.message) {
@@ -315,6 +315,13 @@ export default {
       }
       this.selectedExamTerm = this.baseText + ele
     },
+    isEmpty(obj) {
+      for(var key in obj) {
+          if(obj.hasOwnProperty(key))
+              return false;
+      }
+      return true;
+    },
     load(duplicate) {
       axios.get(`courses/${this.id}/enrollments`)
       .then((response) => {
@@ -336,19 +343,28 @@ export default {
       .then((response) => {
         let tableData = response.data.map((x)=>{
           console.log('hoj ', x)
+          // if (!_.isObject(x.enrollmentCourse.enrollment)) return {}
+          let tmpEnrollment = response.data.find(l => {
+              console.log('l',_.isFinite(l.enrollmentCourse.enrollment))
+              // return !_.isObject(x.enrollmentCourse.enrollment) && x.enrollmentCourse.enrollment === 
+              if (_.isFinite(x.enrollmentCourse.enrollment))
+                return _.isObject(l.enrollmentCourse.enrollment) && l.enrollmentCourse.enrollment.id == x.enrollmentCourse.enrollment
+            })
+           console.log('te', tmpEnrollment,x)
+          if (!tmpEnrollment) tmpEnrollment = x
           let r = {
             id: x.id,
-            priimek: x.enrollment.enrollment.token.student.surname,
-            ime: x.enrollment.enrollment.token.student.name,
-            Vpisna_stevilka: x.enrollment.enrollment.token.student.enrollmentNumber,
+            priimek: tmpEnrollment.enrollmentCourse.enrollment.token.student.surname,
+            ime: tmpEnrollment.enrollmentCourse.enrollment.token.student.name,
+            Vpisna_stevilka: tmpEnrollment.enrollmentCourse.enrollment.token.student.enrollmentNumber,
             Datum: this.$options.filters.datum(x.exam.scheduledAt),
-            Šolsko_leto: x.enrollment.enrollment.curriculum.year.toString,
+            Šolsko_leto:  tmpEnrollment.enrollmentCourse.enrollment.curriculum.year.toString,
             Točke: x.score,
             Ocena: x.status === 'deleted' ? 'VP' : x.mark,
             Prostor: x.exam.location,
             Izpraševalec: x.exam.asking,
             Število_polaganj: x.totalExamAttempts + '-' + x.returnedExamAttempts + '=' + (x.totalExamAttempts - x.returnedExamAttempts),
-            Izpitni_rok: x.exam.examTerm
+            Izpitni_rok: x.exam.examTerm,
             // course: x.enrollmentCourse.courseExecution.course.name,
             // professor: x.enrollmentCourse.courseExecution.lecturer1.name + " " + x.enrollmentCourse.courseExecution.lecturer1.surname || x.enrollmentCourse.courseExecution.lecturer2.name + " " + x.enrollmentCourse.courseExecution.lecturer2.surname || x.enrollmentCourse.courseExecution.lecturer3.name + " " + x.enrollmentCourse.courseExecution.lecturer3.surname,
             // date: this.$options.filters.datum(x.examsAvailable[0].scheduledAt)
@@ -356,7 +372,7 @@ export default {
           return r
         })
         this.examEnrollments = {
-          content: tableData,
+          content: tableData.filter(el => !this.isEmpty(el)),
           fieldNames: null
         };
         this.originalContent = this.examEnrollments
