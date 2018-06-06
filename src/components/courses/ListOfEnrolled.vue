@@ -55,7 +55,10 @@ export default {
             Vpisna_Številka: x.token.student.enrollmentNumber,
             Ime:x.token.student.name,
             Priimek: x.token.student.surname,
-            Username: x.token.student.username
+            Naslov_Stalnega_Bivalisca: x.token.student.permanent.placeOfResidence,
+            Naslov_Zacasnega_Bivalisca: x.token.student.temporary.placeOfResidence,
+            Telefon: x.token.student.phoneNumber,
+            Elektronska_Posta: x.token.student.universityEmail
           }
         })
       })
