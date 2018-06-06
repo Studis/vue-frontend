@@ -59,7 +59,7 @@ export default {
               stack: [
                 {text: (e.token.student.name+" "+e.token.student.surname).toUpperCase(), style: 'bold'},
                 {text: e.token.student.permanent.placeOfResidence, style: 'normal'},
-                {text: e.token.student.permanent.postalNumber+" "+e.token.student.permanent.municipality.name, style: 'normal'}
+                {text: e.token.student.permanent.postalNumber+" "+(e.token.student.permanent.municipality?e.token.student.permanent.municipality.name:""), style: 'normal'}
               ]
             },
             {
