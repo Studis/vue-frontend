@@ -11,7 +11,7 @@
       entityName="student"
       sortByField="priimek"
       v-on:b-click-id="showStudent"
-      :actions="[{name: 'Open', classColor: 'btn-success'}]"
+      :actions="[{name: 'Odpri', classColor: 'btn-success'}]"
       v-model="content"></results>
 
      <br><br><br><br>
@@ -104,7 +104,7 @@
 
       <b-modal ref="dodajRok" size="lg" @ok="scheduleExam">
       <b-container fluid>
-        <h3>Dodaj izpitni rok</h3>{{(scheduledAt)}}
+        <h3>Dodaj izpitni rok</h3>
         <br>
         <p class="naslov">
           <b-dropdown id="ddown1" :text="examTerm+''" class="m-md-2">
@@ -367,7 +367,7 @@ export default {
             Ocena: x.status === 'deleted' ? 'VP' : x.mark,
             Prostor: x.exam.location,
             Izpraševalec: x.exam.asking,
-            Število_polaganj: x.totalExamAttempts + '-' + x.returnedExamAttempts + '=' + (x.totalExamAttempts - x.returnedExamAttempts),
+            Število_polaganj: x.totalExamAttempts,
             Izpitni_rok: x.exam.examTerm,
             // course: x.enrollmentCourse.courseExecution.course.name,
             // professor: x.enrollmentCourse.courseExecution.lecturer1.name + " " + x.enrollmentCourse.courseExecution.lecturer1.surname || x.enrollmentCourse.courseExecution.lecturer2.name + " " + x.enrollmentCourse.courseExecution.lecturer2.surname || x.enrollmentCourse.courseExecution.lecturer3.name + " " + x.enrollmentCourse.courseExecution.lecturer3.surname,

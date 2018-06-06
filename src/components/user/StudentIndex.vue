@@ -67,7 +67,7 @@ export default {
         if (!fieldNames) {
           this.totalRows = content.length;
           
-          // this.fields = [{key: "open", label: "Open"}];
+
           this.printFields = [];
           if (this.actions) this.fields.push({key: "btns", label: "Actions"})
           for (var columnName in columns) {

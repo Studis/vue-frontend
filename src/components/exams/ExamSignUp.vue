@@ -113,6 +113,7 @@ export default {
           } else {
             if (this.getFullName == 'Jože Dobravec') alert('You will need to pay exam! If you are not okay with that please remove enrollement!')
             alert('Prijava uspešna!')
+            this.prepareComponent()
           }
         }).catch((err) => {
           alert(err.message)

@@ -96,10 +96,10 @@ export default {
     getName () {
       axios.get(`students/me`).then((response) => {
         this.fullName = response.data.fullName
-        if(response.data.role == 'STUDENT') this.role = 'Študent'
-        if(response.data.role == 'LECTURER') this.role = 'Učitelj'
-        if(response.data.role == 'CLERK') this.role = 'Referentka'
-        if(response.data.role == 'ADMIN') this.role = 'Skrbnik'
+        // if(response.data.role == 'STUDENT') this.role = 'Študent'
+        // if(response.data.role == 'LECTURER') this.role = 'Učitelj'
+        // if(response.data.role == 'CLERK') this.role = 'Referentka'
+        // if(response.data.role == 'ADMIN') this.role = 'Skrbnik'
       }).catch((e) => {
         console.log(e)
       })

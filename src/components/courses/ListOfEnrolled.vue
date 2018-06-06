@@ -35,7 +35,7 @@ export default {
   },
   methods: {
     btnClicked (el) {
-      if (el.actionName=="Open") this.$router.push({name: 'course', params: { id: el.clickedItem.id }})
+      if (el.actionName=="Odpri") this.$router.push({name: 'course', params: { id: el.clickedItem.id }})
     },
     updateYears (ele) {
       // alert(JSON.stringify(this.content.content.filter(el => el.year == ele)))
