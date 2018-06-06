@@ -1434,10 +1434,14 @@ export default {
         if(this.vpisniList.zacasnoPrebivalisceDrzava == this.countries[x].value.trim()) zacasnaDrzava = this.countries[x].tag
       }
       let pravilnaIzbiraPredmetov = (this.value_splosni.length == 1 && this.value.value_strokovni.length == 1) ? true : false
-      let pravilnaIzbiraNePravice = (this.value_modulski.map(e=>e.name).length==this.value_modulski.map(po => po.modul).filter((value,index,self) => self.indexOf(value)===index).length*3 
-                                    || this.value_modulski.map(e=>e.name).length==(this.value_modulski.map(po => po.modul).filter((value,index,self) => self.indexOf(value)===index).length)*3-2)
-                                    && (this.value_modulski.map(po => po.modul).filter((value,index,self) => self.indexOf(value)===index).length == 3 
-                                    || this.value_modulski.map(po => po.modul).filter((value,index,self) => self.indexOf(value)===index).length == 2)
+      let vsi_moduli = this.value_modulski.map(po => po.modul).filter((value,index,self) => self.indexOf(value)===index)
+      let vsi_predmeti = this.value_modulski.map(e=>e.name)
+      let pravilnaIzbiraNePravice = (
+        vsi_predmeti.length == vsi_moduli.length * 3 
+        || vsi_predmeti.length==vsi_moduli.length*3-2
+        && (vsi_moduli.length == 3 
+        || vsi_moduli.length == 2)
+      )
       if (this.vpisniList.letnikStudija == 2 && pravilnaIzbiraPredmetov) {
         alert('Izberete lahko en splosno izbirni predmet in en strokovno izbirni predmet! ')
         return
