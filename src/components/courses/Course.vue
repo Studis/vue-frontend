@@ -199,7 +199,8 @@ export default {
       axios.put(`/exams/enrollments/${el.id}`,postdata)
       .then(response => {
         if (response.data) {
-          alert(response.data.message)
+          // alert(response.data.message)
+          alert("Sprememba uspešna!")
         }
       }).catch((err) => {
         alert(err.message)
