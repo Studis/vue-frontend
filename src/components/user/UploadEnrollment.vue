@@ -57,8 +57,16 @@ export default {
         }
       }).then((response) => {
         console.log(response.data)
-    
-        this.content = Object.assign({}, this.content,{ content: response.data, fieldNames: null })
+        this.content = Object.assign({}, this.content,{ content: response.data.map(el => {
+            let r = {
+              Elektronski_naslov: el.email,
+              Vpisna_Številka: el.enrollmentNumber,
+              Ime: el.name,
+              Priimek: el.surname,
+              Uporabniško_Ime: el.username
+            }
+            return r;
+          }) , fieldNames: null })
         this.zeNalozeno = true
 
     

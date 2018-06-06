@@ -23,9 +23,9 @@
       <div class="pull-left">
         <div>
           <b-input-group>
-            <b-form-input v-model="filter" placeholder="Search" />
+            <b-form-input v-model="filter" placeholder="Iskanje" />
             <b-input-group-append>
-              <b-button :disabled="!filter" @click="filter = ''" class="btn-dark">Clear</b-button>
+              <b-button :disabled="!filter" @click="filter = ''" class="btn-dark">Pobriši</b-button>
             </b-input-group-append>
           </b-input-group>
         </div>
