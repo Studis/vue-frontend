@@ -53,8 +53,7 @@ export default {
   name: 'studis-header',
   data() {
     return {
-      fullName: '',
-      role: ''
+      fullName: ''
     }
   }, 
   components: {
@@ -111,6 +110,12 @@ export default {
       'getRole',
       'getFullName'
     ]),
+    role () {
+      if (this.getRole == 'LECTURER') return 'Učitelj'
+      if (this.getRole == 'CLERK') return 'Referentka'
+      if (this.getRole == 'STUDENT') return 'Študent'
+      if (this.getRole == 'ADMIN') return 'Skrbnik'
+  },
     ...mapState({
       authChanged: (state) => state.isAuth
     }),

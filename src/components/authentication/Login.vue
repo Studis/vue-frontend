@@ -90,6 +90,7 @@ declare module 'vue/types/vue' {
             this.wrong = false
           }, 2000);
         }
+        this.$store.commit('updateRole', d.data.role)
         if ((d.data.role !== "STUDENT")) {
           this.$router.push({name: 'courses'})
         } else {
