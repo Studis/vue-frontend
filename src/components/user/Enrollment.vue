@@ -1539,9 +1539,10 @@ export default {
       return;
     },
     validName() {
-      if (!/^[a-zA-Z\s]*$/.test(this.vpisniList.ime)) {
+      var regexp = /^((?![0-9\~\!\@\#\$\%\^\&\*\(\)\_\+\=\-\[\]\{\}\;\:\"\\\/\<\>\?]).)+$/;
+      if (!regexp.test(this.vpisniList.ime)) {
         this.errors.push("Ime lahko vsebuje samo črke.");
-        if (!/^[a-zA-Z\s]*$/.test(this.vpisniList.priimek)) {
+        if (!regexp.test(this.vpisniList.priimek)) {
           this.errors.push("Priimek lahko vsebuje samo črke.");
         }
       }
