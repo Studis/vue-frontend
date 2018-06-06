@@ -104,7 +104,7 @@
 
       <b-modal ref="dodajRok" size="lg" @ok="scheduleExam">
       <b-container fluid>
-        <h3>Dodaj izpitni rok</h3>
+        <h3>Dodaj izpitni rok</h3>{{(scheduledAt)}}
         <br>
         <p class="naslov">
           <b-dropdown id="ddown1" :text="examTerm+''" class="m-md-2">
@@ -156,6 +156,7 @@ import axios from "axios";
 import rest from "./../../rest.js";
 import Results from "../Results.vue";
 import _ from 'lodash'
+import moment from 'moment'
 
 export default {
   components: {
@@ -174,7 +175,9 @@ export default {
       return this.isScore && !this.isMark || !this.isScore && this.isMark
     },
     scheduledAt () {
-      return this.examDate + "T" + this.examTime + ":00Z"
+      if (this.examDate && this.examTime) {
+        return moment(this.examDate + "T" + this.examTime + ":00Z").subtract(2, 'hours').format()
+      }
     },
     getContentForEditing () {
       return this.examEnrollments.content
