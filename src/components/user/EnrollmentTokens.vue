@@ -181,7 +181,7 @@ export default {
       this.$refs.novZeton.show();
     },
     newToken() {
-      axios.post(`tokens/${this.id}`, {
+      axios.post(`tokens/${this.id}/${this.pravica}`, {
         program: {
           id: 1000475
         },
