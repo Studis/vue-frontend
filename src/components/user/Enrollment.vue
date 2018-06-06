@@ -1557,17 +1557,25 @@ export default {
         this.vpisniList.ime = response.data.name;
         this.vpisniList.priimek = response.data.surname;
         this.vpisniList.krajRojstva = response.data.placeOfBirth;
-        this.vpisniList.datumRojstva = response.data.dateOfBirth.year + "-" + response.data.dateOfBirth.monthValue + "-" + response.data.dateOfBirth.dayOfMonth;
+        if (response.data.dateOfBirth) this.vpisniList.datumRojstva = response.data.dateOfBirth.year + "-" + response.data.dateOfBirth.monthValue + "-" + response.data.dateOfBirth.dayOfMonth;
         this.vpisniList.spol = response.data.gender;
-        this.vpisniList.stalnoPrebivalisceObcina = response.data.permanent.municipality.name + ' ';
-        this.vpisniList.zacasnoPrebivalisceObcina = response.data.temporary.municipality.name + ' ';
-        this.vpisniList.stalnoPrebivalisceDrzava = 'Slovenija'
-        this.vpisniList.zacasnoPrebivalisceDrzava = 'Slovenija'
-        this.vpisniList.stalnoPrebivaliscePosta = response.data.permanent.postalNumber + ',	' + response.data.permanent.municipality.name;
-        this.vpisniList.zacasnoPrebivaliscePosta = response.data.temporary.postalNumber + ',	' + response.data.temporary.municipality.name;
+
+        
+        this.vpisniList.stalnoPrebivalisceDrzava = 'Slovenija';
+        this.vpisniList.zacasnoPrebivalisceDrzava = 'Slovenija';
+        if (response.data.permanent && response.data.permanent.municipality) {
+          this.vpisniList.stalnoPrebivalisceObcina = response.data.permanent.municipality.name + ' ';
+          this.vpisniList.stalnoPrebivaliscePosta = response.data.permanent.postalNumber + ',	' + response.data.permanent.municipality.name;
+          this.vpisniList.stalnoPrebivalisceNaslov = response.data.permanent.placeOfResidence;
+        }
+        if (response.data.temporary) {
+          this.vpisniList.zacasnoPrebivaliscePosta = response.data.temporary.postalNumber + ',	' + response.data.temporary.municipality.name;
+          this.vpisniList.zacasnoPrebivalisceObcina = response.data.temporary.municipality.name + ' ';
+          this.vpisniList.zacasnoPrebivalisceNaslov = response.data.temporary.placeOfResidence;
+        }
+        
         this.vpisniList.elektronskiNaslov = response.data.universityEmail;
-        this.vpisniList.stalnoPrebivalisceNaslov = response.data.permanent.placeOfResidence;
-        this.vpisniList.zacasnoPrebivalisceNaslov = response.data.temporary.placeOfResidence;
+        
         this.vpisniList.telefonskaStevilka = response.data.phoneNumber;
         axios.get(`tokens/${userid}`).then((response) => {
           for(var x = 0; x < response.data.length; x++) {

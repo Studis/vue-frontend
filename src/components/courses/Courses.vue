@@ -47,6 +47,7 @@
         </b-col>
       </b-col>
       <b-btn style="margin-top:10px" @click.prevent="generateRoki()">Generiraj roke</b-btn>
+      <list-enrolled></list-enrolled>
   </div>
 </template>
 
@@ -56,10 +57,12 @@ import Router from 'vue-router'
 import axios from 'axios';
 import rest from './../../rest.js'
 import Results from '../Results.vue'
+import ListOfEnrolled from './ListOfEnrolled.vue'
 
 export default {
   components: {
-    'results': Results
+    'results': Results,
+    'list-enrolled': ListOfEnrolled
   },
   methods: {
     updateRok (item) {
