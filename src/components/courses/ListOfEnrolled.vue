@@ -8,6 +8,7 @@
       entityName="course"
       sortByField="course"
       v-on:b-click-id="btnClicked"
+      :landscape="true"
       >
       <b-dropdown id="ddown1" :text="selectedYear+'/'+(parseInt(selectedYear)+1)" class="m-md-2" >
         <b-dropdown-item @click.prevent="updateYears(item)" :key="item" v-for="item in allYears">{{item}}/{{item+1}}</b-dropdown-item>
