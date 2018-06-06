@@ -244,7 +244,7 @@
       </b-form-checkbox>
     </b-row>
     <br>
-    <b-row class="my-1">
+    <b-row class="my-1 vanish">
       <b-col sm="4">
         <b-button onClick="window.print()" variant="warning">Natisni</b-button>
       </b-col>
@@ -1718,6 +1718,11 @@ export default {
   }
   .boi {
     margin-top: 30%;
+  }
+
+  @media print { 
+  /* All your print styles go here */
+  .vanish { display: none !important; } 
   }
   
 </style>
