@@ -19,6 +19,7 @@
       </b-dropdown>
       </results>
       <br>
+      <br>
       <h3>Generiranje izpitnih rokov</h3>
        <b-dropdown id="ddown2" :text="safrLetnik+''" class="m-md-2" >
         <b-dropdown-item @click.prevent="updateRok(item)" :key="item" v-for="item in ['2016', '2017', '2018']">{{item}}</b-dropdown-item>
@@ -46,7 +47,9 @@
           <b-form-input v-model="konecJesenskegaObdobja" type="date"/>
         </b-col>
       </b-col>
-      <b-btn style="margin-top:10px" @click.prevent="generateRoki()">Generiraj roke</b-btn>
+      <b-btn variant="success" style="margin-top:10px" @click.prevent="generateRoki()">Generiraj roke</b-btn>
+      <br>
+      <br>
       <list-enrolled></list-enrolled>
   </div>
 </template>
